@@ -46,38 +46,66 @@
  */
 
 var addTwoNumbers = (l1, l2) => {
-  const convertListToInt = (list) => {
-    let currentNode = list;
-    let value = currentNode.val.toString();
-    while (currentNode.next !== null) {
-      value = currentNode.next.val.toString() + value;
-      currentNode = currentNode.next;
+  var reverseString = (string) => {
+    let result = '';
+    for (let i = string.length - 1; i >= 0; i--) {
+      result = result + string[i];
     }
-    return parseInt(value, 10);
+  return result;
   }
 
-  var convertIntToList = (int) => {
-    let value = int;
-    let resultNode = {
-      val : value % 10,
+  var listToString = (list) => {
+    let result = list.val.toString();
+    let currentNode = list;
+    while (currentNode.next !== null) {
+      currentNode = currentNode.next;
+      result = result + currentNode.val.toString();
+    }
+    return reverseString(result);
+  }
+
+  var addTwoStrings = (s1, s2) => {
+    let result = '';
+    let sum;
+    let carried = 0;
+    let places = s1.length < s2.length ? s2.length : s1.length;
+    for (let i = 0; i < places; i++) {
+      if (s1[(s1.length - 1) - i] === undefined) {
+        sum = parseInt(s2[s2.length - i], 10) + carried;
+      } else if (s2[(s2.length - 1) - i] === undefined) {
+        sum = parseInt(s1[(s1.length - 1) - i], 10) + carried;
+      } else {
+        sum = parseInt(s1[(s1.length - 1) - i], 10) + parseInt(s2[(s2.length - 1) - i], 10) + carried;
+      }
+      carried = 0;
+      if (sum > 9) {
+        carried = sum - sum % 10
+        sum = sum - carried;
+        carried = carried / 10;
+      }
+      result = result + sum.toString();
+    }
+    if (carried !== 0) {
+      result = carried.toString() + result;
+    }
+    return result;
+  }
+
+  var stringToList = (string) => {
+    let prepared = reverseString(string);
+    let result = {
+      val : parseInt(prepared[0], 10),
       next : null
     };
-    let currentNode = resultNode;
-    value = value - value % 10;
-    value = value / 10;
-
-    while (value !== 0) {
+    let currentNode = result;
+    for (let i = 1; i < prepared.length; i++) {
       currentNode.next = {
-        val : value % 10,
-        next : null
+        val: null,
+        next: null
       };
-      value = value - value % 10;
-      value = value / 10;
       currentNode = currentNode.next;
+      currentNode.val = parseInt(prepared[i], 10);
     }
-    return resultNode;
+    return result;
   }
-
-  let sum = convertListToInt(l1) + convertListToInt(l2);
-  return convertIntToList(sum);
 };
