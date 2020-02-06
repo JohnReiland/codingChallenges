@@ -56,16 +56,28 @@ var addTwoNumbers = (l1, l2) => {
     return parseInt(value, 10);
   }
 
-  const convertIntToList = (int) => {
+  var convertIntToList = (int) => {
+    let value = int;
     let resultNode = {
-      val : null,
+      val : value % 10,
       next : null
     };
     let currentNode = resultNode;
+    value = value - value % 10;
+    value = value / 10;
 
-
-
+    while (value !== 0) {
+      currentNode.next = {
+        val : value % 10,
+        next : null
+      };
+      value = value - value % 10;
+      value = value / 10;
+      currentNode = currentNode.next;
+    }
+    return resultNode;
   }
 
   let sum = convertListToInt(l1) + convertListToInt(l2);
+  return convertIntToList(sum);
 };
