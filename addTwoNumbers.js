@@ -71,7 +71,7 @@ var addTwoNumbers = (l1, l2) => {
     let places = s1.length < s2.length ? s2.length : s1.length;
     for (let i = 0; i < places; i++) {
       if (s1[(s1.length - 1) - i] === undefined) {
-        sum = parseInt(s2[s2.length - i], 10) + carried;
+        sum = parseInt(s2[(s2.length - 1) - i], 10) + carried;
       } else if (s2[(s2.length - 1) - i] === undefined) {
         sum = parseInt(s1[(s1.length - 1) - i], 10) + carried;
       } else {
@@ -83,7 +83,7 @@ var addTwoNumbers = (l1, l2) => {
         sum = sum - carried;
         carried = carried / 10;
       }
-      result = result + sum.toString();
+      result = sum.toString() + result;
     }
     if (carried !== 0) {
       result = carried.toString() + result;
@@ -108,4 +108,6 @@ var addTwoNumbers = (l1, l2) => {
     }
     return result;
   }
+
+  return stringToList(addTwoStrings(listToString(l1),listToString(l2)));
 };
