@@ -34,8 +34,9 @@ for (let i = 0; i < string.length; i++) {
   if (characters[string[i]] === undefined || characters[string[i]] < startIndex) {
     characters[string[i]] = i;
   } else {
+    longestFound = longestFound >= (i - startIndex) ? longestFound : (i - startIndex);
     startIndex = characters[string[i]] + 1;
-    longestFound = longestFound >= (i + 1 - startIndex) ? longestFound : (i + 1 - startIndex);
+    characters[string[i]] = i;
   }
 }
 longestFound = longestFound >= (string.length - startIndex) ? longestFound : (string.length - startIndex);
