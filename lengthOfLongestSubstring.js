@@ -24,6 +24,20 @@ Note that the answer must be a substring, "pwke" is a subsequence and not a subs
  * @param {string} s
  * @return {number}
  */
-var lengthOfLongestSubstring = function(s) {
+var lengthOfLongestSubstring = (string) => {
+let startIndex = 0;
+let longestFound = 0;
 
+let characters = {};
+
+for (let i = 0; i < string.length; i++) {
+  if (characters[string[i]] === undefined || characters[string[i]] < startIndex) {
+    characters[string[i]] = i;
+  } else {
+    startIndex = characters[string[i]] + 1;
+    longestFound = longestFound >= (i + 1 - startIndex) ? longestFound : (i + 1 - startIndex);
+  }
+}
+longestFound = longestFound >= (string.length - startIndex) ? longestFound : (string.length - startIndex);
+return longestFound
 };
