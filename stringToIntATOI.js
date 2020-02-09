@@ -48,6 +48,73 @@ Thefore INT_MIN (−231) is returned.
  * @param {string} str
  * @return {number}
  */
-var myAtoi = function(str) {
+var myAtoi = (str) => {
+  let nums = {
+    0 : 0,
+    1 : 1,
+    2 : 2,
+    3 : 3,
+    4 : 4,
+    5 : 5,
+    6 : 6,
+    7 : 7,
+    8 : 8,
+    9 : 9,
+  }
 
+  let isNegative = null;
+  let start = -1;
+  let end = -1;
+
+  for (let i = 0; i < str.length; i++) {
+    if (isNegative === null) {
+      if (str[i] === " ") {
+        continue;
+      } else if (str[i] === "-") {
+        isNegative = true;
+        start = i + 1;
+        continue;
+      } else if (str[i] === "+") {
+        isNegative = false;
+        start = i + 1;
+        continue;
+      }
+    }
+    if (start !== -1) {
+      if (nums[str[i]] === undefined) {
+        end = i;
+        break;
+      }
+    }
+    if (nums[str[i]] === undefined) {
+      return 0;
+    }
+    if (start === -1) {
+      start = i;
+      isNegative = false;
+    }
+  }
+  if (start !== -1 && end === -1) {
+    end = str.length;
+  }
+  let selection = str.slice(start, end);
+
+  selection = parseInt(selection, 10);
+  if (isNaN(selection)) {
+    return 0;
+  }
+
+  if (isNegative === true) {
+    selection *= -1;
+  }
+
+  if (selection < -2147483648) {
+    return -2147483648;
+  }
+
+  if (selection > 2147483647) {
+    return 2147483647;
+  }
+
+  return selection;
 };
