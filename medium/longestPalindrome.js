@@ -21,6 +21,9 @@ Output: "bb"
  * @return {string}
  */
 var longestPalindrome = (string) => {
+  if (string.length === 0) {
+    return "";
+  }
   const palindromeSize = (string, index1, index2) => {
     let size = 0;
     while (string[index1] && string[index2]) {
