@@ -13,9 +13,43 @@ Output: "bb"
 */
 
 /*
+
+*/
+
+/*
  * @param {string} s
  * @return {string}
  */
-var longestPalindrome = function(s) {
+var longestPalindrome = (string) => {
+  const palindromeSize = (string, index1, index2) => {
+    let size = 0;
+    while (string[index1] && string[index2]) {
+      if (string[index1] === string[index2]) {
+        index1--;
+        index2++;
+        size++;
+      } else {
+        return string.slice(index1 + 1, index2);
+      }
+    }
+    return string.slice(index1 + 1, index2);
+  }
 
+  let longestLength = 0;
+  let result;
+  let even;
+  let odd;
+  for (let i = 0; i < string.length; i++) {
+    even = palindromeSize(string, i, i + 1);
+    odd = palindromeSize(string, i, i);
+    if (even.length > longestLength) {
+      longestLength = even.length;
+      result = even;
+    }
+    if (odd.length > longestLength) {
+      longestLength = odd.length;
+      result = odd;
+    }
+  }
+  return result;
 };
