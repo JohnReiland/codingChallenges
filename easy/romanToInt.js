@@ -52,11 +52,17 @@ var romanToInt = function(string) {
   let index = 0;
   let values = {
     I : 1,
+    IV : 4,
     V : 5,
+    IX : 9,
     X : 10,
+    XL : 40,
     L : 50,
+    XC : 90,
     C : 100,
+    CD : 400,
     D : 500,
+    CM : 900,
     M : 1000
   }
 
@@ -68,11 +74,12 @@ var romanToInt = function(string) {
 
   while (string[index] !== undefined) {
     let bite = string[index];
-    while (string[index + 1] !== undefined && string[index + 1] >= string[index]) {
+    while (string[index + 1] !== undefined && values[string[index + 1]] > values[string[index]]) {
       bite += string[index + 1];
       index++;
     }
-
+    result += values[bite];
+    index++;
   }
 
   return result;
