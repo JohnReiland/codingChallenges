@@ -47,6 +47,33 @@ Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
  * @param {string} s
  * @return {number}
  */
-var romanToInt = function(s) {
+var romanToInt = function(string) {
+  let result = 0;
+  let index = 0;
+  let values = {
+    I : 1,
+    V : 5,
+    X : 10,
+    L : 50,
+    C : 100,
+    D : 500,
+    M : 1000
+  }
 
+  /*
+  So we need to kind of read ahead of the index, or else recall behind the index.
+  Two loops, I think. One is watching for the end of the string,
+  the other is watching for the end of the current "bite." (not 2b confused w/ "byte")
+  */
+
+  while (string[index] !== undefined) {
+    let bite = string[index];
+    while (string[index + 1] !== undefined && string[index + 1] >= string[index]) {
+      bite += string[index + 1];
+      index++;
+    }
+
+  }
+
+  return result;
 };
