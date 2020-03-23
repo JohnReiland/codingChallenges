@@ -43,6 +43,51 @@ Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
 */
 
 /*
+
+ALTERNATE SOLUTION WITH IMPROVED EASE OF MAINTANANCE
+TESTING SHOWS 6% WORSE PERFORMANCE
+
+var intToRoman = (num) => {
+  let result = '';
+  let $num = num;
+  let scale = 100;
+  let symbols = {
+    100 : ['M', 'CM', 'D', 'CD'],
+    10 : ['C', 'XC', 'L', 'XL'],
+    1 : ['X', 'IX', 'V', 'IV'],
+  }
+
+  while (scale >= 1) {
+    while ($num >= 10 * scale) {
+      result += symbols[scale.toString()][0];
+      $num -= 10 * scale;
+    }
+    if ($num >= 9 * scale) {
+      result += symbols[scale.toString()][1];
+      $num -= 9 * scale;
+    }
+    if ($num >= 5 * scale) {
+      result += symbols[scale.toString()][2];
+      $num -= 5 * scale;
+    }
+    if ($num >= 4 * scale) {
+      result += symbols[scale.toString()][3];
+      $num -= 4 * scale;
+    }
+    scale /= 10;
+  }
+
+  while ($num >= 1) {
+    result += 'I';
+    $num--;
+  }
+
+  return result;
+};
+
+*/
+
+/*
  * @param {number} num
  * @return {string}
  */
@@ -67,8 +112,6 @@ var intToRoman = (num) => {
     $num -= 400;
   }
 
-
-
   while ($num >= 100) {
     result += 'C';
     $num -= 100;
@@ -85,13 +128,12 @@ var intToRoman = (num) => {
     result += 'XL';
     $num -= 40;
   }
+
+
   while ($num >= 10) {
     result += 'X';
     $num -= 10;
   }
-
-
-
   if ($num >= 9) {
     result += 'IX';
     $num -= 9;
@@ -104,11 +146,12 @@ var intToRoman = (num) => {
     result += 'IV';
     $num -= 4;
   }
+
+
   while ($num >= 1) {
     result += 'I';
     $num--;
   }
-
 
   return result;
 };
