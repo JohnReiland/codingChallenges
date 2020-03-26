@@ -23,6 +23,10 @@ All given inputs are in lowercase letters a-z.
  * @param {string[]} strs
  * @return {string}
  */
+
+
+/* NAIVE SOLUTION
+
 var longestCommonPrefix = function(strs) {
   let result = '';
   let i = 0;
@@ -49,6 +53,37 @@ var longestCommonPrefix = function(strs) {
   }
 
   result += strs[0].substring(0,i);
+
+  return result;
+};
+
+*/
+
+var longestCommonPrefix = function(strs) {
+  if (strs.length === 0) {
+    return '';
+  }
+
+  let result = '';
+  let l = 0;
+
+  for (let i = 0; i < strs[0].length; i++) {
+    let test = strs[0][i];
+    let match = true;
+    for (let j = 1; j < strs.length; j++) {
+      if (strs[j][i] !== test) {
+        match = false;
+        break;
+      }
+    }
+    if (match) {
+      l++;
+    } else {
+      break;
+    }
+  }
+
+  result += strs[0].substring(0,l);
 
   return result;
 };
