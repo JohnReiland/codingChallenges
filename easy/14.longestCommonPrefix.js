@@ -60,22 +60,24 @@ var longestCommonPrefix = function(strs) {
 */
 
 var longestCommonPrefix = function(strs) {
-  if (strs.length === 0 || strs[0].length === 0) {
+  if (strs.length === 0) {
     return '';
   }
   let test = strs[0];
   let shortest = strs[0].length;
 
-  for (let i = 0; i < strs.length; i++) {
-    if (!strs[i].startsWith(test)) {
+  for (let i = 1; i < strs.length; i++) {
+    if (strs[i].length < shortest) {
+      shortest = strs[i].length;
+      test = test.substring(0, shortest);
+    }
+    while (!strs[i].startsWith(test)) {
       shortest--;
       if (shortest === 0) {
         return '';
       }
-      test = test.substring(0,shortest);
-      i--;
+      test = test.substring(0, shortest);
     }
   }
-
   return test;
 };
