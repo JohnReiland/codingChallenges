@@ -55,3 +55,94 @@ var threeSum = function(nums) {
 
 */
 
+/*
+
+SLIGHTLY IMPROVED SOLUTION
+
+Load every unique value into an object literal, keeping track of index
+location up to a maximum of two indicies for non-zero values, and three
+indices for zeros (it will never be useful to know the location of more
+than two of the same non-zero integer, nor three zeros)
+
+If there are three instances of zero, push that to the solutions array.
+
+For each unique pairing of two integers, sum them and use the object to quickly
+determine if the value required to make zero (the negative of the sum)
+exists in the array. If it does, push that to the solutions array.
+
+Return the array.
+
+This should be a ^2 solution instead of a ^3 solution, which is still slow.
+
+*/
+
+var threeSum = function(nums) {
+  let results = [];
+  let record = {};
+  for (let i = 0; i < nums.length; i++) {
+    if (record[nums[i]] === undefined) {
+      record[nums[i]] = 1;
+    } else if ((record[nums[i]] < 3 && nums[i] === 0) ||
+              (record[nums[i]] < 2)) {
+      record[nums[i]]++;
+    }
+  }
+
+  // if there is at least one zero
+  if (record['0'] !== undefined) {
+    // add all-zero solution if valid
+    if (record['0'] === 3) {
+      results.push([0, 0, 0]);
+    }
+
+    // add all solutions of [-value, zero, value]
+    for (let key in record) {
+      if (key === '0') {
+        continue;
+      }
+      let value = parseInt(key, 10);
+      if (value > 0 && record[-value] !== undefined) {
+        results.push([-value, 0, value]);
+      }
+    }
+  }
+
+  // add all solutions where two numbers are the same
+  for (let key in record) {
+    if (key === '0') {
+      continue;
+    }
+    if (record[key] === 2) {
+      let value = parseInt(key, 10);
+      if (record[(-2 * value)] !== undefined) {
+        results.push([value, value, -2 * value].sort());
+      }
+    }
+  }
+
+  // reduce to array
+  let unique = [];
+  for (key in record) {
+    if (key !== '0') {
+      unique.push(parseInt(key, 10));
+    }
+  }
+
+  // find remaining solutions
+  for (let i = 0; i < unique.length -1; i++) {
+    for (let j = i + 1; j < unique.length; j++) {
+      let test = (unique[i] + unique[j]);
+      if (test !== 0 &&
+        record[-test] !== undefined &&
+                -test !== unique[i] &&
+                -test !== unique[j]) {
+        if (record[[unique[i], unique[j], -test].sort()] === undefined) {
+          results.push([unique[i], unique[j], -test].sort());
+          record[[unique[i], unique[j], -test].sort()] = true;
+        }
+      }
+    }
+  }
+
+  return results;
+};
