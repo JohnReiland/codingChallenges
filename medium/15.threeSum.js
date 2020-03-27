@@ -74,7 +74,7 @@ Return the array.
 
 This should be a ^2 solution instead of a ^3 solution, which is still slow.
 
-*/
+
 
 var threeSum = function(nums) {
   let results = [];
@@ -142,6 +142,55 @@ var threeSum = function(nums) {
         }
       }
     }
+  }
+
+  return results;
+};
+
+*/
+
+/*
+
+GREATER IMPROVEMENT SOLUTION
+
+Cycles are being wasted testing whether a solution is unique.
+The method for finding solutions needs to preclude non-unique
+solutions from being found altogether.
+
+Sorting the array may be inescapable.
+
+*/
+
+var threeSum = function(nums) {
+  let results = [];
+  let array = nums.sort();
+  let i = 0;
+
+  while (array[i] < 0 && i < array.length - 1) {
+    if (array[i] === array[i-1]) {
+      i++
+      continue;
+    }
+    for (let j = i+1; j < array.length; j++) {
+      if (j !== i + 1 && array[j] === array[j-1]) {
+        continue;
+      }
+      for (let k = array.length-1; k > j && nums[k] > 0; k--) {
+        if (array[k] === array[k+1]) {
+          continue;
+        }
+        if (array[i] + array[j] + array[k] === 0) {
+          results.push([array[i], array[j], array[k]])
+        }
+      }
+    }
+    i++
+  }
+
+  if (array[i] === 0 &&
+    array[i+1] === 0 &&
+    array[i+2] === 0) {
+      results.push([0, 0, 0]);
   }
 
   return results;
