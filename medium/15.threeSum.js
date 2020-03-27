@@ -159,24 +159,24 @@ solutions from being found altogether.
 
 Sorting the array may be inescapable.
 
-*/
-
 var threeSum = function(nums) {
   let results = [];
   let array = nums.sort();
   let i = 0;
 
-  while (array[i] < 0 && i < array.length - 1) {
+  if (array[0] === 0 &&)
+
+  for (let i = 0; (array[i] < 0) && (i < array.length - 1); i++) {
     if (array[i] === array[i-1]) {
       i++
       continue;
     }
     for (let j = i+1; j < array.length; j++) {
-      if (j !== i + 1 && array[j] === array[j-1]) {
+      if (array[j] === array[j+1]) {
         continue;
       }
       for (let k = array.length-1; k > j && nums[k] > 0; k--) {
-        if (array[k] === array[k+1]) {
+        if (array[k] === array[k-1]) {
           continue;
         }
         if (array[i] + array[j] + array[k] === 0) {
@@ -191,6 +191,68 @@ var threeSum = function(nums) {
     array[i+1] === 0 &&
     array[i+2] === 0) {
       results.push([0, 0, 0]);
+  }
+
+  return results;
+};
+
+*/
+
+/*
+
+WORKING SOLUTION
+
+I had to examine another coder's solution.
+With all above improvements, mine still
+wasn't performing fast enough.
+
+Sorting the array was a good start, but an
+efficient solution finds savings in the
+certainty that if a negative number, a second
+number, and a positive number, summed, are negative,
+no smaller positive number can equal zero. Instead,
+the second number must be made larger.
+
+Likewise, if a negative number, a second
+number, and a positive number, summed, are positive,
+no larger second number can equal zero. Instead,
+the positive number must be made smaller.
+
+*/
+
+var threeSum = function(nums) {
+  let results = [];
+  let array = nums.sort((a,b) => {return a - b});
+
+  for (let i = 0; (array[i] <= 0) && (i < array.length - 2); i++) {
+    if (array[i] === array[i-1]) {
+      continue;
+    }
+    let j = i + 1;
+    let k = array.length - 1;
+    while (j < k) {
+      if (array[i] + array[j] + array[k] > 0) {
+        k--;
+        while (array[k] === array[k+1]) {
+          k--;
+        }
+      } else if (array[i] + array[j] + array[k] < 0) {
+        j++;
+        while (array[j] === array[j-1]) {
+          j++;
+        }
+      } else {
+        results.push([array[i], array[j], array[k]])
+        k--;
+        while (array[k] === array[k+1]) {
+          k--;
+        }
+        j++;
+        while (array[j] === array[j-1]) {
+          j++;
+        }
+      }
+    }
   }
 
   return results;
