@@ -16,39 +16,32 @@ The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
  */
 var threeSumClosest = function(nums, target) {
 
-  let array = nums.sort((a, b) => {return a - b});
+  nums = nums.sort((a, b) => {return a - b});
 
-  if (array.length < 3) {
-    return (array) => array.reduce((a, b) => a + b, 0);
+  if (nums.length < 3) {
+    return (nums) => nums.reduce((a, b) => a + b, 0);
   }
 
-  let testValue = array[0] + array[1] + array[2];
-  let bestDistance = Math.abs(target - testValue);
-  let result = testValue;
+  let result = nums[0] + nums[1] + nums[2];
+  let bestDistance = Math.abs(target - result);
 
-  for (let i = 0; i < array.length - 2; i++) {
-    if (array[i] === array[i - 1]) {
+  for (let i = 0; i < nums.length - 2; i++) {
+    if (nums[i] === nums[i - 1]) {
       continue;
     }
     let j = i + 1;
-    let k = array.length - 1;
+    let k = nums.length - 1;
     while (j < k) {
-      testValue = array[i] + array[j] + array[k];
-      testDistance = Math.abs(target - testValue);
+      let testValue = nums[i] + nums[j] + nums[k];
+      let testDistance = Math.abs(target - testValue);
       if (testDistance < bestDistance) {
         bestDistance = testDistance;
         result = testValue;
       }
       if (testValue > target) {
         k--;
-        while (array[k] === array[k + 1]) {
-          k--;
-        }
       } else if (testValue < target) {
         j++;
-        while (array[j] === array[j - 1]) {
-          j++;
-        }
       } else {
         return target;
       }
