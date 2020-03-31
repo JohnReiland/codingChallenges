@@ -18,10 +18,6 @@ var threeSumClosest = function(nums, target) {
 
   nums = nums.sort((a, b) => {return a - b});
 
-  if (nums.length < 3) {
-    return (nums) => nums.reduce((a, b) => a + b, 0);
-  }
-
   let result = nums[0] + nums[1] + nums[2];
   let bestDistance = Math.abs(target - result);
 
