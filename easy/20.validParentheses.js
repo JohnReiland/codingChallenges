@@ -55,7 +55,7 @@ var isValid = function(string) {
     string[i] === "{" ||
     string[i] === "[") {
       stack.push(pairs[string[i]])
-    } else if (string[i] !== stack.pop) {
+    } else if (string[i] !== stack.pop()) {
       return false;
     }
   }
