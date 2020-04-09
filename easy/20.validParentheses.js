@@ -42,23 +42,19 @@ If, the end of the string is reached without false being returned, AND with the 
  * @return {boolean}
  */
 var isValid = function(string) {
-  let pairs = {
-    "(" : ")",
-    "{" : "}",
-    "[" : "]"
-  };
-
   let stack = [];
 
   for (let i = 0; i < string.length; i++) {
-    if (string[i] === "(" ||
-    string[i] === "{" ||
-    string[i] === "[") {
-      stack.push(pairs[string[i]])
+    if (string[i] === "(") {
+      stack.push(")");
+    } else if (string[i] === "{") {
+      stack.push("}");
+    } else if (string[i] === "[") {
+      stack.push("]");
     } else if (string[i] !== stack.pop()) {
       return false;
     }
   }
 
-  return stack.length === 0 ? true : false;
+  return stack.length === 0;
 };
