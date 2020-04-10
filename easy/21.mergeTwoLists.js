@@ -19,5 +19,22 @@ Output: 1->1->2->3->4->4
  * @return {ListNode}
  */
 var mergeTwoLists = function(l1, l2) {
+  let result = {
+    val : null,
+    next : null
+  };
+  let currentNode = result;
+  while (l1 && l2) {
+    if (l2.val < l1.val) {
+      currentNode.next = l2;
+      l2 = l2.next;
+    } else {
+      currentNode.next = l1;
+      l1 = l1.next;
+    }
+    currentNode = currentNode.next;
+  }
+  currentNode.next = l1 ? l1 : l2;
 
+  return result.next;
 };
