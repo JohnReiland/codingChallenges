@@ -22,6 +22,11 @@ It doesn't matter what values are set beyond the returned length.
  * @param {number[]} nums
  * @return {number}
  */
+
+/*
+
+NAIVE SOLUTION
+
 var removeDuplicates = function(nums) {
 
 if (nums.length < 2) {
@@ -41,3 +46,18 @@ for (let i = 1; i < nums.length; i++) {
 
 return;
 };
+
+*/
+
+var removeDuplicates = function(nums) {
+  let i = 1;
+
+  while (nums[i] !== undefined) {
+    while (nums[i] === nums[i-1]) {
+      nums.splice(i, 1);
+    }
+    i++;
+  }
+
+  return;
+  };
