@@ -24,5 +24,20 @@ It doesn't matter what values are set beyond the returned length.
  */
 var removeDuplicates = function(nums) {
 
+if (nums.length < 2) {
+  return;
+}
 
+let previous = nums[0];
+
+for (let i = 1; i < nums.length; i++) {
+  if (nums[i] === previous) {
+    nums.splice(i, 1);
+    i--;
+  } else {
+    previous = nums[i];
+  }
+}
+
+return;
 };
