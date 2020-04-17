@@ -52,8 +52,8 @@ for (let i = 0; i < array.length; i++) {
     if (seen[array[i]] === undefined) {
         seen[array[i]] = true;
         result = i;
-    } 
+    }
 }
 
-return result;    
+return result;
 };
