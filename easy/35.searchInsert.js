@@ -28,10 +28,11 @@ Output: 0
 
 Brute Force Solution:
 
-For each element of sorted array,
+for each element of sorted array,
   if element is not less than target value
     return index
-*/
+return array length
+
 let searchInsert = (nums, target) => {
   for (let i = 0; i < nums.length; i++) {
     if (!(nums[i] < target)) {
@@ -40,3 +41,7 @@ let searchInsert = (nums, target) => {
   }
   return nums.length;
 };
+
+*/
+
+let searchInsert = (nums, target) =>
