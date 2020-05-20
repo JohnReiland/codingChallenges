@@ -35,5 +35,28 @@ return result
 */
 
 let countAndSay = (n) => {
+  let iterateCountAndSay = (string) => {
+    let result = '';
+    let currentCount = 1;
+    let currentChar = string[0];
+    for (let i = 1; i < string.length; i++) {
+      if (string[i] === currentChar) {
+        currentCount++;
+      } else {
+        result += currentCount.toString();
+        result += currentChar;
+        currentCount = 1;
+        currentChar = string[i];
+      }
+    }
+    result += currentCount.toString();
+    result += currentChar;
+    return result;
+  }
 
+  let result = '1';
+  for (let i = 1; i < n; i++) {
+    result = iterateCountAndSay(result);
+  }
+  return result;
 };
