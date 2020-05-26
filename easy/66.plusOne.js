@@ -20,6 +20,35 @@ Explanation: The array represents the integer 4321.
  * @param {number[]} digits
  * @return {number[]}
  */
+
+ /*
+
+Naive solution
+
+last value of array = last value plus one
+let test = array length - 1
+while array[test] === 10 && test >= 0
+  array[test] = 0
+  test = test - 1
+  array[test] = array[test] + 1
+if test < 0
+  array.unshift 1
+return array
+
+ */
+
+
 var plusOne = function(digits) {
-    
+  test = digits.length - 1;
+  digits[test]++;
+  while (digits[test] === 10 && test > 0) {
+      digits[test] = 0;
+      test--;
+      digits[test]++;
+  }
+  if (digits[0] === 10) {
+      digits[0] = 0;
+      digits.unshift(1);
+  }
+  return digits;
 };
