@@ -26,7 +26,7 @@ for each value in the array
     highest is current
 return highest
 
-*/
+
 let maxSubArray = (nums) => {
   let current = 0;
   let highest = nums[0];
@@ -42,3 +42,21 @@ let maxSubArray = (nums) => {
   }
   return highest;
   };
+
+  */
+
+let maxSubArray = (nums) => {
+  let current = 0;
+  let highest = nums[0];
+
+  for (let i = 0; i < nums.length; i++) {
+    current += nums[i];
+    if (current > highest) {
+      highest = current;
+    }
+    if (current < 0) {
+      current = 0;
+    }
+  }
+  return highest;
+};
