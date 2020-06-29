@@ -20,8 +20,6 @@ The higher method uses math insights to jump directly to the solution.
 /*
 BRUTE FORCE SOLUTION
 
-*/
-
 let evenFibonacciNumbers = (number) => {
   let result = 0;
   let newValue;
@@ -38,7 +36,6 @@ let evenFibonacciNumbers = (number) => {
   return result;
 }
 
-/*
 evenFibonacciNumbers(2);
 >2
 2 is the only even value in the Fibonacci sequence not greater than 2.
@@ -67,4 +64,52 @@ With further testing I can confirm the solution works correctly. It's able to su
 
 The 31st Fibonacci number is greater than 4M, and the 90th Fibonacci number is greater than 9 quintillion.
 
+This solution works well enugh for such large, I'm not sure a higher method is worth the effort. Instead I'll refactor for object oriented programming.
+*/
+
+
 /*
+OBJECT ORIENTED SOLUTION
+
+
+
+let evenFibonacciNumbers = (number) => {
+  let result = 0;
+  let low = 1;
+  let high = 2;
+  let fibonacci = () => {
+    let newValue = low + high;
+    low = high;
+    high = newValue;
+  }
+  while (high <= number) {
+    if (high % 2 === 0) {
+      result += high;
+    }
+    fibonacci();
+  }
+  return result;
+}
+
+Refactor only. As expected, performs identically to original solution.
+
+evenFibonacciNumbers(2);
+>2
+2 is the only even value in the Fibonacci sequence not greater than 2.
+
+evenFibonacciNumbers(15);
+>10
+2 and 8 are the even values in the Fibonacci sequence not greater than 15.
+
+evenFibonacciNumbers(40);
+>44
+2, 8, and 34 are the even values in the Fibonacci sequence not greater than 40.
+
+evenFibonacciNumbers(150);
+>188
+2, 8, 34, and 144 are the even values in the Fibonacci sequence not greater than 150.
+
+evenFibonacciNumbers(4000000);
+>4613732
+The sum of all even values in the Fibonacci sequence not greater than 4M is 4613732.
+*/
