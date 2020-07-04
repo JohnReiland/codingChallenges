@@ -19,7 +19,6 @@ prime is found.
 
 /*
 Brute Force Solution
-*/
 
 let nthPrime = (num) => {
   let primes = [2];
@@ -82,3 +81,42 @@ nthPrime(1000);
 
 nthPrime(10001);
 >104743
+
+*/
+
+/*
+Processing is so cheap these days that even calculating the 10,001st prime takes much less than a second.
+It does take a perceptible amount of time, however, and calculating the 100,000th prime took, for me,
+roughly 14 seconds. If it became necessary to regularly find such large value nth primes, there would be huge savings
+in memoizing the list of found primes, as finding the 100,000th prime finds, by necessity, every prime between it and
+the 1st. Thus, the only time new primes need ever be found would be when a larger-value nth prime is needed than has
+ever been needed before.
+*/
+
+let nthPrime = (num) => {
+  if (!nthPrime.primes) {
+    nthPrime.primes = [2];
+  }
+  let isPrime = (num) => {
+    for (let i = 0; i < nthPrime.primes.length; i++) {
+      if (num % nthPrime.primes[i] === 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+  let pushNextPrime = () => {
+    let currentValue = nthPrime.primes[nthPrime.primes.length - 1] + 1;
+    while (!isPrime(currentValue)) {
+      currentValue++;
+    }
+    nthPrime.primes.push(currentValue);
+  }
+  if (nthPrime.primes[num - 1]) {
+    return nthPrime.primes[num - 1];
+  }
+  while (nthPrime.primes.length < num) {
+    pushNextPrime();
+  }
+  return nthPrime.primes[num - 1];
+}
