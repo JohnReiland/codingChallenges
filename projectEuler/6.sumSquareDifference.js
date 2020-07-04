@@ -63,6 +63,7 @@ squareOfSums(100);
 25502500
 */
 
+/*
 let sumSquareDifference = (num) => {
   let sumOfSquares = (num) => {
     let result = 0;
@@ -78,11 +79,13 @@ let sumSquareDifference = (num) => {
   return squareOfSums(num) - sumOfSquares(num);
 }
 
+
 sumSquareDifference(4);
 >70
 
 sumSquareDifference(10);
->
+>2640
 
 sumSquareDifference(100);
->
+>25164150
+*/
