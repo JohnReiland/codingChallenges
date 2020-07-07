@@ -1,0 +1,22 @@
+{
+  "name": "codingchallenges",
+  "version": "1.0.0",
+  "description": "Coding Challenges",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JohnReiland/codingChallenges.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JohnReiland/codingChallenges/issues"
+  },
+  "homepage": "https://github.com/JohnReiland/codingChallenges#readme",
+  "dependencies": {
+    "jest": "^26.1.0"
+  }
+}
