@@ -25,7 +25,7 @@ directly to the solution.
 /*
 BRUTE FORCE SOLUTION
 
-let summedMultiplesOf3And5 = (number) => {
+let multiplesOf3And5 = (number) => {
   let result = 0;
 
   for (let i = 0; i < number; i++) {
@@ -37,13 +37,13 @@ let summedMultiplesOf3And5 = (number) => {
   return result;
 }
 
-summedMultiplesOf3And5(10);
+multiplesOf3And5(10);
 >> 23
 
-summedMultiplesOf3And5(100);
+multiplesOf3And5(100);
 >> 2318
 
-summedMultiplesOf3And5(1000);
+multiplesOf3And5(1000);
 >> 233168
 
 */
@@ -86,7 +86,7 @@ for solving with different multiples, with default parameters set to 3 and 5.
 */
 
 
-let summedMultiplesOf3And5 = (target, number1 = 3, number2 = 5) => {
+let multiplesOf3And5 = (target, number1 = 3, number2 = 5) => {
   let triangular = (number) => {
     return (number * (number + 1)) / 2;
   }
@@ -98,23 +98,25 @@ let summedMultiplesOf3And5 = (target, number1 = 3, number2 = 5) => {
   return summedMultiplesOfValue(target, number1) + summedMultiplesOfValue(target, number2) - summedMultiplesOfValue(target, (number1 * number2));
 }
 
+module.exports = multiplesOf3And5;
+
 /*
-summedMultiplesOf3And5(10);
+multiplesOf3And5(10);
 >>23
 
-summedMultiplesOf3And5(100);
+multiplesOf3And5(100);
 >>2318
 
-summedMultiplesOf3And5(1000);
+multiplesOf3And5(1000);
 >>233168
 
-summedMultiplesOf3And5(10000000000);
+multiplesOf3And5(10000000000);
 >>23333333331666670000
 
-summedMultiplesOf3And5(10000, 4, 7);
+multiplesOf3And5(10000, 4, 7);
 >>17847858
 
-summedMultiplesOf3And5(1000000, 11, 13);
+multiplesOf3And5(1000000, 11, 13);
 >>80419919580
 
 */
