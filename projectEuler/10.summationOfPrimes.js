@@ -23,12 +23,15 @@ than the target number - 1. I will be given a target number. If the highest valu
 that the target number, I should return the array length - 1.
 If not, I should return the index of the highest prime that is less than the target.
 As the array might be quite large, this index should be found using a binary search.
+*/
 
 let summationOfPrimes = (target) => {
   if (!summationOfPrimes.primes) {
     summationOfPrimes.primes = [2];
     summationOfPrimes.sums = [2];
   }
+
+  // helper function returns true if num is prime
   let isPrime = (num) => {
     for (let i = 0; i < summationOfPrimes.primes.length; i++) {
       if (num % summationOfPrimes.primes[i] === 0) {
@@ -37,7 +40,9 @@ let summationOfPrimes = (target) => {
     }
     return true;
   }
-  let nextPrime = () => {
+
+  // helper function finds first prime higher than all in primes array
+  let findNextPrime = () => {
     let currentValue = summationOfPrimes.primes[summationOfPrimes.primes.length - 1] + 1;
     while (!isPrime(currentValue)) {
       currentValue++;
@@ -45,7 +50,9 @@ let summationOfPrimes = (target) => {
     summationOfPrimes.primes.push(currentValue);
     summationOfPrimes.sums.push(summationOfPrimes.sums[summationOfPrimes.sums.length - 1] + currentValue);
   }
-  let index = (target) => {
+
+  // helper function returns index of largest prime in array below target (employs binary search)
+  let indexOfargestPrimeBelowTarget = (target) => {
     if (summationOfPrimes.primes[summationOfPrimes.primes.length - 1] < target) {
       return summationOfPrimes.primes.length - 1;
     }
@@ -64,10 +71,16 @@ let summationOfPrimes = (target) => {
     }
     return left;
   }
+
+
+  // MAIN EXECUTION START
+
+  // Extend primes and sums arrays only if needed
   while (summationOfPrimes.primes[summationOfPrimes.primes.length - 1] < target - 1) {
-    nextPrime();
+    findNextPrime();
   }
-  return summationOfPrimes.sums[index(target)];
+  // Use index of largest prime blow target to return sum of all primes below target
+  return summationOfPrimes.sums[indexOfLargestPrimeBelowTarget(target)];
 }
 
 summationOfPrimes(3);
@@ -84,4 +97,3 @@ summationOfPrimes(1000000);
 
 summationOfPrimes(2000000);
 >142913828922
-*/
