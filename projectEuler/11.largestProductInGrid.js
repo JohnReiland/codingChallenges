@@ -110,7 +110,7 @@ let largestProductInGrid = (string, adjacency) => {
         result = [currentSet.slice(0), productOfArray(currentSet)];
       }
 
-      for (let j = adjacency; j < grid.length; j++) {
+      for (let j = adjacency; j < grid[i].length; j++) {
         currentSet.shift();
         currentSet.push(grid[i][j]);
         if (result[1] < productOfArray(currentSet)) {
@@ -123,9 +123,16 @@ let largestProductInGrid = (string, adjacency) => {
   }
 
   let largestVerticalProduct = (grid, adjacency) => {
-    let result = [[], 0];
-
-    return result;
+    let psuedoGrid = [];
+    for (let i = 0; i < grid.length; i++) {
+      psuedoGrid.push([]);
+    }
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid.length; j++) {
+        psuedoGrid[(grid.length - 1) - j].push(grid[i][j]);
+      }
+    }
+    return largestHorizontalProduct(psuedoGrid, adjacency);
   }
 
   let largestMajorDiagonalProduct = (grid, adjacency) => {
@@ -149,24 +156,24 @@ let largestProductInGrid = (string, adjacency) => {
     adjacency = size;
   }
   populateGrid();
-  //let vertical = largestVerticalProduct(grid, adjacency);
   let horizontal = largestHorizontalProduct(grid, adjacency);
-  //let majorDiagonal = largestMajorDiagonalProduct(grid, adjacency);
-  //let minorDiagonal = largestMinorDiagonalProduct(grid, adjacency);
+  let vertical = largestVerticalProduct(grid, adjacency);
+  let majorDiagonal = largestMajorDiagonalProduct(grid, adjacency);
+  let minorDiagonal = largestMinorDiagonalProduct(grid, adjacency);
 
   let largest = horizontal;
 
-  /*
+
   if (vertical[1] > largest[1]) {
     largest = vertical;
   }
+
   if (majorDiagonal[1] > largest[1]) {
     largest = majorDiagonal;
   }
   if (minorDiagonal[1] > largest[1]) {
     largest = minorDiagonal;
   }
-  */
 
   let result = [[]];
   result.push(largest[1]);
