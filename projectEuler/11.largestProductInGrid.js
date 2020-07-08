@@ -64,6 +64,16 @@ product that are the highest it found. A cross-test comparisson will
 find the highest among all tests.
 
 So first there will be a helper function to convert the string into an array of arrays for easy manipulation, then a series of helper functions which each return the highest product they could find using the given (or default) adjacency and the factors of that product, and then the highest among those is returned as the result.
+
+UPDATE: My initial design for testing sets of values was intended to
+reduce processing by preserving the product of the previous step,
+dividing it by the factor leaving the set and multiplying it by the
+factor joining the set. As zeros are included, however, this
+necessatates special coding to deal with zeros which overcomplicates
+everything. Refactoring to use an array which shifts and pushes values
+and recalculates the product with each step. Lends itself better to
+object-oriented programmingm, is a much more elegant design, much easier
+to understand, test, debug, and modify.
 */
 
 let largestProductInGrid = (string, adjacency) => {
@@ -80,29 +90,31 @@ let largestProductInGrid = (string, adjacency) => {
     }
   }
 
+  let productOfArray = (array) => {
+    let result = 1;
+    for (let i = 0; i < array.length; i++) {
+      result *= array[i];
+    }
+    return result;
+  }
+
   let largestHorizontalProduct = (grid, adjacency) => {
     let result = [[], 0];
-    let currentProduct;
+    let currentSet;
     for (let i = 0; i < grid.length; i++) {
-      currentProduct = 1;
+      currentSet = [];
       for (let j = 0; j < adjacency; j++) {
-        currentProduct *= grid[i][j];
+        currentSet.push(grid[i][j]);
       }
-      if (result[1] < currentProduct) {
-        result = [[], currentProduct];
-        for (let k = 0; k < adjacency; k++) {
-          result[0].push(grid[i][k]);
-        }
+      if (result[1] < productOfArray(currentSet)) {
+        result = [currentSet.slice(0), productOfArray(currentSet)];
       }
 
-      for (let j = adjacency + 1; j < grid.length; j++) {
-        currentProduct /= grid[i][j - 1];
-        currentProduct *= grid[i][j];
-        if (result[1] < currentProduct) {
-          result = [[], currentProduct];
-          for (let k = j - adjacency; k < j; k++) {
-            result[0].push(grid[i][k]);
-          }
+      for (let j = adjacency; j < grid.length; j++) {
+        currentSet.shift();
+        currentSet.push(grid[i][j]);
+        if (result[1] < productOfArray(currentSet)) {
+          result = [currentSet.slice(0), productOfArray(currentSet)];
         }
       }
 
