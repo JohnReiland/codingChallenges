@@ -136,8 +136,37 @@ let largestProductInGrid = (string, adjacency) => {
   }
 
   let largestMajorDiagonalProduct = (grid, adjacency) => {
-    let result = [[], 0];
-    return result;
+    let psuedoGrid = [];
+    for (let i = grid.length - 1; i >= 0; i--) {
+      let row = [];
+      let x = 0;
+      let y = i;
+      while (grid[x] !== undefined && grid[x][y] !== undefined) {
+        row.push(grid[x][y]);
+        x++;
+        y++;
+      }
+      if (row.length < adjacency) {
+        continue;
+      }
+      psuedoGrid.push(row);
+    }
+    for (let j = 1; j < grid.length; j++) {
+      let row = [];
+      let x = j;
+      let y = 0;
+      while (grid[x] !== undefined && grid[x][y] !== undefined) {
+        row.push(grid[x][y]);
+        x++;
+        y++;
+      }
+      if (row.length < adjacency) {
+        continue;
+      }
+      psuedoGrid.push(row);
+    }
+
+    return largestHorizontalProduct(psuedoGrid, adjacency);
   }
 
   let largestMinorDiagonalProduct = (grid, adjacency) => {
