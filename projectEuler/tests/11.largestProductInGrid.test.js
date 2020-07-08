@@ -27,16 +27,16 @@ test('Horizontal: Given a 2x2 grid of "02 02 01 01", output should be [["02", "0
   expect(largestProductInGrid('02 02 01 01')).toStrictEqual([['02', '02'], 4]);
 })
 
-test('Vertical: Given a 3x3 grid of "01 03 05 01 00 99 01 01 01", output should be [["05", "99", "01"], 495]', () => {
-  expect(largestProductInGrid('01 03 05 01 00 99 01 01 01')).toStrictEqual([['05', '99', '01'], 495]);
+test('Vertical: Given a 3x3 grid of "01 02 01 02 05 01 01 03 01", output should be [["02", "05", "03"], 30]', () => {
+  expect(largestProductInGrid('01 02 01 02 05 01 01 03 01')).toStrictEqual([['02', '05', '03'], 30]);
 })
 
-test('Vertical: Given a 3x3 grid of "01 03 05 01 00 99 01 01 01", adjacency 2, output should be [["05", "95"], 495]', () => {
-  expect(largestProductInGrid('01 03 05 01 00 99 01 01 01', 2)).toStrictEqual([['05', '99'], 495]);
+test('Vertical: Given a 3x3 grid of "01 02 01 02 05 01 01 03 01", adjacency 2, output should be [["02", "03"], 6]', () => {
+  expect(largestProductInGrid('01 02 01 02 05 01 01 03 01', 2)).toStrictEqual([['05', '03'], 15]);
 })
 
-test('Horizontal: Given a 3x3 grid of "01 03 05 01 00 99 01 01 01", adjacency 1, output should be [["99"], 99]', () => {
-  expect(largestProductInGrid('01 03 05 01 00 99 01 01 01', 1)).toStrictEqual([['99'], 99]);
+test('Horizontal: Given a 3x3 grid of "01 02 01 02 05 01 01 03 01", adjacency 1, output should be [["05"], 5]', () => {
+  expect(largestProductInGrid('01 02 01 02 05 01 01 03 01', 1)).toStrictEqual([['05'], 5]);
 })
 
 test('Vertical: Given a 2x2 grid of "02 01 02 01", output should be [["02", "02"], 4]', () => {
@@ -47,10 +47,6 @@ test('Major Diagonal: Given a 2x2 grid of "02 01 01 02", output should be [["02"
   expect(largestProductInGrid('02 01 01 02')).toStrictEqual([['02', '02'], 4]);
 })
 
-/*
-
-test('Minor Diagonal: Given a 2x2 grid of "01 02 02 01", output should be [["02", "02"], 4]', () => {
-  expect(largestProductInGrid('01 02 02 01')).toStrictEqual([['02', '02'], 4]);
+test('Minor Diagonal: Given a 3x3 grid of "01 02 01 02 01 01 01 03 01", adjacency 2, output should be [[["02", "03"], 6]', () => {
+  expect(largestProductInGrid('01 02 01 02 01 01 01 03 01', 2)).toStrictEqual([['02', '03'], 6]);
 })
-
-*/
