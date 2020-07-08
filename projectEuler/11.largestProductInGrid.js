@@ -1,5 +1,6 @@
 /*
 In the 20×20 grid below, four numbers along a diagonal line have been marked in red.
+[marking not visible here, the four numbers are 26, 63, 78, and 14]
 
 08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
@@ -54,7 +55,7 @@ I'll output the result as: [[...factors], product]
 /*
 Strategy
 I built a connect-four game once that had to test, after every move,
-whether a player had one. Like this challenge, it required testing
+whether a player had won. Like this challenge, it required testing
 the same grid-like game board in multiple ways. I used seperate functions
 to test for different kinds of wins, vertical horizontal, major diagonal,
 minor diagonal. I'll do the same here, but instead of testing for four
@@ -71,9 +72,9 @@ dividing it by the factor leaving the set and multiplying it by the
 factor joining the set. As zeros are included, however, this
 necessatates special coding to deal with zeros which overcomplicates
 everything. Refactoring to use an array which shifts and pushes values
-and recalculates the product with each step. Lends itself better to
-object-oriented programmingm, is a much more elegant design, much easier
-to understand, test, debug, and modify.
+and recalculates the product with each step lends itself better to
+object-oriented programming, is a much more elegant design, and is much
+easier to understand, test, debug, and modify.
 
 UPDATE_2:
 After performing the above refactor for the horizontal test, I was able to
