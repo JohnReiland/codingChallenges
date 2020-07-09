@@ -17,4 +17,59 @@ We can see that 28 is the first triangle number to have over five divisors.
 What is the value of the first triangle number to have over five hundred divisors?
 */
 
-module.exports = highlyDivTriNum;
+/*
+Right away I get the sense that there might be a fast solution using math.
+The brute force solution is straightforward enough. Using object-oriented design,
+build a function to generate the sequence of triangle numbers, build a function to
+return the divisors of a number input, and feed the first function into the second
+one until one with 501 divisors is found.
+
+There should be a fast solution, and perhaps it can be found by analizing the divisors
+not only of triangle numbers, but of all numbers. I'll build a brute force solution
+first and then come back for the fast solution
+*/
+
+/*
+Highest-level execution will look something like:
+
+target = 500
+
+while (divisors(triangles[triangles.length - 1]) <= target) {
+  findNextTriangle();
+}
+return triangles[triangles.length - 1];
+
+*/
+
+  /*
+  function to generate triangle numbers
+  */
+
+let findNextTriangle = (array) => {
+  let currentValue = array[array.length - 1];
+  currentValue += array.length + 1;
+  array.push(currentValue);
+  return;
+}
+
+/*
+function to return an array of the divisors of an input number
+*/
+
+let divisors = (num) => {
+  let result = [1];
+  if (num <= 1) {
+    return result;
+  }
+  let currentValue = 2;
+  while (currentValue <= num / 2) {
+    if (num % currentValue === 0) {
+      result.push(currentValue);
+    }
+    currentValue++;
+  }
+  result.push(num);
+  return result;
+}
+
+module.exports = {divisors};
