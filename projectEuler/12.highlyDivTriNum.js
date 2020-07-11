@@ -148,6 +148,20 @@ let divisorsOfNthTriNum = (n) => {
   }
 }
 
+/*
+main function
+FAST METHOD
+*/
+
+let highlyDivTriNum = (target) => {
+  let n = 1;
+  while (divisorsOfNthTriNum(n) <= target) {
+    n++;
+  }
+  return ((n * (n + 1)) / 2);
+}
+
+
 
 /*
 highlyDivTriNum(2);
@@ -173,4 +187,4 @@ highlyDivTriNum(500);
 
 */
 
-module.exports = {divisors, divisorsOfNthTriNum};
+module.exports = {divisors, divisorsOfNthTriNum, highlyDivTriNum};

@@ -33,7 +33,25 @@ describe('divisors()', () => {
 
 })
 
-/*
+describe('divisorsOfNthTriNum()', () => {
+
+  test('divisorsOfNthTriNum should be 1', () => {
+    expect(divisorsOfNthTriNum(1)).toBe(1);
+  })
+
+  test('divisorsOfNthTriNum(2) should be 2', () => {
+    expect(divisorsOfNthTriNum(2)).toBe(2);
+  })
+
+  test('divisorsOfNthTriNum(7) should be 6', () => {
+    expect(divisorsOfNthTriNum(7)).toBe(6);
+  })
+
+  test('divisorsOfNthTriNum(100) should be 12', () => {
+    expect(divisorsOfNthTriNum(100)).toBe(12);
+  })
+
+})
 
 describe('highlyDivTriNum()', () => {
 
@@ -59,24 +77,10 @@ describe('highlyDivTriNum()', () => {
 
 })
 
-*/
+describe('high values for highlyDivTriNum() - USE ONLY WITH FAST METHOD!', () => {
 
-describe('divisorsOfNthTriNum()', () => {
-
-  test('divisorsOfNthTriNum should be 1', () => {
-    expect(divisorsOfNthTriNum(1)).toBe(1);
-  })
-
-  test('divisorsOfNthTriNum(2) should be 2', () => {
-    expect(divisorsOfNthTriNum(2)).toBe(2);
-  })
-
-  test('divisorsOfNthTriNum(7) should be 6', () => {
-    expect(divisorsOfNthTriNum(7)).toBe(6);
-  })
-
-  test('divisorsOfNthTriNum(100) should be 12', () => {
-    expect(divisorsOfNthTriNum(100)).toBe(12);
+  test('highlyDivTriNum(500) should be 76576500', () => {
+    expect(highlyDivTriNum(500)).toBe(76576500);
   })
 
 })
