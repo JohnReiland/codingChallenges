@@ -1,4 +1,4 @@
-const {findNextTriangle, divisors, highlyDivTriNum} = require('../12.highlyDivTriNum');
+const {divisors, divisorsOfNthTriNum, highlyDivTriNum} = require('../12.highlyDivTriNum');
 
 
 describe('divisors()', () => {
@@ -33,6 +33,8 @@ describe('divisors()', () => {
 
 })
 
+/*
+
 describe('highlyDivTriNum()', () => {
 
   test('highlyDivTriNum(1) should be 3', () => {
@@ -53,6 +55,28 @@ describe('highlyDivTriNum()', () => {
 
   test('highlyDivTriNum(5) should be 28', () => {
     expect(highlyDivTriNum(5)).toBe(28);
+  })
+
+})
+
+*/
+
+describe('divisorsOfNthTriNum()', () => {
+
+  test('divisorsOfNthTriNum should be 1', () => {
+    expect(divisorsOfNthTriNum(1)).toBe(1);
+  })
+
+  test('divisorsOfNthTriNum(2) should be 2', () => {
+    expect(divisorsOfNthTriNum(2)).toBe(2);
+  })
+
+  test('divisorsOfNthTriNum(7) should be 6', () => {
+    expect(divisorsOfNthTriNum(7)).toBe(6);
+  })
+
+  test('divisorsOfNthTriNum(100) should be 12', () => {
+    expect(divisorsOfNthTriNum(100)).toBe(12);
   })
 
 })
