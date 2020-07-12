@@ -129,11 +129,16 @@ There might also be a way to break the large numbers up
 into blocks that are small enough to do work with, while
 still being larger than one digit. I can look into that
 as a fast solution.
+
+UPDATE: BigInt is a thing! This should make everything much simpler and faster.
+
+Convert everything to a BigInt, sum with running total, output as string.
+Piece of cake.
 */
 
 /*
 BRUTE FORCE METHOD
-*/
+
 
 let largeSum = (array) => {
   let currentSum = array[0];
@@ -167,6 +172,20 @@ let largeSum = (array) => {
     position = 0;
   }
   return currentSum;
+}
+
+*/
+
+/*
+BigInt Method
+*/
+
+let largeSum = (array) => {
+  let currentSum = BigInt(array[0]);
+  for (let i = 1; i < array.length; i++) {
+    currentSum+= BigInt(array[i]);
+  }
+  return currentSum.toString();
 }
 
 /*
