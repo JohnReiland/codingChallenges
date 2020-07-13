@@ -14,8 +14,64 @@ Which starting number, under one million, produces the longest chain?
 NOTE: Once the chain starts the terms are allowed to go above one million.
 */
 
-let longestCollatzSequence = (start) = {
+/*
+My first instinct was to build a function that takes a starting input and performs a
+series of Collatz transformations until it reaches 1, returning the number of steps
+that took, but this would waste most of the information gained in the processing of
+that number.
 
+Instead, I'm thinking a better approach would be to build a function that performs
+reverse-Collatz transformations, starting with 1, and then doubling it until past the
+target number, storing each step and its distance from 1 in an object literal. Then I would
+take the first value generated from this method (2) and perform minus 1, times 3 operations
+on it repeatedly to build up another set of values. I might want to perform all of this
+recursively, I'm not sure.
+
+At any rate, I should be able to put a hard limit on the range of numbers that actually
+need to be tested. If I'm concerned with only the numbers below 100, how low could they be
+and still stray above 100? Math.ceil(100 / 3) is 34, which is even. (35 * 3) + 1 is 106.
+Nothing less than 35 can lead above 100 without first stopping somewhere between 35 and
+100. Thus, for any target number, I only need consider the numbers between
+Math.floor(target / 3) and (target - 1). The longest chain found within that range will be
+the longest of all values below the target number.
+*/
+
+/*
+Because this is a branching operation, recursion is going to be the way to go. The recursive
+function will need to know the target value (so as to stop when the result is at or above it),
+the distance from one of its current value, the largest distance yet found, and the object
+literal in which it can store the
+information it finds.
+
+UPDATE:
+It's more difficult than I expected to predict how far the tree needs to grow before it's
+certain that it will cover all values in a range. It now seems simpler to me to use my
+original design, and simply memoize ever step to save time in future runs.
+*/
+
+let findCollatz = (num) => {
+  if (!findCollatz.record) {
+    findCollatz.record = {1: 1};
+  }
+
+  if (findCollatz.record[num] !== undefined) {
+    return findCollatz.record[num];
+  }
+
+  let result = 1;
+  let currentValue = num;
+
+  while (currentValue > 1) {
+    if (currentValue % 2 === 0) {
+      currentValue /= 2;
+    } else {
+      currentValue *= 3;
+      currentValue += 1;
+    }
+    result++;
+  }
+  findCollatz.record[num] = result;
+  return result;
 }
 
-module.exports = longestCollatzSequence;
+module.exports = {findCollatz};
