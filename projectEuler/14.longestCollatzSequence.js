@@ -62,6 +62,11 @@ let findCollatz = (num) => {
   let currentValue = num;
 
   while (currentValue > 1) {
+    if (findCollatz.record[currentValue] !== undefined) {
+      findCollatz.record[num] = result + findCollatz.record[currentValue] - 1;
+      return findCollatz.record[num];
+    }
+
     if (currentValue % 2 === 0) {
       currentValue /= 2;
     } else {
@@ -74,4 +79,47 @@ let findCollatz = (num) => {
   return result;
 }
 
-module.exports = {findCollatz};
+/*
+findCollatz(2);
+>2
+
+findCollatz(10);
+>7
+
+findCollatz(13);
+>10
+*/
+
+let longestCollatzSequence = (target) => {
+
+  // MAIN EXECUTION START
+
+  let highest = 1
+  let result;
+
+  for (let i = 2; i < target; i++) {
+    let test = findCollatz(i);
+    if (test > highest) {
+      highest = test;
+      result = i;
+    }
+  }
+
+  return result;
+}
+
+/*
+longestCollatzSequence(10);
+>9
+
+longestCollatzSequence(100);
+>97
+
+longestCollatzSequence(1000);
+>871
+
+longestCollatzSequence(1000000);
+>837799
+*/
+
+module.exports = {findCollatz, longestCollatzSequence};
