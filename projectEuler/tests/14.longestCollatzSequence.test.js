@@ -1,0 +1,1 @@
+const longestCollatzSequence = require('../14.longestCollatzSequence');
