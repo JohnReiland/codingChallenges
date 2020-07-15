@@ -56,7 +56,26 @@ method needs to be found. One thing that I notice when drawing out grids on
 paper are subsequences, repetitve patterns which make up the larger sequences.
 This suggests to me that I need to look at the problem in a different way, one
 which sees the sequences as combinations of subsequences.
+
+I've got it! The pattern finally revealed itself after I
+noticed that the total number of paths is always twice the
+number of paths found without changing the first move.
+
+Focusing only on these numbers "before the turn," I can see
+that each sequence starts with 1, and then each consequtive
+value in the sequence is just the previous value plus the value
+of the previous sequence's next value. When this can no longer
+be performed, the value is doubled. The number of paths for
+that grid size is the sum of all numbers in that sequence.
+
+This is a purely mathematical solution which should be much,
+much faster than any of the previous methods. Unfortunately,
+I think it only holds for square grids. I'll try to find a
+more general rule to apply to grids of any shape, but for
+now I'll impliment for square only.
 */
+
+/*
 
 let nextSequence = (string, width, height) => {
   let i = string.length - 2;
@@ -108,8 +127,41 @@ let allSequences = (width, height) => {
 let latticePaths = (width, height) => {
   height = height || width;
   let sequences = allSequences(width, height);
-  return sequences.length;
+  return sequences;
 }
+
+*/
+
+let arraySum = (array) => {
+  let result = 0;
+  for (let i = 0; i < array.length; i++) {
+    result += array[i];
+  }
+  return result;
+}
+
+let latticePaths = (width) => {
+  if (width < 1) {
+    return 1;
+  }
+
+  if (!latticePaths.chain) {
+    latticePaths.chain = [[1]];
+  }
+
+  while (latticePaths.chain.length < width) {
+    latticePaths.chain.push([1]);
+    let currentSeq = latticePaths.chain.length - 1;
+    let previousSeq = currentSeq - 1;
+    for (let i = 0; i < latticePaths.chain[previousSeq].length - 1; i++) {
+      latticePaths.chain[currentSeq].push( latticePaths.chain[currentSeq][i] + latticePaths.chain[previousSeq][i + 1]);
+    }
+    latticePaths.chain[currentSeq].push(2 * latticePaths.chain[currentSeq][latticePaths.chain[currentSeq].length - 1]);
+  }
+
+  return 2 * arraySum(latticePaths.chain[width - 1]);
+}
+
 
 /*
 latticePaths(1);
@@ -121,12 +173,6 @@ latticePaths(2);
 latticePaths(3);
 >20
 
-latticePaths(3, 1);
->4
-
-latticePaths(3, 2);
->10
-
 latticePaths(12);
 >2704156
 
@@ -135,7 +181,13 @@ latticePaths(13);
 
 latticePaths(14);
 >40116600
+
+latticePaths(15);
+>155117520
+
+latticePaths(20);
+>137846528820
 */
 
 
-module.exports = {nextSequence, allSequences, latticePaths};
+module.exports = {arraySum, latticePaths};

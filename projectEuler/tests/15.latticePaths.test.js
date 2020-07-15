@@ -1,6 +1,7 @@
-const {nextSequence, allSequences, latticePaths} = require('../15.latticePaths');
+const {arraySum, latticePaths} = require('../15.latticePaths');
 
 
+/*
 
 describe('nextSequence()', () => {
 
@@ -22,6 +23,20 @@ describe('allSequences()', () => {
 
 })
 
+*/
+
+describe('arraySum()', () => {
+
+  test('arraySum([1, 2, 3]) should be 6', () => {
+    expect(arraySum([1, 2, 3])).toBe(6);
+  })
+
+  test('arraySum([1, 2, 3, 4, 5]) should be 15', () => {
+    expect(arraySum([1, 2, 3, 4, 5])).toBe(15);
+  })
+
+})
+
 describe('latticePaths()', () => {
 
   test('latticePaths(1) should be 2', () => {
@@ -36,6 +51,12 @@ describe('latticePaths()', () => {
     expect(latticePaths(3)).toBe(20);
   })
 
+  test('latticePaths(10) should be 184756', () => {
+    expect(latticePaths(10)).toBe(184756);
+  })
+
+  /*
+
   test('latticePaths(3, 1) should be 4', () => {
     expect(latticePaths(3, 1)).toBe(4);
   })
@@ -44,6 +65,7 @@ describe('latticePaths()', () => {
     expect(latticePaths(3, 2)).toBe(10);
   })
 
+  */
 
 
 })
