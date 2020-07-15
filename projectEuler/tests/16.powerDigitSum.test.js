@@ -1,4 +1,4 @@
-const {bigIntPow, sumBigInt} = require('../16.powerDigitSum');
+const {bigIntPow, sumBigInt, powerDigitSum} = require('../16.powerDigitSum');
 
 describe('bigIntPow()', () => {
 
@@ -20,6 +20,18 @@ describe('sumBigInt()', () => {
 
   test('sumBigInt(12345n) should be 15', () => {
     expect(sumBigInt(12345n)).toBe(15);
+  })
+
+})
+
+describe('powerDigitSum()', () => {
+
+  test('powerDigitSum(2, 4) should be 7', () => {
+    expect(powerDigitSum(2, 4)).toBe(7);
+  })
+
+  test('powerDigitSum(2, 5) should be 5', () => {
+    expect(powerDigitSum(2, 5)).toBe(5);
   })
 
 })

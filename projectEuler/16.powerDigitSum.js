@@ -62,8 +62,21 @@ sumBigInt(12345n);
 >15
 */
 
-let powerDigitSum = (base, power) => {
+// MAIN EXECUTION START
 
+let powerDigitSum = (base, power) => {
+  return sumBigInt(bigIntPow(base, power));
 }
 
-module.exports = {bigIntPow, sumBigInt};
+/*
+powerDigitSum(2, 4);
+>7
+
+powerDigitSum(2, 5);
+>5
+
+powerDigitSum(2, 1000);
+>1366
+*/
+
+module.exports = {bigIntPow, sumBigInt, powerDigitSum};
