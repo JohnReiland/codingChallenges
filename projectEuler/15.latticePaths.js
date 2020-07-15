@@ -34,6 +34,18 @@ number of paths through the grid.
 
 I'm going to build the function to be able to consider non-square grids, but to
 assume a square grid if height not given.
+
+UPDATE:
+I've got a working brute force method, but it's too wasteful to work
+on girds of large sizes. It took 18 seconds for it to return the number
+of paths on a 12x12 grid, and stopped with an out-of-memory prevention
+halt when I attempted to find the number of paths on a 13x13 grid.
+
+I think a major source of waste is that I'm finding all possible sequences
+for a length and then screening out invalid sequences. The larger the grid,
+the exponentially more sequences are possible, and the exponentially fewer
+among them are valid. This means that most of the work being performed is
+just thrown away. A better nextSequence needs to be made.
 */
 
 let nextSequence = (string) => {
@@ -64,4 +76,43 @@ let allSequences = (num) => {
   return result;
 }
 
-module.exports = {nextSequence, allSequences};
+let latticePaths = (width, height) => {
+  height = height || width;
+  let sequences = allSequences(width + height);
+  let result = 0;
+  for (let i = 0; i < sequences.length; i++) {
+    let count = 0;
+    for (let j = 0; j < sequences[i].length; j++) {
+      if (sequences[i][j] === '1') {
+        count++;
+      }
+    }
+    if (count === width) {
+      result++;
+    }
+  }
+  return result;
+}
+
+/*
+latticePaths(1);
+>2
+
+latticePaths(2);
+>6
+
+latticePaths(3);
+>20
+
+latticePaths(3, 1);
+>4
+
+latticePaths(3, 2);
+>10
+
+latticePaths(12);
+>2704156
+*/
+
+
+module.exports = {nextSequence, allSequences, latticePaths};

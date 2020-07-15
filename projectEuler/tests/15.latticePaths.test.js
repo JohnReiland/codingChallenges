@@ -1,4 +1,4 @@
-const {nextSequence, allSequences} = require('../15.latticePaths');
+const {nextSequence, allSequences, latticePaths} = require('../15.latticePaths');
 
 describe('nextSequence()', () => {
 
@@ -20,6 +20,30 @@ describe('allSequences()', () => {
 
   test('allSequences(2) should be ["00", "01", "10", "11"]', () => {
     expect(allSequences(2)).toStrictEqual(['00', '01', '10', '11']);
+  })
+
+})
+
+describe('latticePaths()', () => {
+
+  test('latticePaths(1) should be 2', () => {
+    expect(latticePaths(1)).toBe(2);
+  })
+
+  test('latticePaths(2) should be 6', () => {
+    expect(latticePaths(2)).toBe(6);
+  })
+
+  test('latticePaths(3) should be 20', () => {
+    expect(latticePaths(3)).toBe(20);
+  })
+
+  test('latticePaths(3, 1) should be 4', () => {
+    expect(latticePaths(3, 1)).toBe(4);
+  })
+
+  test('latticePaths(3, 2) should be 6', () => {
+    expect(latticePaths(3, 2)).toBe(10);
   })
 
 })
