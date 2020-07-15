@@ -1,25 +1,23 @@
 const {nextSequence, allSequences, latticePaths} = require('../15.latticePaths');
 
-describe('nextSequence()', () => {
 
-  test('nextSequence("00") should be "01"', () => {
-    expect(nextSequence('00')).toBe('01');
-  })
+
+describe('nextSequence()', () => {
 
   test('nextSequence("01") should be "10"', () => {
     expect(nextSequence('01')).toBe('10');
-  })
-
-  test('nextSequence("10") should be "11"', () => {
-    expect(nextSequence('10')).toBe('11');
   })
 
 })
 
 describe('allSequences()', () => {
 
-  test('allSequences(2) should be ["00", "01", "10", "11"]', () => {
-    expect(allSequences(2)).toStrictEqual(['00', '01', '10', '11']);
+  test('allSequences(1) should be ["01", "10"]', () => {
+    expect(allSequences(1, 1)).toStrictEqual(['01', '10']);
+  })
+
+  test('allSequences(1) should be ["01", "10"]', () => {
+    expect(allSequences(2, 2)).toStrictEqual(['0011', '0101', '0110', '1001', '1010', '1100']);
   })
 
 })
@@ -45,5 +43,7 @@ describe('latticePaths()', () => {
   test('latticePaths(3, 2) should be 6', () => {
     expect(latticePaths(3, 2)).toBe(10);
   })
+
+
 
 })

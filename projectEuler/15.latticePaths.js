@@ -46,31 +46,60 @@ for a length and then screening out invalid sequences. The larger the grid,
 the exponentially more sequences are possible, and the exponentially fewer
 among them are valid. This means that most of the work being performed is
 just thrown away. A better nextSequence needs to be made.
+
+UPDATE_2:
+I've made a better nextSequence, one which intelligently calculates the next
+valid sequence instead of returning the very next sequence regardless of
+validity. This allowed for solving the paths of 13x13 and 14x14 grids, but
+it's still too inefficent to solve 15x15 grids without crashing. A faster
+method needs to be found. One thing that I notice when drawing out grids on
+paper are subsequences, repetitve patterns which make up the larger sequences.
+This suggests to me that I need to look at the problem in a different way, one
+which sees the sequences as combinations of subsequences.
 */
 
-let nextSequence = (string) => {
-  let value = parseInt(string, 2);
-  let result = (value + 1).toString(2);
-  while (result.length < string.length) {
-    result = '0' + result;
+let nextSequence = (string, width, height) => {
+  let i = string.length - 2;
+  while (!(string[i] === '0' && string[i + 1] === '1')) {
+    i--;
   }
+  let result = string.slice(0, i) + '10';
+  let zeros = width;
+  let ones = height;
+  for (let i = 0; i < result.length; i++) {
+    if (result[i] === '0') {
+      zeros--;
+    } else {
+      ones--;
+    }
+  }
+  while (zeros > 0) {
+    result = result + '0';
+    zeros--;
+  }
+  while (ones > 0) {
+    result = result + '1';
+    ones--;
+  }
+
   return result;
 }
 
-let allSequences = (num) => {
+let allSequences = (width, height) => {
   let result = [];
-  if (num < 2) {
-    return result;
-  }
   let currentSequence = '';
   let endSquence = '';
-  for (let i = 0; i < num; i++) {
+  for (let i = 0; i < width; i++) {
     currentSequence = currentSequence + '0';
-    endSquence = endSquence + '1';
+    endSquence = endSquence + '0';
+  }
+  for (let i = 0; i < height; i++) {
+    currentSequence = currentSequence + '1';
+    endSquence = '1' + endSquence;
   }
   result.push(currentSequence);
   while (currentSequence !== endSquence) {
-    currentSequence = nextSequence(currentSequence);
+    currentSequence = nextSequence(currentSequence, width, height);
     result.push(currentSequence);
   }
   return result;
@@ -78,20 +107,8 @@ let allSequences = (num) => {
 
 let latticePaths = (width, height) => {
   height = height || width;
-  let sequences = allSequences(width + height);
-  let result = 0;
-  for (let i = 0; i < sequences.length; i++) {
-    let count = 0;
-    for (let j = 0; j < sequences[i].length; j++) {
-      if (sequences[i][j] === '1') {
-        count++;
-      }
-    }
-    if (count === width) {
-      result++;
-    }
-  }
-  return result;
+  let sequences = allSequences(width, height);
+  return sequences.length;
 }
 
 /*
@@ -112,6 +129,12 @@ latticePaths(3, 2);
 
 latticePaths(12);
 >2704156
+
+latticePaths(13);
+>10400600
+
+latticePaths(14);
+>40116600
 */
 
 
