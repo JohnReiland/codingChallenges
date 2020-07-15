@@ -1,9 +1,13 @@
-const {powerdigitSum} = require('../15.powerDigitSum');
+const {bigIntPow} = require('../16.powerDigitSum');
 
-describe('testName()', () => {
+describe('bigIntPow()', () => {
 
-  test('testName(value) should be result', () => {
-    expect(testName(value)).toBe(result);
+  test('bigIntPow(2, 3) should be 8n', () => {
+    expect(bigIntPow(2, 3)).toBe(8n);
+  })
+
+  test('bigIntPow(2, 60) should be 1152921504606846976n', () => {
+    expect(bigIntPow(2, 60)).toBe(1152921504606846976n);
   })
 
 })
