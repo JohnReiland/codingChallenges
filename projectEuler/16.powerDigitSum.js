@@ -35,8 +35,35 @@ let bigIntPow = (base, power) => {
   return result;
 }
 
+/*
+bigIntPow(2, 3);
+>8n
+
+bigIntPow(2, 60);
+>1152921504606846976n
+*/
+
+let sumBigInt = (bigInt) => {
+  let result = 0n;
+  let currentValue = bigInt;
+  while (currentValue > 0n) {
+    result += currentValue % 10n;
+    currentValue -= currentValue % 10n;
+    currentValue /= 10n;
+  }
+  return Number(result);
+}
+
+/*
+sumBigInt(23n);
+>5
+
+sumBigInt(12345n);
+>15
+*/
+
 let powerDigitSum = (base, power) => {
 
 }
 
-module.exports = {bigIntPow};
+module.exports = {bigIntPow, sumBigInt};
