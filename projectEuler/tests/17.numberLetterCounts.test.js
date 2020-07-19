@@ -14,16 +14,24 @@ describe('chart[]', () => {
 
 describe('letterCount()', () => {
 
-  test('letterCount(77) should be 13', () => {
-    expect(letterCount(77)).toBe(13)
+  test('letterCount(77) should be 12', () => {
+    expect(letterCount(77)).toBe(12)
   })
 
-  test('letterCount(189) should be 20', () => {
-    expect(letterCount(189)).toBe(20)
+  test('letterCount(189) should be 23', () => {
+    expect(letterCount(189)).toBe(23)
+  })
+
+  test('letterCount(189, true) should be 20', () => {
+    expect(letterCount(189, true)).toBe(20)
   })
 
   test('letterCount(810) should be 15', () => {
     expect(letterCount(810)).toBe(15)
+  })
+
+  test('letterCount(2278) should be 36', () => {
+    expect(letterCount(2278)).toBe(36)
   })
 
 })
