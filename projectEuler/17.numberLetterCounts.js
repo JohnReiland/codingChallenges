@@ -32,7 +32,7 @@ numberLetterCount(1, 5);
 */
 
 let chart = {
-0: ['zero', 4],
+0: ['zero', 0],
 1: ['one', 3],
 2: ['two', 3],
 3: ['three', 5],
@@ -50,11 +50,11 @@ let chart = {
 15: ['fifteen', 7],
 16: ['sixteen', 7],
 17: ['seventeen', 9],
-18: ['eightteen', 9],
+18: ['eighteen', 8],
 19: ['nineteen', 8],
 20: ['twenty', 6],
 30: ['thirty', 6],
-40: ['fourty', 6],
+40: ['forty', 5],
 50: ['fifty', 5],
 60: ['sixty', 5],
 70: ['seventy', 7],
@@ -77,13 +77,14 @@ let letterCount = (num, American) => {
   let needsAnd = false;
   // if number ends in 10 through 19
   if (((currentValue % 100) - (currentValue % 10)) / 10 === 1) {
+    needsAnd = true;
     result += chart[currentValue % 100][1];
     currentValue -= currentValue % 100;
-  } else if (currentValue % 1000 !== 0) {
+  } else if (currentValue % 100 !== 0) {
     needsAnd = true;
     result += chart[currentValue % 10][1];
     currentValue -= currentValue % 10;
-    if (currentValue !== 0) {
+    if (currentValue % 100 !== 0) {
       result += chart[currentValue % 100][1];
       currentValue -= currentValue % 100;
     }
@@ -116,6 +117,23 @@ letterCount(810);
 >15
 */
 
+let numberLetterCount = (start, end, American = false) => {
+  let result = 0;
+  if (start < 1) {
+    start = 1;
+  }
+  for (let i = start; i <= end; i++) {
+    result += letterCount(i, American);
+  }
+  return result;
+}
 
+/*
+numberLetterCount(1, 5);
+>19
 
-module.exports = {chart, letterCount};
+numberLetterCount(1, 1000);
+>21124
+*/
+
+module.exports = {chart, letterCount, numberLetterCount};
