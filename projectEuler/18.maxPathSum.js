@@ -29,4 +29,39 @@ Find the maximum total from top to bottom of the triangle below:
 NOTE: As there are only 16384 routes, it is possible to solve this problem by trying every route. However, Problem 67, is the same challenge with a triangle containing one-hundred rows; it cannot be solved by brute force, and requires a clever method! ;o)
 */
 
-module.exports = {};
+/*
+Oh, I'll be aiming for the clever method.
+I have an intuition for a solution that I don't think counts as brute force,
+though it requires non-trivial work. For each row, starting with second from bottom,
+compare each pair of values below it and add the larger. Then repeat with the third
+from the bottom, and continue until you reach the top. This lets each level represent
+the largest possible path to the bottom without searching every possible path.
+
+Now, how to build it with object-oriented programming. The input format isn't given,
+but if I were designing it, I would use an array of arrays. The first array within the
+array would have one element in it (75). The next would have two, and so in. I see no
+reason why this is an unreasonable format, so that's what I'll go with.
+
+I'll create a helper function which collapses two arrays, returning a new array. Then
+I'll cycle all rows through it and return the only element in the final array.
+*/
+
+let collapseRow = (array1, array2) => {
+  let result = [];
+
+  for (let i = 0; i < array1.length; i++) {
+    result.push(array1[i] + (array2[i] > array2[i + 1] ? array2[i] : array2[i + 1]));
+  }
+
+  return result;
+}
+
+/*
+collapseRow([1], [2, 3]);
+>[4]
+
+collapseRow([1, 2, 3, 4], [5, 6, 7, 8, 9]);
+>[7, 9, 11, 13]
+*/
+
+module.exports = {collapseRow};
