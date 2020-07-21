@@ -43,8 +43,7 @@ The index of the unseen integer found last is the first covering prefix.
 
 */
 
-let solution = (array) => {
-
+let prefixSet = (array) => {
 let seen = {};
 let result = 0;
 
@@ -57,3 +56,5 @@ for (let i = 0; i < array.length; i++) {
 
 return result;
 };
+
+module.exports = {prefixSet}
