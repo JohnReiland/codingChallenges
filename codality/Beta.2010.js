@@ -113,6 +113,14 @@ let doesIntersect = (range1, range2) => {
   return range1[1] >= range2[0] ? true : false;
 }
 
+/*
+doesIntersect([-1, 1], [-4, 6])
+>true
+
+doesIntersect([-1, 1], [2, 4])
+>false
+*/
+
 let findRanges = (array) => {
   let result = [];
   for (let i = 0; i < array.length; i++) {
@@ -121,6 +129,32 @@ let findRanges = (array) => {
   return result
 }
 
+/*
+findRanges([1, 5, 2, 1, 4, 0]);
+>[[-1, 1], [-4, 6], [0, 4], [2, 4], [0, 8], [5, 5]]
+*/
 
+let numberOfDiscIntersections = (array) => {
+  let result = 0;
+  let ranges = findRanges(array);
 
-module.exports = {doesIntersect, findRanges}
+  for (let i = 1; i < ranges.length; i++) {
+    for (let j = 0; j < i; j++) {
+      if (doesIntersect(ranges[j], ranges[i])) {
+        result++;
+        if (result > 10000000) {
+          return -1;
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
+/*
+numberOfDiscIntersections([1, 5, 2, 1, 4, 0]);
+>11
+*/
+
+module.exports = {doesIntersect, findRanges, numberOfDiscIntersections}

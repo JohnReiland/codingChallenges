@@ -1,4 +1,4 @@
-const {doesIntersect, findRanges} = require('../Beta.2010');
+const {doesIntersect, findRanges, numberOfDiscIntersections} = require('../Beta.2010');
 
 describe('doesIntersect()', () => {
 
@@ -20,8 +20,6 @@ describe('findRanges()', () => {
 
 })
 
-/*
-
 describe('numberOfDiscIntersections()', () => {
 
   test('numberOfDiscIntersections([1, 5, 2, 1, 4, 0]) should be 11', () => {
@@ -29,5 +27,3 @@ describe('numberOfDiscIntersections()', () => {
   })
 
 })
-
-*/
