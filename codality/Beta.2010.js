@@ -113,4 +113,14 @@ let doesIntersect = (range1, range2) => {
   return range1[1] >= range2[0] ? true : false;
 }
 
-module.exports = {doesIntersect}
+let findRanges = (array) => {
+  let result = [];
+  for (let i = 0; i < array.length; i++) {
+    result.push([i - array[i], i + array[i]]);
+  }
+  return result
+}
+
+
+
+module.exports = {doesIntersect, findRanges}
