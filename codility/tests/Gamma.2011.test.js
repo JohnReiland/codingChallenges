@@ -1,9 +1,21 @@
-const {} = require('../Gamma.2011');
+const {string, countEven, countOdd, countPalindromicSlices} = require('../Gamma.2011');
 
-describe('test()', () => {
+/*
+describe('countEven()', () => {
 
-  test('test(value) should be result', () => {
-    expect(test(value)).toBe(result);
+  test('countEven(3) should be 4', () => {
+    expect(countEven(3)).toBe(4);
   })
+
+})
+*/
+
+describe('countOdd()', () => {
+
+  test('countOdd(3) should be 4', () => {
+    expect(countOdd(3)).toBe(4);
+  })
+
+
 
 })
