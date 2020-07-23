@@ -157,11 +157,85 @@ I submitted my solution and got a final score of 64. Disappointing.
 I think that I made a huge mistage in not implementing my knowledge of triangular
 numbers, which would have allowed for fast counting of large blocks of like characters.
 I will implement it tomorrow, though time has already expired.
+
+
+SEARCH SAVINGS
+Thinking more about it, there could only be palindromic slices that extend past the
+extent of the found slice if those slices reach the extent of the found slice, meaning
+the slices they are mirrors of must touch the start of the slice, as demonstrated:
+
+1.
+ybabcdefgfedcbabcdz
+ |^|
+
+2.
+ybabcdefgfedcbabcdz
+ |*     ^      |
+
+3.
+ybabcdefgfedcbabcdz
+ |*     ^    |`|
+
+4.
+ybabcdefgfedcbabcdz
+  *     *  |  ^  |
+
+1. A palindrome is identified at index 2, from 1 to 3
+2. A palindrome is identified at index 8, from 1 to 15
+  3. A mirror of the palindrom centered on index 2 is sure to exist at index 14, from 13 to 15
+  BUT: *because it extends to the end of the palindrome at index 8,* it might be larger than
+  13 to 15. It must be tested, starting with 12, 16 (actual slice is from 11 to 17).
+
+Thus, when a palindrom is found, it marks of an area of search ahead of and behind the current index.
+Any palindromes found behind the current index but not touching the back of the search area will have
+mirror images (no larger) in front of the current index, and can be counted without searching.
+However, and palindromes found behind the current index and touching the back of the search area may
+extend beyond the front of the search area. Those which have been found should be counted, and then
+testing should continue on the mirror images to see if they extend further.
+
+
+REPEATED CHARS
+
+jdighwlaaaaaaaaaaaaaaakjsl
+
+In the above string, there are no palindromes other than the series of 15 consecutive 'a's. The number
+of palindromes that can be made with n consecutive identical letters is: (n(n + 1)) / 2.
+
+EDIT: this isn't accurate, since it requires at least two consequtive letters to create a run. Therefore,
+the algorithm is (n - 1 (n)) / 2.
+
+Thus, there are 105 palindromic slices that can be made with 15 consecutive identical letters. The savings
+gain from using this algorithm must be implemented, but how can I incorporated it into the brute force
+search? When two consecutive identical characters are found, a new function should take over which
+first uses triangle numbers to figure out how many slices exist in the run of like chars. To allow for
+search savings to function, the locations and sizes of these will all still need to be recorded, just
+as those of regular slices are. Then. because a run of alike chars can exist as the core of a larger
+palindrome, the values on the ends of the run must be tested until unlike characters are found.
+
+All of the above tells me that there needs to be a highly flexible palindrome counter, able to analyze
+both even-length and odd-length search areas, able to start at any distance from the center, and able
+to record all palindromic slices found into an array.
+
+In short, countEven and countOdd need to be combined into a more versitile counter. Then this counter
+needs to be made able to record the locations and lengths of palindromic slices it finds.
+
+There also needs to be a new function which calculates the number of palindromic strings in a run of
+like chars, and which is likewise able to record the locations and lengths of palindromic slices it
+calculates to exist.
+
+The main function needs to use the countRun function whenever it detects a run of like chars, then
+switch off to the unified palindromeCount in the appropriate mode, based on whether the run length
+is even or odd.
+
+If no run is fount, then palindromeCount should run in odd mode.
+
+In either case, when a new palindrome is found, the record should be consulted to look for closed
+palindromes that can be counted (and recorded) without searching, then for open palindromes that can
+be counted and recorded but also must be examined to see if they're part of larger palindromes.
 */
 
-let string = 'jsirtrisj';
 
-let countEven = (index) => {
+let countEven = (string, index) => {
   let left = index;
   let right = index + 1;
   let result = 0;
@@ -176,8 +250,9 @@ let countEven = (index) => {
   return result;
 }
 
-let countOdd = (index) => {
-      let left = index;
+
+let countOdd = (string, index) => {
+  let left = index;
   let right = index + 2;
   let result = 0;
   while (string[left] === string[right] && string[right] !== undefined) {
@@ -188,7 +263,34 @@ let countOdd = (index) => {
   return result;
 }
 
+
+let count = (string, index, width = 0) => {
+  let left = index;
+  let right = index + 1 + width;
+  let result = 0;
+  while (string[left] === string[right] && string[right] !== undefined) {
+    result++;
+    left--;
+    right++;
+  }
+  return result;
+}
+
+
+let countRun = (string, index) => {
+  let run = 1;
+  let testvalue = string[index];
+  let testIndex = index + 1;
+  while (string[testIndex] === testvalue) {
+    run++;
+    testIndex++;
+  }
+  return (((run - 1) * run) / 2);
+}
+
+
 let countPalindromicSlices = (string) => {
+  let record = [];
   let result = 0;
   for (let i = 0; i < string.length; i++) {
       result += countEven(i);
@@ -197,4 +299,4 @@ let countPalindromicSlices = (string) => {
   return result;
 }
 
-module.exports = {string, countEven, countOdd, countPalindromicSlices};
+module.exports = {count, countRun, countPalindromicSlices};
