@@ -246,7 +246,8 @@ now. The savings made by identifying runs is very large. I'll see how it improve
 UPDATE_4:
 Uploading my new code onto codility, it didn't immedieatly pass the example test.
 After returning from a found run, my function was skipping too much of the string;
-the last char of the run might belong to a new palindromic slice, and I had missed
+the last char of the run might belong to a new palindromic slice, and I had missedgs
+
 this possibility. I'm going to submit now, hopefully this more efficent algorithm
 will result in a higher score.
 
@@ -310,7 +311,7 @@ let countRun = (string, index) => {
 
 */
 
-let solution = (string) => {
+let countPalindromicSlices = (string) => {
 
   let count = (string, index, width = 0) => { // (Does not presume match with index + 1 + width)
     let left = index;
