@@ -232,9 +232,28 @@ If no run is fount, then palindromeCount should run in odd mode.
 In either case, when a new palindrome is found, the record should be consulted to look for closed
 palindromes that can be counted (and recorded) without searching, then for open palindromes that can
 be counted and recorded but also must be examined to see if they're part of larger palindromes.
+
+UPDATE_3:
+I've implemented a method to identify runs and use triangle numbers to calculate the number
+of palindromic slices rather then identify them, and then resume scanning the string for
+new ones.
+
+I've put aside the idea of keeping track of found slices, even though with large, non-run
+palindromes, there are savings to be found there. It's difficult to keep track of where the current index needs to be, and might have very high overhead. Depending on the nature of
+the strings, I'm still convinced there is savings there, but I'm not implimenting it for
+now. The savings made by identifying runs is very large. I'll see how it improves my score.
+
+UPDATE_4:
+Uploading my new code onto codility, it didn't immedieatly pass the example test.
+After returning from a found run, my function was skipping too much of the string;
+the last char of the run might belong to a new palindromic slice, and I had missed
+this possibility. I'm going to submit now, hopefully this more efficent algorithm
+will result in a higher score.
+
+92! Much Improved!
 */
 
-
+/*
 let countEven = (string, index) => {
   let left = index;
   let right = index + 1;
@@ -262,8 +281,9 @@ let countOdd = (string, index) => {
   }
   return result;
 }
+*/
 
-
+/*
 let count = (string, index, width = 0) => {
   let left = index;
   let right = index + 1 + width;
@@ -288,15 +308,70 @@ let countRun = (string, index) => {
   return (((run - 1) * run) / 2);
 }
 
+*/
 
-let countPalindromicSlices = (string) => {
-  let record = [];
+let solution = (string) => {
+
+  let count = (string, index, width = 0) => { // (Does not presume match with index + 1 + width)
+    let left = index;
+    let right = index + 1 + width;
+    let result = 0;
+    while (string[left] === string[right] && string[right] !== undefined) {
+      result++;
+      //record[left].push(right);
+      left--;
+      right++;
+    }
+    return result;
+  }
+
+
+  let countRun = (string, index) => { // (Does not presume match with index + 1)
+    let run = 1;
+    let testvalue = string[index];
+    let testIndex = index + 1;
+    while (string[testIndex] === testvalue) {
+      run++;
+      testIndex++;
+      //record.push([]);
+    }
+    /*
+    if (run > 1) {
+      for (let i = index; i < index + run - 1; i++) {
+        for (let j = i + 1; j < index + run; j++) {
+          record[i].push(j);
+        }
+      }
+    }
+    */
+
+    return run;
+  }
+
+
+  // MAIN EXECUTION START
+
   let result = 0;
+  //let record = [];
+
   for (let i = 0; i < string.length; i++) {
-      result += countEven(i);
-      result += countOdd(i);
+    //record.push([]);
+
+    if (string[i] === string[i + 1]) {
+
+      let run = countRun(string, i);
+      result += ((run - 1) * run) / 2;
+      result += count(string, i - 1, run);
+      i += run - 2;
+
+    } else if (string[i] === string[i + 2]) {
+      result += count(string, i, 1);
+    }
+    if (result > 100000000) {
+      return -1;
+    }
   }
   return result;
 }
 
-module.exports = {count, countRun, countPalindromicSlices};
+module.exports = {countPalindromicSlices};
