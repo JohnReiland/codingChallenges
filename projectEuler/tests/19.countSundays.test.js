@@ -1,9 +1,27 @@
-const {} = require('../19.countSundays');
+const {calculateNext} = require('../19.countSundays');
 
-describe('test()', () => {
-
-    test('test(value) should be result', () => {
-        expect(test(value)).toBe(result);
+describe('calculateNext()', () => {
+    /*
+        test('calculateNext(record) should be "1901"', () => {
+        expect(calculateNext({
+            190101 : [1, 0],
+            highest : '190101'
+        })).toBe(1901);
     })
 
+    test('calculateNext(record) should be "1901"', () => {
+        expect(calculateNext({
+            190101 : [1, 0],
+            highest : '190101'
+        })).toBe(1);
+    })
+
+
+    test('calculateNext(record) should be "1901"', () => {
+    expect(calculateNext({
+        190101 : [1, 0],
+        highest : '190101'
+    })).toBe(1);
+
+    */
 })
