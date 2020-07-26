@@ -42,12 +42,12 @@ function is used to extend the data in the object by calculating firsts
 of the month, forward from the highest date prior to calculation. The
 last (and highest) date calculated is then recorded as such, and the
 number of Sundays returned.
-*/
 
-let record = {
-  190001 : [1, 0],
-  highest : '190001'
-}
+UPDATE:
+The brute force method is so fast I don't think any faster way is needed
+unless calculating the number of Sundays falling on firsts of the month
+through millions of years into the future.
+*/
 
 let calculateNext = (record) => {
   let commonCal = {
@@ -64,8 +64,8 @@ let calculateNext = (record) => {
     11 : ['November', 30],
     12 : ['December', 31]
   }
-  let year = parseInt(record['highest'].slice(0,4), 10);
-  let month = parseInt(record['highest'].slice(4,6), 10);
+  let year = parseInt(record['highest'].slice(0, record['highest'].length - 2), 10);
+  let month = parseInt(record['highest'].slice(record['highest'].length - 2), 10);
   let day = parseInt(record[record['highest']][0]);
   let count = parseInt(record[record['highest']][1]);
   let needsLeapDay = 0;
@@ -82,7 +82,7 @@ let calculateNext = (record) => {
   }
   day += needsLeapDay;
   day %= 7;
-  if (day === 0) {
+  if (day === 0 && year > 1900) {
     count++;
   }
   month++;
@@ -100,4 +100,32 @@ let calculateNext = (record) => {
   record['highest'] = newValue;
 }
 
-module.exports = {calculateNext};
+let countSundays = (yearMonth) => {
+  if (!countSundays.record) {
+    countSundays.record = {
+      190001 : [1, 0],
+      highest : '190001'
+    }
+  }
+  let target = parseInt(yearMonth, 10);
+  let current = parseInt(countSundays.record['highest'], 10);
+  while (current < target) {
+    calculateNext(countSundays.record);
+    current = parseInt(countSundays.record['highest'], 10);
+  }
+  return countSundays.record[target][1];
+}
+
+/*
+countSundays(190112);
+>2
+
+countSundays(190512):
+>9
+
+countSundays(200012);
+>171
+*/
+
+
+module.exports = {calculateNext, countSundays};
