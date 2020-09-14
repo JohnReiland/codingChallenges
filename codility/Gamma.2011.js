@@ -312,8 +312,8 @@ let countRun = (string, index) => {
 */
 
 let countPalindromicSlices = (string) => {
-
-  let count = (string, index, width = 0) => { // (Does not presume match with index + 1 + width)
+  let count = (string, index, width = 0) => {
+    // (Does not presume match with index + 1 + width)
     let left = index;
     let right = index + 1 + width;
     let result = 0;
@@ -324,10 +324,10 @@ let countPalindromicSlices = (string) => {
       right++;
     }
     return result;
-  }
+  };
 
-
-  let countRun = (string, index) => { // (Does not presume match with index + 1)
+  let countRun = (string, index) => {
+    // (Does not presume match with index + 1)
     let run = 1;
     let testvalue = string[index];
     let testIndex = index + 1;
@@ -347,8 +347,7 @@ let countPalindromicSlices = (string) => {
     */
 
     return run;
-  }
-
+  };
 
   // MAIN EXECUTION START
 
@@ -359,12 +358,10 @@ let countPalindromicSlices = (string) => {
     //record.push([]);
 
     if (string[i] === string[i + 1]) {
-
       let run = countRun(string, i);
       result += ((run - 1) * run) / 2;
       result += count(string, i - 1, run);
       i += run - 2;
-
     } else if (string[i] === string[i + 2]) {
       result += count(string, i, 1);
     }
@@ -373,6 +370,6 @@ let countPalindromicSlices = (string) => {
     }
   }
   return result;
-}
+};
 
-module.exports = {countPalindromicSlices};
+module.exports = { countPalindromicSlices };
