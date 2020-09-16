@@ -95,7 +95,7 @@ let largestProductInGrid = (string, adjacency) => {
         currentValue++;
       }
     }
-  }
+  };
 
   let productOfArray = (array) => {
     let result = 1;
@@ -103,7 +103,7 @@ let largestProductInGrid = (string, adjacency) => {
       result *= array[i];
     }
     return result;
-  }
+  };
 
   let largestHorizontalProduct = (grid, adjacency) => {
     let result = [[], 0];
@@ -124,10 +124,9 @@ let largestProductInGrid = (string, adjacency) => {
           result = [currentSet.slice(0), productOfArray(currentSet)];
         }
       }
-
     }
     return result;
-  }
+  };
 
   let largestVerticalProduct = (grid, adjacency) => {
     let psuedoGrid = [];
@@ -136,11 +135,11 @@ let largestProductInGrid = (string, adjacency) => {
     }
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid.length; j++) {
-        psuedoGrid[(grid.length - 1) - j].push(grid[i][j]);
+        psuedoGrid[grid.length - 1 - j].push(grid[i][j]);
       }
     }
     return largestHorizontalProduct(psuedoGrid, adjacency);
-  }
+  };
 
   let largestMajorDiagonalProduct = (grid, adjacency) => {
     let psuedoGrid = [];
@@ -174,7 +173,7 @@ let largestProductInGrid = (string, adjacency) => {
     }
 
     return largestHorizontalProduct(psuedoGrid, adjacency);
-  }
+  };
 
   let largestMinorDiagonalProduct = (grid, adjacency) => {
     let psuedoGrid = [];
@@ -183,16 +182,15 @@ let largestProductInGrid = (string, adjacency) => {
     }
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid.length; j++) {
-        psuedoGrid[(grid.length - 1) - j].push(grid[i][j]);
+        psuedoGrid[grid.length - 1 - j].push(grid[i][j]);
       }
     }
     return largestMajorDiagonalProduct(psuedoGrid, adjacency);
-  }
-
+  };
 
   // MAIN EXECUTION START
 
-  let gridString = string.split(' ');
+  let gridString = string.split(" ");
   let grid = [];
   let size = Math.sqrt(gridString.length);
   adjacency = adjacency || size;
@@ -220,14 +218,14 @@ let largestProductInGrid = (string, adjacency) => {
   result.push(largest[1]);
   for (let i = 0; i < largest[0].length; i++) {
     if (largest[0][i] < 10) {
-      result[0].push('0' + largest[0][i].toString());
+      result[0].push("0" + largest[0][i].toString());
     } else {
       result[0].push(largest[0][i].toString());
     }
   }
 
   return result;
-}
+};
 
 /*
 01 02 01

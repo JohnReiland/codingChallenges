@@ -39,21 +39,26 @@ let summationOfPrimes = (target) => {
       }
     }
     return true;
-  }
+  };
 
   // helper function finds first prime higher than all in primes array
   let findNextPrime = () => {
-    let currentValue = summationOfPrimes.primes[summationOfPrimes.primes.length - 1] + 1;
+    let currentValue =
+      summationOfPrimes.primes[summationOfPrimes.primes.length - 1] + 1;
     while (!isPrime(currentValue)) {
       currentValue++;
     }
     summationOfPrimes.primes.push(currentValue);
-    summationOfPrimes.sums.push(summationOfPrimes.sums[summationOfPrimes.sums.length - 1] + currentValue);
-  }
+    summationOfPrimes.sums.push(
+      summationOfPrimes.sums[summationOfPrimes.sums.length - 1] + currentValue
+    );
+  };
 
   // helper function returns index of largest prime in array below target (employs binary search)
   let indexOfargestPrimeBelowTarget = (target) => {
-    if (summationOfPrimes.primes[summationOfPrimes.primes.length - 1] < target) {
+    if (
+      summationOfPrimes.primes[summationOfPrimes.primes.length - 1] < target
+    ) {
       return summationOfPrimes.primes.length - 1;
     }
     let left = 0;
@@ -70,19 +75,22 @@ let summationOfPrimes = (target) => {
       }
     }
     return left;
-  }
-
+  };
 
   // MAIN EXECUTION START
 
   // Extend primes and sums arrays only if needed
-  while (summationOfPrimes.primes[summationOfPrimes.primes.length - 1] < target - 1) {
+  while (
+    summationOfPrimes.primes[summationOfPrimes.primes.length - 1] <
+    target - 1
+  ) {
     findNextPrime();
   }
   // Use index of largest prime blow target to return sum of all primes below target
   return summationOfPrimes.sums[indexOfLargestPrimeBelowTarget(target)];
-}
+};
 
+/*
 summationOfPrimes(3);
 >2
 
@@ -97,3 +105,4 @@ summationOfPrimes(1000000);
 
 summationOfPrimes(2000000);
 >142913828922
+*/

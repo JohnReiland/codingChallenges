@@ -32,35 +32,35 @@ numberLetterCount(1, 5);
 */
 
 let chart = {
-0: ['zero', 0],
-1: ['one', 3],
-2: ['two', 3],
-3: ['three', 5],
-4: ['four', 4],
-5: ['five', 4],
-6: ['six', 3],
-7: ['seven', 5],
-8: ['eight', 5],
-9: ['nine', 4],
-10: ['ten', 3],
-11: ['eleven', 6],
-12: ['twelve', 6],
-13: ['thirteen', 8],
-14: ['fourteen', 8],
-15: ['fifteen', 7],
-16: ['sixteen', 7],
-17: ['seventeen', 9],
-18: ['eighteen', 8],
-19: ['nineteen', 8],
-20: ['twenty', 6],
-30: ['thirty', 6],
-40: ['forty', 5],
-50: ['fifty', 5],
-60: ['sixty', 5],
-70: ['seventy', 7],
-80: ['eighty', 6],
-90: ['ninety', 6],
-}
+  0: ["zero", 0],
+  1: ["one", 3],
+  2: ["two", 3],
+  3: ["three", 5],
+  4: ["four", 4],
+  5: ["five", 4],
+  6: ["six", 3],
+  7: ["seven", 5],
+  8: ["eight", 5],
+  9: ["nine", 4],
+  10: ["ten", 3],
+  11: ["eleven", 6],
+  12: ["twelve", 6],
+  13: ["thirteen", 8],
+  14: ["fourteen", 8],
+  15: ["fifteen", 7],
+  16: ["sixteen", 7],
+  17: ["seventeen", 9],
+  18: ["eighteen", 8],
+  19: ["nineteen", 8],
+  20: ["twenty", 6],
+  30: ["thirty", 6],
+  40: ["forty", 5],
+  50: ["fifty", 5],
+  60: ["sixty", 5],
+  70: ["seventy", 7],
+  80: ["eighty", 6],
+  90: ["ninety", 6],
+};
 
 /*
 chart[1][1];
@@ -104,7 +104,7 @@ let letterCount = (num, American) => {
     result += 8; // add 8 for "thousand"
   }
   return result;
-}
+};
 
 /*
 letterCount(77);
@@ -126,7 +126,7 @@ let numberLetterCount = (start, end, American = false) => {
     result += letterCount(i, American);
   }
   return result;
-}
+};
 
 /*
 numberLetterCount(1, 5);
@@ -136,4 +136,4 @@ numberLetterCount(1, 1000);
 >21124
 */
 
-module.exports = {chart, letterCount, numberLetterCount};
+module.exports = { chart, letterCount, numberLetterCount };

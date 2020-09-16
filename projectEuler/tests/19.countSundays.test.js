@@ -1,4 +1,4 @@
-const {calculateNext, countSundays} = require('../19.countSundays');
+const { calculateNext, countSundays } = require("../19.countSundays");
 
 /*
 describe('calculateNext()', () => {
@@ -28,14 +28,12 @@ describe('calculateNext()', () => {
 })
 */
 
-
-describe('countSundays()', () => {
-
+describe("countSundays()", () => {
   test('countSundays(190112) should be "2"', () => {
     expect(countSundays(190112)).toBe(2);
-  })
+  });
 
   test('countSundays(190512) should be "9"', () => {
     expect(countSundays(190512)).toBe(9);
-  })
-})
+  });
+});

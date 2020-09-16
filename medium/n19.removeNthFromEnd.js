@@ -46,23 +46,23 @@ while tail.next is not null
 hold.next is hold.next.next
 return head
 */
-var removeNthFromEnd = function(head, n) {
+var removeNthFromEnd = function (head, n) {
   if (head.next === null) {
-      return null;
+    return null;
   }
 
   let hold = head;
   let tail = head;
 
   for (let i = 0; i < n; i++) {
-      tail = tail.next;
+    tail = tail.next;
   }
   if (tail === null) {
-      return head.next;
+    return head.next;
   }
   while (tail.next !== null) {
-      tail = tail.next;
-      hold = hold.next;
+    tail = tail.next;
+    hold = hold.next;
   }
   hold.next = hold.next.next;
   return head;

@@ -104,14 +104,14 @@ let nthPrime = (num) => {
       }
     }
     return true;
-  }
+  };
   let pushNextPrime = () => {
     let currentValue = nthPrime.primes[nthPrime.primes.length - 1] + 1;
     while (!isPrime(currentValue)) {
       currentValue++;
     }
     nthPrime.primes.push(currentValue);
-  }
+  };
   if (nthPrime.primes[num - 1]) {
     return nthPrime.primes[num - 1];
   }
@@ -119,4 +119,4 @@ let nthPrime = (num) => {
     pushNextPrime();
   }
   return nthPrime.primes[num - 1];
-}
+};

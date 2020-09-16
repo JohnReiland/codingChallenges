@@ -121,7 +121,7 @@ let divisors = (num) => {
   }
   result.push(num);
   return result;
-}
+};
 
 /*
 main function
@@ -146,7 +146,7 @@ let divisorsOfNthTriNum = (n) => {
   } else {
     return divisors(n).length * divisors((n + 1) / 2).length;
   }
-}
+};
 
 /*
 main function
@@ -158,10 +158,8 @@ let highlyDivTriNum = (target) => {
   while (divisorsOfNthTriNum(n) <= target) {
     n++;
   }
-  return ((n * (n + 1)) / 2);
-}
-
-
+  return (n * (n + 1)) / 2;
+};
 
 /*
 highlyDivTriNum(2);
@@ -187,4 +185,4 @@ highlyDivTriNum(500);
 
 */
 
-module.exports = {divisors, divisorsOfNthTriNum, highlyDivTriNum};
+module.exports = { divisors, divisorsOfNthTriNum, highlyDivTriNum };

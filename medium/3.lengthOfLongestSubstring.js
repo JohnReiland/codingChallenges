@@ -30,14 +30,21 @@ var lengthOfLongestSubstring = (string) => {
   let characters = {};
 
   for (let i = 0; i < string.length; i++) {
-    if (characters[string[i]] === undefined || characters[string[i]] < startIndex) {
+    if (
+      characters[string[i]] === undefined ||
+      characters[string[i]] < startIndex
+    ) {
       characters[string[i]] = i;
     } else {
-      longestFound = longestFound >= (i - startIndex) ? longestFound : (i - startIndex);
+      longestFound =
+        longestFound >= i - startIndex ? longestFound : i - startIndex;
       startIndex = characters[string[i]] + 1;
       characters[string[i]] = i;
     }
   }
-  longestFound = longestFound >= (string.length - startIndex) ? longestFound : (string.length - startIndex);
+  longestFound =
+    longestFound >= string.length - startIndex
+      ? longestFound
+      : string.length - startIndex;
   return longestFound;
 };

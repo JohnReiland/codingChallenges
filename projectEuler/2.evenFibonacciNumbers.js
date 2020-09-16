@@ -67,7 +67,6 @@ The 31st Fibonacci number is greater than 4M, and the 90th Fibonacci number is g
 This solution works well enugh for such large, I'm not sure a higher method is worth the effort. Instead I'll refactor for object oriented programming.
 */
 
-
 /*
 OBJECT ORIENTED SOLUTION
 

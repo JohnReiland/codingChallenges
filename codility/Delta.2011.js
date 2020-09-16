@@ -97,14 +97,14 @@ HELPER FUNCTIONS
 let maxBinary = (num) => {
   let value = "";
   for (let i = 0; i < num; i++) {
-    value += "1"
+    value += "1";
   }
   return value;
-}
+};
 
 let binToInt = (string) => {
   return parseInt(string, 2);
-}
+};
 
 let rangeArray = (num) => {
   let result = [];
@@ -112,11 +112,11 @@ let rangeArray = (num) => {
     result.push(i);
   }
   return result;
-}
+};
 
 let intToBin = (num) => {
   return num.toString(2);
-}
+};
 
 let binArray = (array) => {
   let result = [];
@@ -124,12 +124,12 @@ let binArray = (array) => {
     result.push(intToBin(array[i]));
   }
   return result;
-}
+};
 
 let generateS = (array) => {
   let result = [];
   let length = array.length;
-  let bin = binArray(rangeArray(binToInt(maxBinary(array.length))))
+  let bin = binArray(rangeArray(binToInt(maxBinary(array.length))));
   for (let i = 0; i < bin.length; i++) {
     let current = [];
     let value = bin[i];
@@ -147,7 +147,7 @@ let generateS = (array) => {
   }
   result.unshift(current);
   return result;
-}
+};
 
 let applyS = (A, S) => {
   let sum = 0;
@@ -155,7 +155,7 @@ let applyS = (A, S) => {
     sum += A[i] * S[i];
   }
   return Math.abs(sum);
-}
+};
 
 let bruteForce = (array) => {
   if (array.length === 0) {
@@ -169,7 +169,7 @@ let bruteForce = (array) => {
     }
   }
   return smallestFound;
-}
+};
 
 let convertArrayToAbs = (array) => {
   let result = [];
@@ -177,13 +177,13 @@ let convertArrayToAbs = (array) => {
     result.push(Math.abs(array[i]));
   }
   return result;
-}
+};
 
 let sortArrayDesc = (array) => {
   return array.sort(function (a, b) {
     return b - a;
   });
-}
+};
 
 /*
 MAIN FUNCTION
@@ -196,9 +196,20 @@ let minAbsSum = (array) => {
   let converted = sortArrayDesc(convertArrayToAbs(array));
   let sum = converted[0];
   for (let i = 1; i < converted.length; i++) {
-    sum += sum < 0 ? converted[i]: converted[i] * -1;
+    sum += sum < 0 ? converted[i] : converted[i] * -1;
   }
   return Math.abs(sum);
-}
+};
 
-module.exports = { sortArrayDesc, convertArrayToAbs, minAbsSum, maxBinary, binToInt, rangeArray, intToBin, binArray, generateS, bruteForce };
+module.exports = {
+  sortArrayDesc,
+  convertArrayToAbs,
+  minAbsSum,
+  maxBinary,
+  binToInt,
+  rangeArray,
+  intToBin,
+  binArray,
+  generateS,
+  bruteForce,
+};

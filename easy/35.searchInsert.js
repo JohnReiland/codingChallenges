@@ -92,7 +92,7 @@ let searchInsert = (nums, target) => {
   }
 
   while (left < right) {
-    middle = Math.floor((left + right)/2);
+    middle = Math.floor((left + right) / 2);
     if (nums[middle] > target) {
       right = middle - 1;
     } else if (nums[middle] < target) {
@@ -106,4 +106,4 @@ let searchInsert = (nums, target) => {
   } else {
     return left + 1;
   }
-}
+};

@@ -51,23 +51,29 @@ through millions of years into the future.
 
 let calculateNext = (record) => {
   let commonCal = {
-    1 : ['Januray', 31],
-    2 : ['February', 28],
-    3 : ['March', 31],
-    4 : ['April', 30],
-    5 : ['May', 31],
-    6 : ['June', 30],
-    7 : ['July', 31],
-    8 : ['August', 31],
-    9 : ['September', 30],
-    10 : ['October', 31],
-    11 : ['November', 30],
-    12 : ['December', 31]
-  }
-  let year = parseInt(record['highest'].slice(0, record['highest'].length - 2), 10);
-  let month = parseInt(record['highest'].slice(record['highest'].length - 2), 10);
-  let day = parseInt(record[record['highest']][0]);
-  let count = parseInt(record[record['highest']][1]);
+    1: ["Januray", 31],
+    2: ["February", 28],
+    3: ["March", 31],
+    4: ["April", 30],
+    5: ["May", 31],
+    6: ["June", 30],
+    7: ["July", 31],
+    8: ["August", 31],
+    9: ["September", 30],
+    10: ["October", 31],
+    11: ["November", 30],
+    12: ["December", 31],
+  };
+  let year = parseInt(
+    record["highest"].slice(0, record["highest"].length - 2),
+    10
+  );
+  let month = parseInt(
+    record["highest"].slice(record["highest"].length - 2),
+    10
+  );
+  let day = parseInt(record[record["highest"]][0]);
+  let count = parseInt(record[record["highest"]][1]);
   let needsLeapDay = 0;
   day += commonCal[month][1];
   if (month === 2) {
@@ -92,29 +98,29 @@ let calculateNext = (record) => {
   }
   month = month.toString();
   if (month.length === 1) {
-    month = '0' + month;
+    month = "0" + month;
   }
   year = year.toString();
   let newValue = year + month;
   record[newValue] = [day, count];
-  record['highest'] = newValue;
-}
+  record["highest"] = newValue;
+};
 
 let countSundays = (yearMonth) => {
   if (!countSundays.record) {
     countSundays.record = {
-      190001 : [1, 0],
-      highest : '190001'
-    }
+      190001: [1, 0],
+      highest: "190001",
+    };
   }
   let target = parseInt(yearMonth, 10);
-  let current = parseInt(countSundays.record['highest'], 10);
+  let current = parseInt(countSundays.record["highest"], 10);
   while (current < target) {
     calculateNext(countSundays.record);
-    current = parseInt(countSundays.record['highest'], 10);
+    current = parseInt(countSundays.record["highest"], 10);
   }
   return countSundays.record[target][1];
-}
+};
 
 /*
 countSundays(190112);
@@ -127,5 +133,4 @@ countSundays(200012);
 >171
 */
 
-
-module.exports = {calculateNext, countSundays};
+module.exports = { calculateNext, countSundays };

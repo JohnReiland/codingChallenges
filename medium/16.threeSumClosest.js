@@ -14,9 +14,10 @@ The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
  * @param {number} target
  * @return {number}
  */
-var threeSumClosest = function(nums, target) {
-
-  nums = nums.sort((a, b) => {return a - b});
+var threeSumClosest = function (nums, target) {
+  nums = nums.sort((a, b) => {
+    return a - b;
+  });
 
   let result = nums[0] + nums[1] + nums[2];
   let bestDistance = Math.abs(target - result);
@@ -45,5 +46,4 @@ var threeSumClosest = function(nums, target) {
   }
 
   return result;
-
 };

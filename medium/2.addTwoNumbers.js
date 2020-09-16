@@ -47,12 +47,12 @@
 
 var addTwoNumbers = (l1, l2) => {
   var reverseString = (string) => {
-    let result = '';
+    let result = "";
     for (let i = string.length - 1; i >= 0; i--) {
       result = result + string[i];
     }
-  return result;
-  }
+    return result;
+  };
 
   var listToString = (list) => {
     let result = list.val.toString();
@@ -62,24 +62,27 @@ var addTwoNumbers = (l1, l2) => {
       result = result + currentNode.val.toString();
     }
     return reverseString(result);
-  }
+  };
 
   var addTwoStrings = (s1, s2) => {
-    let result = '';
+    let result = "";
     let sum;
     let carried = 0;
     let places = s1.length < s2.length ? s2.length : s1.length;
     for (let i = 0; i < places; i++) {
-      if (s1[(s1.length - 1) - i] === undefined) {
-        sum = parseInt(s2[(s2.length - 1) - i], 10) + carried;
-      } else if (s2[(s2.length - 1) - i] === undefined) {
-        sum = parseInt(s1[(s1.length - 1) - i], 10) + carried;
+      if (s1[s1.length - 1 - i] === undefined) {
+        sum = parseInt(s2[s2.length - 1 - i], 10) + carried;
+      } else if (s2[s2.length - 1 - i] === undefined) {
+        sum = parseInt(s1[s1.length - 1 - i], 10) + carried;
       } else {
-        sum = parseInt(s1[(s1.length - 1) - i], 10) + parseInt(s2[(s2.length - 1) - i], 10) + carried;
+        sum =
+          parseInt(s1[s1.length - 1 - i], 10) +
+          parseInt(s2[s2.length - 1 - i], 10) +
+          carried;
       }
       carried = 0;
       if (sum > 9) {
-        carried = sum - sum % 10
+        carried = sum - (sum % 10);
         sum = sum - carried;
         carried = carried / 10;
       }
@@ -89,25 +92,25 @@ var addTwoNumbers = (l1, l2) => {
       result = carried.toString() + result;
     }
     return result;
-  }
+  };
 
   var stringToList = (string) => {
     let prepared = reverseString(string);
     let result = {
-      val : parseInt(prepared[0], 10),
-      next : null
+      val: parseInt(prepared[0], 10),
+      next: null,
     };
     let currentNode = result;
     for (let i = 1; i < prepared.length; i++) {
       currentNode.next = {
         val: null,
-        next: null
+        next: null,
       };
       currentNode = currentNode.next;
       currentNode.val = parseInt(prepared[i], 10);
     }
     return result;
-  }
+  };
 
-  return stringToList(addTwoStrings(listToString(l1),listToString(l2)));
+  return stringToList(addTwoStrings(listToString(l1), listToString(l2)));
 };

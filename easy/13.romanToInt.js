@@ -47,24 +47,24 @@ Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
  * @param {string} s
  * @return {number}
  */
-var romanToInt = function(string) {
+var romanToInt = function (string) {
   let result = 0;
   let index = 0;
   let values = {
-    I : 1,
-    IV : 4,
-    V : 5,
-    IX : 9,
-    X : 10,
-    XL : 40,
-    L : 50,
-    XC : 90,
-    C : 100,
-    CD : 400,
-    D : 500,
-    CM : 900,
-    M : 1000
-  }
+    I: 1,
+    IV: 4,
+    V: 5,
+    IX: 9,
+    X: 10,
+    XL: 40,
+    L: 50,
+    XC: 90,
+    C: 100,
+    CD: 400,
+    D: 500,
+    CM: 900,
+    M: 1000,
+  };
 
   /*
   So we need to kind of read ahead of the index, or else recall behind the index.
@@ -74,7 +74,10 @@ var romanToInt = function(string) {
 
   while (string[index] !== undefined) {
     let bite = string[index];
-    while (string[index + 1] !== undefined && values[string[index + 1]] > values[string[index]]) {
+    while (
+      string[index + 1] !== undefined &&
+      values[string[index + 1]] > values[string[index]]
+    ) {
       bite += string[index + 1];
       index++;
     }

@@ -138,7 +138,7 @@ let arraySum = (array) => {
     result += array[i];
   }
   return result;
-}
+};
 
 let latticePaths = (width) => {
   if (width < 1) {
@@ -154,14 +154,21 @@ let latticePaths = (width) => {
     let currentSeq = latticePaths.chain.length - 1;
     let previousSeq = currentSeq - 1;
     for (let i = 0; i < latticePaths.chain[previousSeq].length - 1; i++) {
-      latticePaths.chain[currentSeq].push( latticePaths.chain[currentSeq][i] + latticePaths.chain[previousSeq][i + 1]);
+      latticePaths.chain[currentSeq].push(
+        latticePaths.chain[currentSeq][i] +
+          latticePaths.chain[previousSeq][i + 1]
+      );
     }
-    latticePaths.chain[currentSeq].push(2 * latticePaths.chain[currentSeq][latticePaths.chain[currentSeq].length - 1]);
+    latticePaths.chain[currentSeq].push(
+      2 *
+        latticePaths.chain[currentSeq][
+          latticePaths.chain[currentSeq].length - 1
+        ]
+    );
   }
 
   return 2 * arraySum(latticePaths.chain[width - 1]);
-}
-
+};
 
 /*
 latticePaths(1);
@@ -189,5 +196,4 @@ latticePaths(20);
 >137846528820
 */
 
-
-module.exports = {arraySum, latticePaths};
+module.exports = { arraySum, latticePaths };

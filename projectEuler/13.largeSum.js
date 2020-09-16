@@ -103,7 +103,6 @@ Work out the first ten digits of the sum of the following one-hundred 50-digit n
 53503534226472524250874054075591789781264330331690
 */
 
-
 /*
 Looks easy. Probably isn't. So I know JavaScript doesn't
 work with numbers more than 21 digits long. It expresses
@@ -183,10 +182,10 @@ BigInt Method
 let largeSum = (array) => {
   let currentSum = BigInt(array[0]);
   for (let i = 1; i < array.length; i++) {
-    currentSum+= BigInt(array[i]);
+    currentSum += BigInt(array[i]);
   }
   return currentSum.toString();
-}
+};
 
 /*
 largeSum(['111', '111']);

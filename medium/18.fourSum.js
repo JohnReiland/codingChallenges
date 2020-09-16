@@ -31,14 +31,13 @@ inverting it, and making it the target passed to threeSum along with the rest of
  * @param {number} target
  * @return {number[][]}
  */
-var fourSum = function(nums, target) {
-
-  var threeSumTarget = function(nums, target1, target2) {
+var fourSum = function (nums, target) {
+  var threeSumTarget = function (nums, target1, target2) {
     let results = [];
     let array = nums;
 
     for (let i = 0; i < array.length - 2; i++) {
-      if (array[i] === array[i-1]) {
+      if (array[i] === array[i - 1]) {
         continue;
       }
       let j = i + 1;
@@ -46,22 +45,22 @@ var fourSum = function(nums, target) {
       while (j < k) {
         if (array[i] + array[j] + array[k] > target1 + target2) {
           k--;
-          while (array[k] === array[k+1]) {
+          while (array[k] === array[k + 1]) {
             k--;
           }
         } else if (array[i] + array[j] + array[k] < target1 + target2) {
           j++;
-          while (array[j] === array[j-1]) {
+          while (array[j] === array[j - 1]) {
             j++;
           }
         } else {
-          results.push([-target1, array[i], array[j], array[k]])
+          results.push([-target1, array[i], array[j], array[k]]);
           k--;
-          while (array[k] === array[k+1]) {
+          while (array[k] === array[k + 1]) {
             k--;
           }
           j++;
-          while (array[j] === array[j-1]) {
+          while (array[j] === array[j - 1]) {
             j++;
           }
         }
@@ -71,14 +70,16 @@ var fourSum = function(nums, target) {
     return results;
   };
 
-  let array = nums.sort((a,b) => {return a - b});
+  let array = nums.sort((a, b) => {
+    return a - b;
+  });
   let results = [];
 
   for (let i = 0; i < array.length - 3; i++) {
-    if (array[i] === array[i-1]) {
+    if (array[i] === array[i - 1]) {
       continue;
     }
-    results.push(...threeSumTarget(array.slice(i + 1), (-1 * array[i]), target));
+    results.push(...threeSumTarget(array.slice(i + 1), -1 * array[i], target));
   }
 
   return results;

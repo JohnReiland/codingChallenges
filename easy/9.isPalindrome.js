@@ -22,15 +22,15 @@ Explanation: Reads 01 from right to left. Therefore it is not a palindrome.
  * @param {number} x
  * @return {boolean}
  */
-var isPalindrome = function(int) {
+var isPalindrome = function (int) {
   if (int < 0) {
     return false;
   }
   let hold = int;
   let reversed = 0;
   while (hold !== 0) {
-    reversed = (reversed * 10) + hold % 10;
-    hold = (hold - (hold % 10)) /10;
+    reversed = reversed * 10 + (hold % 10);
+    hold = (hold - (hold % 10)) / 10;
   }
   if (int === reversed) {
     return true;

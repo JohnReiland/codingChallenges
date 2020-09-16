@@ -29,5 +29,3 @@ Each string is either "0" or doesn't contain any leading zero.
 
 
 */
-
-

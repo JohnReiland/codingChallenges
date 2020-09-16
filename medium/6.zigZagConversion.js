@@ -32,7 +32,7 @@ P     I
  * @param {number} numRows
  * @return {string}
  */
-var convert = function(s, numRows) {
+var convert = function (s, numRows) {
   if (numRows === 1) {
     return s;
   }
@@ -46,7 +46,7 @@ var convert = function(s, numRows) {
   for (let i = 0; i < s.length; i++) {
     array[currentRow].push(s[i]);
     if (falling) {
-      if (currentRow === numRows-1) {
+      if (currentRow === numRows - 1) {
         falling = false;
       }
     } else {
@@ -60,7 +60,7 @@ var convert = function(s, numRows) {
       currentRow--;
     }
   }
-  let result = '';
+  let result = "";
   for (let i = 0; i < array.length; i++) {
     for (let j = 0; j < array[i].length; j++) {
       result += array[i][j];

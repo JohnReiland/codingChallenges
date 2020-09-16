@@ -4,6 +4,7 @@
   "description": "Coding Challenges",
   "main": "index.js",
   "scripts": {
+    "format": "prettier --write \"**/*.js\"",
     "test": "jest --watch"
   },
   "repository": {
@@ -16,7 +17,9 @@
     "url": "https://github.com/JohnReiland/codingChallenges/issues"
   },
   "homepage": "https://github.com/JohnReiland/codingChallenges#readme",
-  "dependencies": {
-    "jest": "^26.1.0"
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^26.4.2",
+    "prettier": "^2.1.2"
   }
 }

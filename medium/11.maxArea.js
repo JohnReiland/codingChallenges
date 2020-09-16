@@ -51,11 +51,11 @@ let maxArea = (heightArray) => {
     let length = index2 - index1;
     let area = height * length;
     return area;
-  }
+  };
 
   let result = 0;
   let left = 0;
-  let right = heightArray.length-1;
+  let right = heightArray.length - 1;
   let test = 0;
   let hold = 0;
 
@@ -64,13 +64,13 @@ let maxArea = (heightArray) => {
     result = Math.max(test, result);
     if (heightArray[left] < heightArray[right]) {
       hold = heightArray[left];
-      left++
+      left++;
       while (hold > heightArray[left]) {
         left++;
       }
     } else {
       hold = heightArray[right];
-      right--
+      right--;
       while (hold > heightArray[right]) {
         right--;
       }

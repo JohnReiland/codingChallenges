@@ -18,10 +18,10 @@ Output: 1->1->2->3->4->4
  * @param {ListNode} l2
  * @return {ListNode}
  */
-var mergeTwoLists = function(l1, l2) {
+var mergeTwoLists = function (l1, l2) {
   let result = {
-    val : null,
-    next : null
+    val: null,
+    next: null,
   };
   let currentNode = result;
   while (l1 && l2) {

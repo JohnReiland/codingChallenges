@@ -1,4 +1,4 @@
-const {countPalindromicSlices} = require('../Gamma.2011');
+const { countPalindromicSlices } = require("../Gamma.2011");
 
 /*
 describe('countEven()', () => {
@@ -42,26 +42,24 @@ describe('countRun()', () => {
 
 */
 
-describe('countPalindromicSlices()', () => {
-
+describe("countPalindromicSlices()", () => {
   test('countPalindromicSlices("baababa") should be 6', () => {
-    expect(countPalindromicSlices('baababa')).toBe(6);
-  })
+    expect(countPalindromicSlices("baababa")).toBe(6);
+  });
 
   test('countPalindromicSlices("eiedeie") should be 5', () => {
-    expect(countPalindromicSlices('eiedeie')).toBe(5);
-  })
+    expect(countPalindromicSlices("eiedeie")).toBe(5);
+  });
 
   test('countPalindromicSlices("aaaaa") should be 10', () => {
-    expect(countPalindromicSlices('aaaaa')).toBe(10);
-  })
+    expect(countPalindromicSlices("aaaaa")).toBe(10);
+  });
 
   test('countPalindromicSlices("eieaaaaaeiea") should be 16', () => {
-    expect(countPalindromicSlices('eieaaaaaeiea')).toBe(16);
-  })
+    expect(countPalindromicSlices("eieaaaaaeiea")).toBe(16);
+  });
 
   test('countPalindromicSlices("eieaaaaaaaaaaaaaaaeiea") should be 111', () => {
-    expect(countPalindromicSlices('eieaaaaaaaaaaaaaaaeiea')).toBe(111);
-  })
-
-})
+    expect(countPalindromicSlices("eieaaaaaaaaaaaaaaaeiea")).toBe(111);
+  });
+});

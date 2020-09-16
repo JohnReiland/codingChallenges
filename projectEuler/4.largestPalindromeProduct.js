@@ -5,7 +5,6 @@ Find the largest palindrome made from the product of two 3-digit numbers.
 
 */
 
-
 /*
 Upon reading the prompt I immediately had the impulse to solve this by brute-forcing
 products of all 3-digit number combinations and using a palindrome-checker to verify
@@ -61,7 +60,6 @@ isPalindrome(9009);
 >true
 
 */
-
 
 /*
 let largestPalindromeProduct = (num) => {

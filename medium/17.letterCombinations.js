@@ -12,12 +12,23 @@ Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
  * @param {string} digits
  * @return {string[]}
  */
-var letterCombinations = function(digits) {
+var letterCombinations = function (digits) {
   if (digits.length === 0) {
     return [];
   }
   let $digits = digits;
-  let letters = [,,['a','b','c'],['d','e','f'],['g','h','i'],['j','k','l'],['m','n','o'],['p','q','r','s'],['t','u','v'],['w','x','y','z']];
+  let letters = [
+    ,
+    ,
+    ["a", "b", "c"],
+    ["d", "e", "f"],
+    ["g", "h", "i"],
+    ["j", "k", "l"],
+    ["m", "n", "o"],
+    ["p", "q", "r", "s"],
+    ["t", "u", "v"],
+    ["w", "x", "y", "z"],
+  ];
   let lastChar;
   let result = letters[$digits[$digits.length - 1]];
   $digits = $digits.substr(0, $digits.length - 1);

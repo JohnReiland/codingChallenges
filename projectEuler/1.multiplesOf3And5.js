@@ -21,7 +21,6 @@ directly to the solution.
 
 */
 
-
 /*
 BRUTE FORCE SOLUTION
 
@@ -85,18 +84,21 @@ After solving using the higher appraoch, I added additional inputs to allow
 for solving with different multiples, with default parameters set to 3 and 5.
 */
 
-
 let multiplesOf3And5 = (target, number1 = 3, number2 = 5) => {
   let triangular = (number) => {
     return (number * (number + 1)) / 2;
-  }
+  };
   let summedMultiplesOfValue = (target, number) => {
-    let result = (Math.floor((target - 1) / number));
+    let result = Math.floor((target - 1) / number);
     result = number * triangular(result);
     return result;
-  }
-  return summedMultiplesOfValue(target, number1) + summedMultiplesOfValue(target, number2) - summedMultiplesOfValue(target, (number1 * number2));
-}
+  };
+  return (
+    summedMultiplesOfValue(target, number1) +
+    summedMultiplesOfValue(target, number2) -
+    summedMultiplesOfValue(target, number1 * number2)
+  );
+};
 
 module.exports = multiplesOf3And5;
 

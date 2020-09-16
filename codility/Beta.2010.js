@@ -111,7 +111,7 @@ Else, the number of intersections
 
 let doesIntersect = (range1, range2) => {
   return range1[1] >= range2[0] ? true : false;
-}
+};
 
 /*
 doesIntersect([-1, 1], [-4, 6])
@@ -126,8 +126,8 @@ let findRanges = (array) => {
   for (let i = 0; i < array.length; i++) {
     result.push([i - array[i], i + array[i]]);
   }
-  return result
-}
+  return result;
+};
 
 /*
 findRanges([1, 5, 2, 1, 4, 0]);
@@ -150,11 +150,11 @@ let numberOfDiscIntersections = (array) => {
   }
 
   return result;
-}
+};
 
 /*
 numberOfDiscIntersections([1, 5, 2, 1, 4, 0]);
 >11
 */
 
-module.exports = {doesIntersect, findRanges, numberOfDiscIntersections}
+module.exports = { doesIntersect, findRanges, numberOfDiscIntersections };

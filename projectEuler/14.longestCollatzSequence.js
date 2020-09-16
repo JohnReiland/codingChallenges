@@ -51,7 +51,7 @@ original design, and simply memoize ever step to save time in future runs.
 
 let findCollatz = (num) => {
   if (!findCollatz.record) {
-    findCollatz.record = {1: 1};
+    findCollatz.record = { 1: 1 };
   }
 
   if (findCollatz.record[num] !== undefined) {
@@ -77,7 +77,7 @@ let findCollatz = (num) => {
   }
   findCollatz.record[num] = result;
   return result;
-}
+};
 
 /*
 findCollatz(2);
@@ -91,10 +91,9 @@ findCollatz(13);
 */
 
 let longestCollatzSequence = (target) => {
-
   // MAIN EXECUTION START
 
-  let highest = 1
+  let highest = 1;
   let result;
 
   for (let i = 2; i < target; i++) {
@@ -106,7 +105,7 @@ let longestCollatzSequence = (target) => {
   }
 
   return result;
-}
+};
 
 /*
 longestCollatzSequence(10);
@@ -122,4 +121,4 @@ longestCollatzSequence(1000000);
 >837799
 */
 
-module.exports = {findCollatz, longestCollatzSequence};
+module.exports = { findCollatz, longestCollatzSequence };

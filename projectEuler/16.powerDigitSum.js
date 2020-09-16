@@ -33,7 +33,7 @@ let bigIntPow = (base, power) => {
     result *= base;
   }
   return result;
-}
+};
 
 /*
 bigIntPow(2, 3);
@@ -52,7 +52,7 @@ let sumBigInt = (bigInt) => {
     currentValue /= 10n;
   }
   return Number(result);
-}
+};
 
 /*
 sumBigInt(23n);
@@ -66,7 +66,7 @@ sumBigInt(12345n);
 
 let powerDigitSum = (base, power) => {
   return sumBigInt(bigIntPow(base, power));
-}
+};
 
 /*
 powerDigitSum(2, 4);
@@ -79,4 +79,4 @@ powerDigitSum(2, 1000);
 >1366
 */
 
-module.exports = {bigIntPow, sumBigInt, powerDigitSum};
+module.exports = { bigIntPow, sumBigInt, powerDigitSum };

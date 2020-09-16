@@ -220,12 +220,14 @@ the positive number must be made smaller.
 
 */
 
-var threeSum = function(nums) {
+var threeSum = function (nums) {
   let results = [];
-  let array = nums.sort((a,b) => {return a - b});
+  let array = nums.sort((a, b) => {
+    return a - b;
+  });
 
-  for (let i = 0; (array[i] <= 0) && (i < array.length - 2); i++) {
-    if (array[i] === array[i-1]) {
+  for (let i = 0; array[i] <= 0 && i < array.length - 2; i++) {
+    if (array[i] === array[i - 1]) {
       continue;
     }
     let j = i + 1;
@@ -233,22 +235,22 @@ var threeSum = function(nums) {
     while (j < k) {
       if (array[i] + array[j] + array[k] > 0) {
         k--;
-        while (array[k] === array[k+1]) {
+        while (array[k] === array[k + 1]) {
           k--;
         }
       } else if (array[i] + array[j] + array[k] < 0) {
         j++;
-        while (array[j] === array[j-1]) {
+        while (array[j] === array[j - 1]) {
           j++;
         }
       } else {
-        results.push([array[i], array[j], array[k]])
+        results.push([array[i], array[j], array[k]]);
         k--;
-        while (array[k] === array[k+1]) {
+        while (array[k] === array[k + 1]) {
           k--;
         }
         j++;
-        while (array[j] === array[j-1]) {
+        while (array[j] === array[j - 1]) {
           j++;
         }
       }

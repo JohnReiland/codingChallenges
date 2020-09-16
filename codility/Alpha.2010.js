@@ -44,17 +44,17 @@ The index of the unseen integer found last is the first covering prefix.
 */
 
 let prefixSet = (array) => {
-let seen = {};
-let result = 0;
+  let seen = {};
+  let result = 0;
 
-for (let i = 0; i < array.length; i++) {
+  for (let i = 0; i < array.length; i++) {
     if (seen[array[i]] === undefined) {
-        seen[array[i]] = true;
-        result = i;
+      seen[array[i]] = true;
+      result = i;
     }
-}
+  }
 
-return result;
+  return result;
 };
 
-module.exports = {prefixSet}
+module.exports = { prefixSet };

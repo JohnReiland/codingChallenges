@@ -21,7 +21,7 @@ Explanation: The array represents the integer 4321.
  * @return {number[]}
  */
 
- /*
+/*
 
 Naive solution
 
@@ -37,18 +37,17 @@ return array
 
  */
 
-
-var plusOne = function(digits) {
+var plusOne = function (digits) {
   test = digits.length - 1;
   digits[test]++;
   while (digits[test] === 10 && test > 0) {
-      digits[test] = 0;
-      test--;
-      digits[test]++;
+    digits[test] = 0;
+    test--;
+    digits[test]++;
   }
   if (digits[0] === 10) {
-      digits[0] = 0;
-      digits.unshift(1);
+    digits[0] = 0;
+    digits.unshift(1);
   }
   return digits;
 };

@@ -54,11 +54,13 @@ let collapseRow = (array1, array2) => {
   let result = [];
 
   for (let i = 0; i < array1.length; i++) {
-    result.push(array1[i] + (array2[i] > array2[i + 1] ? array2[i] : array2[i + 1]));
+    result.push(
+      array1[i] + (array2[i] > array2[i + 1] ? array2[i] : array2[i + 1])
+    );
   }
 
   return result;
-}
+};
 
 /*
 collapseRow([1], [2, 3]);
@@ -71,10 +73,10 @@ collapseRow([1, 2, 3, 4], [5, 6, 7, 8, 9]);
 let maxPathSum = (array) => {
   let currentRow = array[array.length - 1];
   while (currentRow.length > 1) {
-    currentRow = collapseRow(array[currentRow.length - 2], currentRow)
+    currentRow = collapseRow(array[currentRow.length - 2], currentRow);
   }
   return currentRow[0];
-}
+};
 
 /*
 maxPathSum([[3], [7, 4], [2, 4, 6], [8, 5, 9, 3]]);
@@ -103,4 +105,4 @@ maxPathSum([
 >1074
 */
 
-module.exports = {collapseRow, maxPathSum};
+module.exports = { collapseRow, maxPathSum };

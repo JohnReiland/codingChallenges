@@ -41,7 +41,7 @@ If, the end of the string is reached without false being returned, AND with the 
  * @param {string} s
  * @return {boolean}
  */
-var isValid = function(string) {
+var isValid = function (string) {
   let stack = [];
 
   for (let i = 0; i < string.length; i++) {

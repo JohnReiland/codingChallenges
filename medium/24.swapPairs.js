@@ -38,26 +38,25 @@ while currentPair is not null AND currentPair.next is not null
 return result
 */
 
-var swapPairs = function(head) {
+var swapPairs = function (head) {
+  if (head === null || head.next === null) {
+    return head;
+  }
 
-if (head === null || head.next === null) {
-  return head;
-}
+  let currentPair = head;
+  let result = currentPair.next;
+  let holdHead;
+  let holdTail;
 
-let currentPair = head;
-let result = currentPair.next;
-let holdHead;
-let holdTail;
-
-while (currentPair !== null && currentPair.next !== null) {
+  while (currentPair !== null && currentPair.next !== null) {
     if (holdHead !== undefined) {
-        holdHead.next = currentPair.next;
+      holdHead.next = currentPair.next;
     }
     holdTail = currentPair.next.next;
     currentPair.next.next = currentPair;
     currentPair.next = holdTail;
     holdHead = currentPair;
     currentPair = holdTail;
-}
-return result;
+  }
+  return result;
 };

@@ -24,7 +24,6 @@ All given inputs are in lowercase letters a-z.
  * @return {string}
  */
 
-
 /* NAIVE SOLUTION
 
 var longestCommonPrefix = function(strs) {
@@ -59,9 +58,9 @@ var longestCommonPrefix = function(strs) {
 
 */
 
-var longestCommonPrefix = function(strs) {
+var longestCommonPrefix = function (strs) {
   if (strs.length === 0) {
-    return '';
+    return "";
   }
   let test = strs[0];
   let shortest = strs[0].length;
@@ -74,7 +73,7 @@ var longestCommonPrefix = function(strs) {
     while (!strs[i].startsWith(test)) {
       shortest--;
       if (shortest === 0) {
-        return '';
+        return "";
       }
       test = test.substring(0, shortest);
     }

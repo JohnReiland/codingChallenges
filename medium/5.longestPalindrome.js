@@ -36,7 +36,7 @@ var longestPalindrome = (string) => {
       }
     }
     return string.slice(index1 + 1, index2);
-  }
+  };
 
   let longestLength = 0;
   let result;

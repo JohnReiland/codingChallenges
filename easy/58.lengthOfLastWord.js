@@ -15,7 +15,7 @@ Output: 5
  * @return {number}
  */
 
- /*
+/*
 Naive solution:
 
 if string length === 0
@@ -41,9 +41,9 @@ var lengthOfLastWord = (string) => {
   }
   let last;
   for (let i = string.length - 1; i >= 0 && last === undefined; i--) {
-    if (string[i] !== ' ') {
+    if (string[i] !== " ") {
       last = i;
-    } 
+    }
   }
   if (last === undefined) {
     return 0;
@@ -51,7 +51,7 @@ var lengthOfLastWord = (string) => {
 
   let result = 1;
   for (let i = last - 1; i >= 0; i--) {
-    if (string[i] !== ' ') {
+    if (string[i] !== " ") {
       result++;
     } else {
       return result;

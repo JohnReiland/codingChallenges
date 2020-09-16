@@ -51,7 +51,7 @@ return;
 
 let removeDuplicates = (nums) => {
   for (let i = 1; i < nums.length; i++) {
-    while (nums[i] === nums[i-1]) {
+    while (nums[i] === nums[i - 1]) {
       nums.splice(i, 1);
     }
   }
