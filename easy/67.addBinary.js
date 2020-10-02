@@ -27,12 +27,22 @@ Each string is either "0" or doesn't contain any leading zero.
 */
 
 /*
-
-
-
+I imagine I can easily make helper functions that convert between binary and
+base 10, and then make an addBinary function that makes use of both helper
+functions.
 */
 
-var addBinary = function (a, b) {};
+let toBase10 = (string) => {
+  return parseInt(string, 2);
+};
+
+let toBin = (num) => {
+  return num.toString(2);
+};
+
+let addBinary = (a, b) => {
+  return toBin(toBase10(a) + toBase10(b));
+};
 
 module.exports = {
   addBinary,
