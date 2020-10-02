@@ -49,6 +49,12 @@ Second, one or both strings are finished, but carried is not empty.
 Third, one or both strings are finished and carried is empty.
 
 These states require consideration when designing the function.
+
+UPDATE 2:
+I now have a working version, but it's in dire need of a refactor.
+I'm going to do so twice; once to simplify the design while keeping bitwise
+operation, and again to take advantage of BigInt, which is how I would really
+handle this task in any situation where I could get away with using it.
 */
 
 /*
@@ -69,9 +75,9 @@ addBinary("1010", "1011");
 
 addBinary("11", "1");
 >"101"
-
 */
 
+/*
 let addAndCarry = (top, bottom, carry) => {
   let result;
   let newCarry = carry;
@@ -158,8 +164,29 @@ let addBinary = (a, b) => {
   return result;
 };
 
+
+
+addBinary("10100000100100110110010000010101111011011001101110111111111101000000101111001110001111100001101", "110101001011101110001111100110001010100001101011101010000011011011001011101111001100000011011110011");
+>"110111101100010011000101110110100000011101000101011001000011011000001100011110011010010011000000000"
+*/
+
+let addBinary = (a, b) => {
+  let result = "";
+  let indexA = a.length - 1; // calclulation starts from end of binary strings
+  let indexB = b.length - 1;
+  let carry = 0;
+  // while part of one string remains uncalculated OR there is value to carry
+  while (indexA >= 0 || indexB >= 0 || carry > 0) {
+    carry += a[indexA] === "1" ? 1 : 0;
+    carry += b[indexB] === "1" ? 1 : 0;
+    result = (carry % 2).toString() + result; // % 2 matches bitwise addition
+    carry = carry > 1 ? 1 : 0;
+    indexA--;
+    indexB--;
+  }
+  return result;
+};
+
 module.exports = {
   addBinary,
-  addAndCarry,
-  mergeCarry,
 };
