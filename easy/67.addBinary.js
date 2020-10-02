@@ -55,6 +55,9 @@ I now have a working version, but it's in dire need of a refactor.
 I'm going to do so twice; once to simplify the design while keeping bitwise
 operation, and again to take advantage of BigInt, which is how I would really
 handle this task in any situation where I could get away with using it.
+
+UPDATE 3:
+Refactor done, much improved. Now refactoring for BigInt.
 */
 
 /*
@@ -170,6 +173,8 @@ addBinary("101000001001001101100100000101011110110110011011101111111111010000001
 >"110111101100010011000101110110100000011101000101011001000011011000001100011110011010010011000000000"
 */
 
+/*
+
 let addBinary = (a, b) => {
   let result = "";
   let indexA = a.length - 1; // calclulation starts from end of binary strings
@@ -186,6 +191,34 @@ let addBinary = (a, b) => {
   }
   return result;
 };
+
+addBinary("1010", "1011");
+>"10101"
+
+addBinary("11", "1");
+>"101"
+
+*/
+
+let addBinary = (a, b) => {
+  return (BigInt(`0b${a}`) + BigInt(`0b${b}`)).toString(2);
+};
+
+/*
+${} allows for expressions inside string literals.
+Here the expression is just the binary string.
+
+The `0b` prefix signals that what follows is binary data.
+Used together with ${} inside BigInt(), binary is directly converted to BigInt.
+
+.toString(2) converts the BigInt sum back to binary for output.
+
+addBinary("1010", "1011");
+>"10101"
+
+addBinary("11", "1");
+>"101"
+*/
 
 module.exports = {
   addBinary,
