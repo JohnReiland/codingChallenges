@@ -1,5 +1,4 @@
-const { TestScheduler } = require("jest");
-const { climbStairs } = require("../60.climbStairs");
+const { climbStairs } = require("../70.climbStairs");
 
 describe("climbStairs", () => {
   test("climbstairs(2) should be 2", () => {
