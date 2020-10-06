@@ -41,8 +41,17 @@ this to be accomplished without needing a temporary variable.
 Despite there being only two arrays, there are, in effect, three places that
 values are being swapped to/from. They are the start of nums1 (index 0 -> m-1),
 the end of nums1 (index m -> nums1.length-1), and nums2.
+
+UPDATE:
+Looking at other solutions online, a much better method sorts from high to low,
+rather than low to high. Refactoring to use this concept.
+
+UPDATE1:
+Looking at more solutions, more memory savings are available when, considering
+the function will already be impure, side effects are allowed for other inputs.
 */
 
+/*
 let merge = (nums1, m, nums2, n) => {
   for (let i = 0, j = 0; i < m; i++) {
     if (nums1[i] > nums2[j]) {
@@ -56,6 +65,23 @@ let merge = (nums1, m, nums2, n) => {
   }
   for (let i = m, j = 0; i < nums1.length; i++, j++) {
     nums1[i] = nums2[j];
+  }
+  return nums1;
+};
+*/
+
+let merge = (nums1, m, nums2, n) => {
+  for (let end = m + n - 1; end >= 0; ) {
+    if (n === 0) {
+      return nums1;
+    }
+    if (nums1[m - 1] >= nums2[n - 1]) {
+      nums1[end--] = nums1[m - 1];
+      m--;
+    } else {
+      nums1[end--] = nums2[n - 1];
+      n--;
+    }
   }
   return nums1;
 };
