@@ -37,11 +37,20 @@ let isSymmetric = (tree) => {
 }
 
 UPDATE:
-After moderate success in testing, shortcomings in the design of my
-treeToArray function are becoming apparent. Extensive testing is also
-difficult, as binary trees must be crafted by hand. I'm going to redesign
-my treeToArray function, but first, I'm going to build an arrayToTree
-function to let me quickly create trees for testing.
+I'm having much too much difficulty with this. It can't be as complicated as I'm
+making it. I'm going to start over from stratch.
+
+None of this work converting trees to arrays and back is necessary for this.
+It's useful to be able to do it, but not needed for this challenege. All that's
+needed is a way to navigate the tree in an ordered way, and two pointers
+navigating the tree in a mirrored fashion. If ever the vals of their nodes don't
+match, the tree isn't symetrical.
+
+The sticking point for me was the root having no mirror node (or being its own
+mirror node), which prevented me from wrapping my head around a solution. As
+soon as I seperated the recursive part of the challenge from the root it was no
+problem.
+
 */
 
 function TreeNode(val, left, right) {
@@ -50,85 +59,78 @@ function TreeNode(val, left, right) {
   this.right = (right===undefined ? null : right)
 }
 
-let treeToArrayRec = (tree) => {
-  let result = [];
-  if (!tree) {
-    return result;
+let isSymmetricRec = (left, right = left) => {
+  if (left === null && right === null) {
+    return true;
   }
-  result.push(tree.val);
-
-  let merge = [];
-  let left;
-  let right;
-  if (tree.left) {
-    left = treeToArrayRec(tree.left);
-  } else {
-    left = [null];
-  }
-  if (tree.right) {
-    right = treeToArrayRec(tree.right);
-  } else {
-    right = [null];
-  }
-  if (left[0] === null && right[0] === null) {
-    return result;
-  }
-  merge.push(left[0], right[0]);
-  if (left[1]) {
-    merge.push(...left[1]);
-  }
-  if (right[1]) {
-    merge.push(...right[1]);
-  }
-  result.push(merge);
-
-  return result;
-}
-
-let treeToArray = (tree) => {
-  let result = [];
-  let recursive = treeToArrayRec(tree);
-  result.push(recursive[0], ...recursive[1]);
-  return result;
-}
-
-let arrayIsSymmetric = (array) => {
-  if (array.length % 2 !== 0) {
+  if (left === null || right === null) {
     return false;
   }
-  let half = array.length / 2;
-  for (let i = 0; i < half; i++) {
-    if (array[i] != array[array.length - (1 + i)]) {
-      return false;
-    }
+  if (left.val !== right.val) {
+    return false;
   }
-  return true;
+  return isSymmetricRec(left.left, right.right) &&
+  isSymmetricRec(left.right, right.left);
 }
 
 let isSymmetric = (tree) => {
   if (!tree) {
     return true;
   }
-  if (tree.left === null && tree.right === null) {
+  if (!tree.left && !tree.right) {
     return true;
   }
-  let array = treeToArray(tree);
-  if (array.length < 2) {
-    return true;
+  if (!tree.left || !tree.right) {
+    return false;
   }
-  let width = 2;
-  for (let i = 1; i < array.length;) {
-    let block = [];
-    while (block.length < width) {
-      block.push(array[i] === undefined ? null : array[i]);
-      i++;
-    }
-    if (!arrayIsSymmetric(block)) {
-      return false;
-    }
-    width *= 2;
-  }
-  return true;
-};
+  return isSymmetricRec(tree.left, tree.right);
+}
 
-module.exports = { TreeNode, treeToArray, arrayIsSymmetric, isSymmetric };
+/*
+
+  const tree1 = new TreeNode(1,
+    new TreeNode(2, 
+      new TreeNode(3),
+      new TreeNode(4)),
+    new TreeNode(2,
+      new TreeNode(4),
+      new TreeNode(3)));
+// [1,2,2,3,4,4,3]
+
+isSymmetric(tree1);
+>true
+
+
+  const tree2 = new TreeNode(1,
+    new TreeNode(2, 
+      null,
+      new TreeNode(3)),
+    new TreeNode(2,
+      null,
+      new TreeNode(3)));
+// [1,2,2,null,3,null,3]
+
+isSymmetric(tree2);
+>false
+
+
+  const tree3 = new TreeNode(2,
+    new TreeNode(3,
+      new TreeNode(4,
+        null,
+        null),
+      new TreeNode(5,
+        new TreeNode(8),
+        new TreeNode(9))),
+    new TreeNode(3,
+      new TreeNode(5,
+        new TreeNode(9),
+        new TreeNode(8)),
+      new TreeNode(4)));
+// [2,3,3,4,5,5,4,null,null,8,9,9,8]
+
+isSymmetric(tree3);
+>true
+*/
+
+module.exports = { TreeNode, isSymmetric };
