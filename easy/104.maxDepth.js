@@ -23,18 +23,19 @@ return its depth = 3.
 This should be straightforward to accomplish with a recursive function.
 The max depth for a node is equal to the greater of the max depths of each of
 its children, plus one.
+
+UPDATE:
+This refactor removes a lot of logic which, on reflection, isn't needed. It can
+be reduced even more than this, but I feel further reduction hurts clarity.
 */
 
-let maxDepth = (node, depth = 0) => {
+let maxDepth = (node) => {
   if (!node) {
     return 0;
   }
-  if (!node.left && !node.right) {
-    return 1;
-  }
-  let left = node.left ? maxDepth(node.left) : 0;
-  let right = node.right ? maxDepth(node.right) : 0;
-  return left > right ? left + 1 : right + 1;
+  let left = maxDepth(node.left);
+  let right = maxDepth(node.right);
+  return 1 + (left > right ? left: right);
 };
 
 function TreeNode(val, left, right) {
@@ -42,5 +43,30 @@ function TreeNode(val, left, right) {
   this.left = (left===undefined ? null : left)
   this.right = (right===undefined ? null : right)
 }
+
+/*
+const tree0 = undefined;
+maxDepth(tree0);
+>0;
+
+const tree1 = new TreeNode (3);
+maxDepth(tree1)'
+>1
+
+const tree2 = new TreeNode (3, 
+  new TreeNode(9),
+  new TreeNode(20));
+maxDepth(tree2)'
+>2
+
+const tree3 = new TreeNode (3, 
+  new TreeNode(9),
+  new TreeNode(20,
+    new TreeNode(15),
+    new TreeNode(7)));
+
+maxDepth(tree3)'
+>3
+*/
 
 module.exports = { maxDepth, TreeNode };
