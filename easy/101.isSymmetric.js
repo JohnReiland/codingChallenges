@@ -54,9 +54,9 @@ problem.
 */
 
 function TreeNode(val, left, right) {
-  this.val = (val===undefined ? 0 : val)
-  this.left = (left===undefined ? null : left)
-  this.right = (right===undefined ? null : right)
+  this.val = val === undefined ? 0 : val;
+  this.left = left === undefined ? null : left;
+  this.right = right === undefined ? null : right;
 }
 
 let isSymmetricRec = (left, right = left) => {
@@ -69,9 +69,11 @@ let isSymmetricRec = (left, right = left) => {
   if (left.val !== right.val) {
     return false;
   }
-  return isSymmetricRec(left.left, right.right) &&
-  isSymmetricRec(left.right, right.left);
-}
+  return (
+    isSymmetricRec(left.left, right.right) &&
+    isSymmetricRec(left.right, right.left)
+  );
+};
 
 let isSymmetric = (tree) => {
   if (!tree) {
@@ -84,7 +86,7 @@ let isSymmetric = (tree) => {
     return false;
   }
   return isSymmetricRec(tree.left, tree.right);
-}
+};
 
 /*
 

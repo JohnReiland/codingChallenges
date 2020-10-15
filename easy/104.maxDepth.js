@@ -35,13 +35,13 @@ let maxDepth = (node) => {
   }
   let left = maxDepth(node.left);
   let right = maxDepth(node.right);
-  return 1 + (left > right ? left: right);
+  return 1 + (left > right ? left : right);
 };
 
 function TreeNode(val, left, right) {
-  this.val = (val===undefined ? 0 : val)
-  this.left = (left===undefined ? null : left)
-  this.right = (right===undefined ? null : right)
+  this.val = val === undefined ? 0 : val;
+  this.left = left === undefined ? null : left;
+  this.right = right === undefined ? null : right;
 }
 
 /*
