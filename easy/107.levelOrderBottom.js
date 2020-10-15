@@ -16,21 +16,40 @@ return its bottom-up level order traversal as:
 ]
 */
 
-let levelOrderBottom = (node, level = 0, result = [[]]) => {
+let levelOrderBottom = (node, level = 0, result = []) => {
   if (!node) {
-    return [];
+    return result;
   }
-  result[result.length - (level + 1)].push(node.val);
-  if (!result[level + 1]) {
+  if (!result[level]) {
     result.unshift([]);
   }
+  result[result.length - (level + 1)].push(node.val);
   levelOrderBottom(node.left, level + 1, result);
   levelOrderBottom(node.right, level + 1, result);
-  if (result[0].length === 0) {
-    result.shift();
-  }
   return result;
 };
+
+/*
+const tree0 = undefined;
+levelOrderBottom(tree0);
+>[]
+
+const tree1 = new TreeNode(3,
+  new TreeNode(9),
+  new TreeNode(20,
+    new TreeNode(15), new TreeNode(7)));
+levelOrderBottom(tree1);
+>[[15, 7], [9, 20], [3]]
+
+const tree2 = new TreeNode(3,
+  new TreeNode(9),
+  new TreeNode(20,
+    new TreeNode(15), new TreeNode(7,
+      new TreeNode(11))));
+levelOrderBottom(tree2);
+>[[11], [15, 7], [9, 20], [3]]
+
+*/
 
 function TreeNode(val, left, right) {
   this.val = val === undefined ? 0 : val;
