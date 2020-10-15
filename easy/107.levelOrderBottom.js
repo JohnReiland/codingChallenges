@@ -16,14 +16,21 @@ return its bottom-up level order traversal as:
 ]
 */
 
-/*
-I can see that an elegant solution using a recursive function is possible. I'll
-figure that out soon, but first I want a brute force solution. To do that I'll
-create an array and push values to it, then reverse its values into a new array
-and return that.
-*/
-
-let levelOrderBottom = (node) => {};
+let levelOrderBottom = (node, level = 0, result = [[]]) => {
+  if (!node) {
+    return [];
+  }
+  result[result.length - (level + 1)].push(node.val);
+  if (!result[level + 1]) {
+    result.unshift([]);
+  }
+  levelOrderBottom(node.left, level + 1, result);
+  levelOrderBottom(node.right, level + 1, result);
+  if (result[0].length === 0) {
+    result.shift();
+  }
+  return result;
+};
 
 function TreeNode(val, left, right) {
   this.val = val === undefined ? 0 : val;
