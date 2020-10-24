@@ -20,6 +20,43 @@ n == height.length
 0 <= height[i] <= 105
 */
 
-let trap = (height) => {};
+/*
+The specifics are something I still need to work out, but I can envision an
+array that fills with "potential" water. The value of each element represents
+the amount of potential to count if an elevation at a height equal to that
+element's index is encountered.
+*/
+
+/*
+UPDATE:
+I have a working solution, however it's not efficient enough for large datasets.
+I'll need to come up with something better.
+*/
+
+let trap = (height) => {
+  if (height.length < 3) {
+    return 0;
+  }
+  let potential = [0];
+  let result = 0;
+  let highest = 0;
+  for (let i = 0; i < height.length; i++) {
+    while (potential.length - 1 < height[i]) {
+      potential.push(0);
+    }
+    for (let j = 0; j < potential.length; j++) {
+      if (height[i] > highest) {
+        highest = height[i];
+      }
+      if (j < height[i]) {
+        result += potential[j];
+        potential[j] = 0;
+      } else if (j < highest) {
+        potential[j]++;
+      }
+    }
+  }
+  return result;
+};
 
 module.exports = { trap };
