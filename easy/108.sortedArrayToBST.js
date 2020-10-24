@@ -25,7 +25,7 @@ be trivially easy. Take the middle-most index of the array (or one of the two
 middle-most in the event of an array with an even number of elements) and make
 that the root of the tree. For each index before it in the array, make its
 value the left leaf of the index after it. For each index after, make its
-value the right leaf of the index before it.
+value the right leaf of the index before it. 
 
 Unless I'm misunderstanding the challenge, this should result in a valid
 solution.
