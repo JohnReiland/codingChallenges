@@ -1,16 +1,26 @@
 /*
+<<<<<<< HEAD
 Given an array where elements are sorted in ascending order, convert it to a
 height balanced BST.
 
 For this problem, a height-balanced binary tree is defined as a binary tree in
 which the depth of the two subtrees of every node never differ by more than 1.
+=======
+Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
+
+For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
+>>>>>>> f8ea714e85b8739f494791f88a62da0628ad89df
 
 Example:
 
 Given the sorted array: [-10,-3,0,5,9],
 
+<<<<<<< HEAD
 One possible answer is: [0,-3,9,-10,null,5], which represents the following
 height balanced BST:
+=======
+One possible answer is: [0,-3,9,-10,null,5], which represents the following height balanced BST:
+>>>>>>> f8ea714e85b8739f494791f88a62da0628ad89df
 
       0
      / \
@@ -19,6 +29,7 @@ height balanced BST:
  -10  5
 */
 
+<<<<<<< HEAD
 /*
 I'm not sure if I understand the challenge correctly, as it seems like it should
 be trivially easy. Take the middle-most index of the array (or one of the two
@@ -53,6 +64,9 @@ let sortedArrayToBST = (nums) => {
   }
   return root;
 };
+=======
+let sortedArrayToBST = (nums) => {};
+>>>>>>> f8ea714e85b8739f494791f88a62da0628ad89df
 
 function TreeNode(val, left, right) {
   this.val = val === undefined ? 0 : val;
