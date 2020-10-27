@@ -125,7 +125,9 @@ let maxPoints = (array) => {
       }
     }
   }
-  array[array.length - 1][2] = 1;
+  if (overlaps[array.length - 1] === undefined) {
+    array[array.length - 1][2] = 1;
+  }
 
   for (let i = 0; i < array.length - 1; i++) {
     initializeChecked(i);
@@ -134,7 +136,7 @@ let maxPoints = (array) => {
       if (isNotAlreadyChecked(i, j)) {
         checked[i][j] = true;
         pointsOnCurrentSlope = array[i][2] + array[j][2];
-        points = [];
+        points = [j];
         for (let k = j + 1; k < array.length; k++) {
           if (isNotAlreadyChecked(j, k)) {
             if (doShareSlope(array[i], array[j], array[k])) {
@@ -143,10 +145,10 @@ let maxPoints = (array) => {
             }
           }
         }
-        for (let z = 0; z < points.length - 1; z++) {
-          for (let y = z + 1; y < points.length; y++) {
-            initializeChecked(y);
-            checked[z][y] = true;
+        for (let y = 0; y < points.length - 1; y++) {
+          for (let z = y + 1; z < points.length; z++) {
+            initializeChecked(points[y]);
+            checked[points[y]][points[z]] = true;
           }
         }
         if (pointsOnCurrentSlope > array.length / 2) {
