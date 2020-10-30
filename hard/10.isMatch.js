@@ -256,20 +256,87 @@ If length of [a*] === 1, search for [.b] || [..b]  (.b OR ..b)
 If length of [a*] === 0, search for [..b]
 */
 
+/*
+Is it possible for the string length to be valid at first, and invalid later?
+Yes, because there are wrong turns, which consume letters.
+
+For the pattern a.*bd*ca.*
+Search array is [a, .*, b, d*, ca, .*]
+Minimum length is 4.
+The string "abcbd" has a length 5, and is valid.
+
+[.*, b, d*, ca, .*]
+"abcbd" becomes "bcbd", length 4, minimum is 3, still valid.
+
+[d*, ca, .*]
+"bcbd" becoms "cbd" length 3, minimum is 2, still valid.
+"cbd" fails to match, previous search resumes.
+
+[.*, b, d*, ca, .*]
+"bcbd" becomes "bd", length 2, minimum is 3, length invalid.
+*/
+
+/*
+// build function here to identify search pattern elements and push to array
+let buildArray = (pattern) => {
+  let result = [];
+
+  for (let i = 0; i < pattern.length; ) {
+    if (pattern[i + 1] === "*") {
+      result.push(pattern.substr(i, 2));
+      i += 2;
+    } else {
+      let element = "";
+      while (pattern[i + 1] !== "*" && i < pattern.length) {
+        element = element + pattern[i];
+        i++;
+      }
+      result.push(element);
+    }
+  }
+  return result;
+};
+*/
+
 let isMatch = (string, pattern) => {
   let patternElementArray = [];
+  let lengthMinimum = 0;
+  let minimumIsExact = true;
 
-  // build function here to identify search pattern elements and push to array
+  for (let i = 0; i < pattern.length; ) {
+    if (pattern[i + 1] === "*") {
+      minimumIsExact = false;
+      patternElementArray.push(pattern.substr(i, 2));
+      i += 2;
+    } else {
+      let element = "";
+      while (pattern[i + 1] !== "*" && i < pattern.length) {
+        element = element + pattern[i];
+        i++;
+      }
+      lengthMinimum += element.length;
+      patternElementArray.push(element);
+    }
+  }
+
+  if (string.length < lengthMinimum) {
+    return false;
+  }
+  if (minimumIsExact && string.length !== lengthMinimum) {
+    return false;
+  }
 
   let recurse = (
-    stringStart,
-    stringEnd,
-    patternStart,
-    patternEnd,
-    lengthAdjust
-  ) => {};
+    lengthMinimum,
+    stringStart = 0,
+    stringEnd = string.length,
+    patternStart = 0,
+    patternEnd = patternElementArray.length
+  ) => {
+    //
+  };
 
-  return recurse(0, string.length - 1, 0, patternElementArray.length - 1, 0);
+  return recurse(lengthMinimum);
 };
 
 module.exports = { isMatch };
