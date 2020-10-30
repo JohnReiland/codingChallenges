@@ -318,25 +318,90 @@ let isMatch = (string, pattern) => {
       patternElementArray.push(element);
     }
   }
-
+  // fail if string length renders match impossible
   if (string.length < lengthMinimum) {
     return false;
   }
   if (minimumIsExact && string.length !== lengthMinimum) {
     return false;
   }
+  // clean up patternElementArray (.* absorbs adjacent []* elements)
+  for (let i = 0; i < patternElementArray.length; i++) {
+    if (patternElementArray[i] === ".*") {
+      while (
+        patternElementArray[i - 1] &&
+        patternElementArray[i - 1][1] === "*"
+      ) {
+        patternElementArray.splice(i - 1, 1);
+        i--;
+      }
+      while (
+        patternElementArray[i + 1] &&
+        patternElementArray[i + 1][1] === "*"
+      ) {
+        patternElementArray.splice(i + 1, 1);
+      }
+    }
+  }
 
   let recurse = (
     lengthMinimum,
     stringStart = 0,
-    stringEnd = string.length,
+    stringEnd = string.length - 1,
     patternStart = 0,
-    patternEnd = patternElementArray.length
+    patternEnd = patternElementArray.length - 1
   ) => {
-    //
+    if (stringEnd + 1 - stringStart < lengthMinimum) {
+      return false;
+    }
+    while (
+      patternStart <= patternEnd &&
+      patternElementArray[patternStart][1] !== "*"
+    ) {
+      let currentElement = patternElementArray[patternStart];
+      for (let i = 0; i < currentElement.length; i++) {
+        if (stringStart > stringEnd) {
+          return false;
+        } else if (
+          string[stringStart] !== currentElement[i] &&
+          currentElement[i] !== "."
+        ) {
+          return null;
+        } else {
+          lengthMinimum--;
+          stringStart++;
+        }
+      }
+      patternStart++;
+    }
+    while (
+      patternStart <= patternEnd &&
+      patternElementArray[patternEnd][1] !== "*"
+    ) {
+      let currentElement = patternElementArray[patternEnd];
+      for (let i = currentElement.length - 1; i >= 0; i--) {
+        if (stringEnd < stringStart) {
+          return false;
+        } else if (
+          string[stringEnd] !== currentElement[i] &&
+          currentElement[i] !== "."
+        ) {
+          return null;
+        } else {
+          lengthMinimum--;
+          stringEnd--;
+        }
+      }
+      patternEnd--;
+    }
+    /*
+    if first element considered in pattern array is variable length, known char
+    */
+    return true;
   };
-
-  return recurse(lengthMinimum);
+  let result = recurse(lengthMinimum);
+  return result === true ? true : false;
+  // return recurse(lengthMinimum);
 };
 
 module.exports = { isMatch };
