@@ -243,8 +243,8 @@ describe(`isMatch("ab*a.*ba*ca.*b")`, () => {
     expect(isMatch("abbbcab", "ab*a.*ba*ca.*b")).toBe(false);
   });
 
-  test(`isMatch("abacab", "ab*a.*ba*ca.*b") should be true`, () => {
-    expect(isMatch("abacab", "ab*a.*ba*ca.*b")).toBe(true);
+  test(`isMatch("aabacab", "ab*a.*ba*ca.*b") should be true`, () => {
+    expect(isMatch("aabacab", "ab*a.*ba*ca.*b")).toBe(true);
   });
 
   test(`isMatch("abaadbaacab", "ab*a.*ba*ca.*b") should be true`, () => {
@@ -253,7 +253,7 @@ describe(`isMatch("ab*a.*ba*ca.*b")`, () => {
 });
 
 describe(`isMatch("a*.*b.c.*b")`, () => {
-  test(`isMatch("bicb", "a*.*b.c.*b") should be false`, () => {
-    expect(isMatch("bicb", "a*.*b.c.*b")).toBe(false);
+  test(`isMatch("bicb", "a*.*b.c.*b") should be true`, () => {
+    expect(isMatch("bikibicb", "a*.*b.c.*b")).toBe(true);
   });
 });

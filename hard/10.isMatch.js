@@ -308,14 +308,12 @@ let buildArray = (pattern) => {
     A backstep is when isMatch() returns FALSE and is called again with a
     stringStart value 1 LOWER than the previous call.
 
-    The method for finding retries is easy; it's one less the number of chars
-    encountered without failing the last []* element.
+    The method for finding retries is easy; it's the number of chars encountered
+    without failing the last []* element.
 
     The method for finding backsteps is trickier; it's the LESSER number between
-    the above number and the number of dots at the beginning of the first block
-    after any number of running []* elements.
-
-    Keep the above, but there might be an easier way.
+    the above number and the number of dots encountered before the first non-dot
+    value in a fixed-length element.
     */
 
 /*
@@ -470,9 +468,11 @@ let isMatch = (string, pattern) => {
         scanList.shift();
         patternStart++;
       }
+      /*
       if (retries > 0) {
         retries--;
       }
+      */
       let backsteps = Math.min(retries, backstepMax);
       let result = recurse(
         lengthMinimum,
@@ -547,9 +547,11 @@ let isMatch = (string, pattern) => {
         scanList.shift();
         patternEnd--;
       }
+      /*
       if (retries > 0) {
         retries--;
       }
+      */
       let backsteps = Math.min(retries, backstepMax);
       let result = recurse(
         lengthMinimum,
@@ -600,12 +602,14 @@ let isMatch = (string, pattern) => {
     // find first non-dot, non-[]*. If none && lengthMinimum is valid, string matches
     let i = patternStart;
     let needle = null;
+    let totalDots = 0;
     let leadingDots;
     while (i <= patternEnd && needle === null) {
       if (patternElementArray[i][1] !== "*") {
         let j = 0;
         while (patternElementArray[i][j] === ".") {
           j++;
+          totalDots++;
           lengthMinimum--;
         }
         if (patternElementArray[i][j] !== undefined) {
@@ -628,24 +632,28 @@ let isMatch = (string, pattern) => {
     if (stringStart > stringEnd) {
       return false;
     }
-    patternStart += i;
+    patternStart = i;
     let result = recurse(
       lengthMinimum,
-      stringStart - leadingDots,
+      stringStart + totalDots - leadingDots,
       stringEnd,
-      patternStart + 1,
+      patternStart,
       patternEnd
     );
+    // this is needed because failed matches are allowed to hide in .*
     while (result === null) {
       stringStart++;
       while (stringStart <= stringEnd && string[stringStart] !== needle) {
         stringStart++;
       }
+      if (stringStart > stringEnd) {
+        return null;
+      }
       result = recurse(
         lengthMinimum,
         stringStart - leadingDots,
         stringEnd,
-        patternStart + 1,
+        patternStart,
         patternEnd
       );
     }
