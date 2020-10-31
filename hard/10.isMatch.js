@@ -298,6 +298,34 @@ let buildArray = (pattern) => {
 };
 */
 
+/*
+    This will be solved by recursing, but in order to do so, the right number of
+    retries and backsteps need to be found.
+
+    A retry is when isMatch() returns NULL and is called again with a
+    stringStart value 1 HIGHER than the previous call.
+
+    A backstep is when isMatch() returns FALSE and is called again with a
+    stringStart value 1 LOWER than the previous call.
+
+    The method for finding retries is easy; it's one less the number of chars
+    encountered without failing the last []* element.
+
+    The method for finding backsteps is trickier; it's the LESSER number between
+    the above number and the number of dots at the beginning of the first block
+    after any number of running []* elements.
+
+    Keep the above, but there might be an easier way.
+    */
+
+/*
+    I don't want to test twice as much as necessary. If I have a pattern of
+    *a*b*c*..d and a string that starts aaaaaaaaaa, I don't want, index after
+    index, to be testing is this d? is it a? is *this* d? is it a? I should only
+    be testing is it a. Then, only when it's not, is it b, c, then d. Then, if
+    it's not d, the stop value, its preceeding dots allow for  
+    */
+
 let isMatch = (string, pattern) => {
   let patternElementArray = [];
   let lengthMinimum = 0;
@@ -325,9 +353,10 @@ let isMatch = (string, pattern) => {
   if (minimumIsExact && string.length !== lengthMinimum) {
     return false;
   }
-  // clean up patternElementArray (.* absorbs adjacent []* elements)
+  // clean up patternElementArray
   for (let i = 0; i < patternElementArray.length; i++) {
     if (patternElementArray[i] === ".*") {
+      // (.* absorbs adjacent []* elements)
       while (
         patternElementArray[i - 1] &&
         patternElementArray[i - 1][1] === "*"
@@ -338,6 +367,14 @@ let isMatch = (string, pattern) => {
       while (
         patternElementArray[i + 1] &&
         patternElementArray[i + 1][1] === "*"
+      ) {
+        patternElementArray.splice(i + 1, 1);
+      }
+    } else if (patternElementArray[i][1] === "*") {
+      //(any non-dot []* absorbs adjacent []* elements)
+      while (
+        patternElementArray[i + 1] &&
+        patternElementArray[i + 1] === patternElementArray[i]
       ) {
         patternElementArray.splice(i + 1, 1);
       }
@@ -355,6 +392,7 @@ let isMatch = (string, pattern) => {
       return false;
     }
     while (
+      // first element is fixed-length
       patternStart <= patternEnd &&
       patternElementArray[patternStart][1] !== "*"
     ) {
@@ -375,12 +413,13 @@ let isMatch = (string, pattern) => {
       patternStart++;
     }
     while (
+      // last element is fixed-length
       patternStart <= patternEnd &&
       patternElementArray[patternEnd][1] !== "*"
     ) {
       let currentElement = patternElementArray[patternEnd];
       for (let i = currentElement.length - 1; i >= 0; i--) {
-        if (stringEnd < stringStart) {
+        if (stringStart > stringEnd) {
           return false;
         } else if (
           string[stringEnd] !== currentElement[i] &&
@@ -394,14 +433,225 @@ let isMatch = (string, pattern) => {
       }
       patternEnd--;
     }
-    /*
-    if first element considered in pattern array is variable length, known char
-    */
-    return true;
+    if (
+      // first element is known-char, variable-length
+      patternStart <= patternEnd &&
+      patternElementArray[patternStart][0] !== "." &&
+      stringStart <= stringEnd
+    ) {
+      let scanList = [];
+      let i = patternStart;
+      while (
+        i <= patternEnd &&
+        patternElementArray[i] &&
+        patternElementArray[i][1] === "*" &&
+        patternElementArray[i][0] !== "."
+      ) {
+        scanList.push(patternElementArray[i][0]);
+        i++;
+      }
+      let backstepMax = 0;
+      if (patternElementArray[i]) {
+        let j = 0;
+        while (patternElementArray[i][j] === ".") {
+          backstepMax++;
+          j++;
+        }
+      }
+      let retries = 0;
+      while (scanList[0]) {
+        while (
+          stringStart <= stringEnd &&
+          string[stringStart] === scanList[0]
+        ) {
+          retries++;
+          stringStart++;
+        }
+        scanList.shift();
+        patternStart++;
+      }
+      if (retries > 0) {
+        retries--;
+      }
+      let backsteps = Math.min(retries, backstepMax);
+      let result = recurse(
+        lengthMinimum,
+        stringStart,
+        stringEnd,
+        patternStart,
+        patternEnd
+      );
+      while (result !== true && (backsteps > 0 || retries > 0)) {
+        if (result === null && retries > 0) {
+          retries--;
+          stringStart++;
+          result = recurse(
+            lengthMinimum,
+            stringStart,
+            stringEnd,
+            patternStart,
+            patternEnd
+          );
+        } else if (result === false && backsteps > 0) {
+          backsteps--;
+          stringStart--;
+          result = recurse(
+            lengthMinimum,
+            stringStart,
+            stringEnd,
+            patternStart,
+            patternEnd
+          );
+        } else {
+          backsteps = 0;
+          retries = 0;
+        }
+      }
+      if (result !== true) {
+        return result;
+      }
+      return true;
+    }
+
+    if (
+      // last element is known-char, variable-length
+      patternStart <= patternEnd &&
+      patternElementArray[patternEnd][0] !== "." &&
+      stringStart <= stringEnd
+    ) {
+      let scanList = [];
+      let i = patternEnd;
+      while (
+        i >= patternStart &&
+        patternElementArray[i] &&
+        patternElementArray[i][1] === "*" &&
+        patternElementArray[i][0] !== "."
+      ) {
+        scanList.push(patternElementArray[i][0]);
+        i--;
+      }
+      let backstepMax = 0;
+      if (patternElementArray[i]) {
+        let j = patternElementArray[i].length - 1;
+        while (patternElementArray[i][j] === ".") {
+          backstepMax++;
+          j--;
+        }
+      }
+      let retries = 0;
+      while (scanList[0]) {
+        while (stringStart <= stringEnd && string[stringEnd] === scanList[0]) {
+          retries++;
+          stringEnd--;
+        }
+        scanList.shift();
+        patternEnd--;
+      }
+      if (retries > 0) {
+        retries--;
+      }
+      let backsteps = Math.min(retries, backstepMax);
+      let result = recurse(
+        lengthMinimum,
+        stringStart,
+        stringEnd,
+        patternStart,
+        patternEnd
+      );
+      while (result !== true && (backsteps > 0 || retries > 0)) {
+        if (result === null && retries > 0) {
+          retries--;
+          stringEnd--;
+          result = recurse(
+            lengthMinimum,
+            stringStart,
+            stringEnd,
+            patternStart,
+            patternEnd
+          );
+        } else if (result === false && backsteps > 0) {
+          backsteps--;
+          stringEnd++;
+          result = recurse(
+            lengthMinimum,
+            stringStart,
+            stringEnd,
+            patternStart,
+            patternEnd
+          );
+        } else {
+          backsteps = 0;
+          retries = 0;
+        }
+      }
+      if (result !== true) {
+        return result;
+      }
+      return true;
+    }
+    if (patternStart > patternEnd && stringStart <= stringEnd) {
+      return false;
+    }
+    // first and last elements are both .* (may be same element)
+    // if same element, string matches
+    if (patternStart === patternEnd) {
+      return true;
+    }
+    // find first non-dot, non-[]*. If none && lengthMinimum is valid, string matches
+    let i = patternStart;
+    let needle = null;
+    let leadingDots;
+    while (i <= patternEnd && needle === null) {
+      if (patternElementArray[i][1] !== "*") {
+        let j = 0;
+        while (patternElementArray[i][j] === ".") {
+          j++;
+          lengthMinimum--;
+        }
+        if (patternElementArray[i][j] !== undefined) {
+          needle = patternElementArray[i][j];
+          leadingDots = j;
+          break;
+        }
+      }
+      i++;
+    }
+
+    if (needle === null) {
+      // if no non-dots
+      return true;
+    }
+
+    while (stringStart <= stringEnd && string[stringStart] !== needle) {
+      stringStart++;
+    }
+    if (stringStart > stringEnd) {
+      return false;
+    }
+    patternStart += i;
+    let result = recurse(
+      lengthMinimum,
+      stringStart - leadingDots,
+      stringEnd,
+      patternStart + 1,
+      patternEnd
+    );
+    while (result === null) {
+      stringStart++;
+      while (stringStart <= stringEnd && string[stringStart] !== needle) {
+        stringStart++;
+      }
+      result = recurse(
+        lengthMinimum,
+        stringStart - leadingDots,
+        stringEnd,
+        patternStart + 1,
+        patternEnd
+      );
+    }
+    return result;
   };
   let result = recurse(lengthMinimum);
   return result === true ? true : false;
-  // return recurse(lengthMinimum);
 };
-
 module.exports = { isMatch };

@@ -100,7 +100,7 @@ describe(`isMatch(".a.")`, () => {
   });
 });
 
-describe.skip(`isMatch("a*")`, () => {
+describe(`isMatch("a*")`, () => {
   test(`isMatch("aaab", "a*") should be false`, () => {
     expect(isMatch("aaab", "a*")).toBe(false);
   });
@@ -114,7 +114,7 @@ describe.skip(`isMatch("a*")`, () => {
   });
 });
 
-describe.skip(`isMatch(".*")`, () => {
+describe(`isMatch(".*")`, () => {
   test(`isMatch("", ".*") should be true`, () => {
     expect(isMatch("", ".*")).toBe(true);
   });
@@ -160,7 +160,7 @@ describe(`isMatch(".*.")`, () => {
   });
 });
 
-describe.skip(`isMatch(".*a.*")`, () => {
+describe(`isMatch(".*a.*")`, () => {
   test(`isMatch("", ".*a.*") should be false`, () => {
     expect(isMatch("", ".*a.*")).toBe(false);
   });
@@ -186,7 +186,7 @@ describe.skip(`isMatch(".*a.*")`, () => {
   });
 });
 
-describe.skip(`isMatch(".*..*")`, () => {
+describe(`isMatch(".*..*")`, () => {
   test(`isMatch("", ".*..*") should be false`, () => {
     expect(isMatch("", ".*..*")).toBe(false);
   });
@@ -200,7 +200,7 @@ describe.skip(`isMatch(".*..*")`, () => {
   });
 });
 
-describe.skip(`isMatch("a*.b.*")`, () => {
+describe(`isMatch("a*.b.*")`, () => {
   test(`isMatch("b", "a*.b.*") should be false`, () => {
     expect(isMatch("b", "a*.b.*")).toBe(false);
   });
@@ -218,7 +218,7 @@ describe.skip(`isMatch("a*.b.*")`, () => {
   });
 });
 
-describe.skip(`isMatch("ab*a.*ba*ca.*b")`, () => {
+describe(`isMatch("ab*a.*ba*ca.*b")`, () => {
   test(`isMatch("aacab", "ab*a.*ba*ca.*b") should be false`, () => {
     expect(isMatch("aacab", "ab*a.*ba*ca.*b")).toBe(false);
   });
@@ -252,44 +252,8 @@ describe.skip(`isMatch("ab*a.*ba*ca.*b")`, () => {
   });
 });
 
-describe.skip(`isMatch("a*.*b.c.*b")`, () => {
+describe(`isMatch("a*.*b.c.*b")`, () => {
   test(`isMatch("bicb", "a*.*b.c.*b") should be false`, () => {
     expect(isMatch("bicb", "a*.*b.c.*b")).toBe(false);
-  });
-});
-
-describe.skip("buildArray()", () => {
-  test(`buildArray("abc") should be ["abc"]`, () => {
-    expect(buildArray("abc")).toStrictEqual(["abc"]);
-  });
-
-  test(`buildArray("a*b") should be ["a*", "b"]`, () => {
-    expect(buildArray("a*b")).toStrictEqual(["a*", "b"]);
-  });
-
-  test(`buildArray(".*a.cd*efg*") should be
-        [".*", "a.c", "d*", "ef", "g*"]`, () => {
-    expect(buildArray(".*a.cd*efg*")).toStrictEqual([
-      ".*",
-      "a.c",
-      "d*",
-      "ef",
-      "g*",
-    ]);
-  });
-
-  test(`buildArray("ab*a.*ba*ca.*b") should be
-        ["a", "b*", "a", ".*", "b", "a*", "ca", ".*", "b"]`, () => {
-    expect(buildArray("ab*a.*ba*ca.*b")).toStrictEqual([
-      "a",
-      "b*",
-      "a",
-      ".*",
-      "b",
-      "a*",
-      "ca",
-      ".*",
-      "b",
-    ]);
   });
 });
