@@ -257,3 +257,9 @@ describe(`isMatch("a*.*b.c.*b")`, () => {
     expect(isMatch("bikibicb", "a*.*b.c.*b")).toBe(true);
   });
 });
+
+describe(`isMatch("a*..b.*")`, () => {
+  test(`isMatch("zbsoijfoie", "a*..b.*") should be false`, () => {
+    expect(isMatch("zbsoijfoie", "a*..b.*")).toBe(false);
+  });
+});
