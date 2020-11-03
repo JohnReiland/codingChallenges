@@ -1,5 +1,15 @@
 const { isMatch } = require("../10.isMatch");
 
+describe(`isMatch("")`, () => {
+  test(`isMatch("a", "") should be false`, () => {
+    expect(isMatch("a", "")).toBe(false);
+  });
+
+  test(`isMatch("", "") should be true`, () => {
+    expect(isMatch("", "")).toBe(true);
+  });
+});
+
 describe(`isMatch(".")`, () => {
   test(`isMatch("", ".") should be false`, () => {
     expect(isMatch("", ".")).toBe(false);
@@ -50,7 +60,9 @@ describe(`isMatch("..")`, () => {
   test(`isMatch("ab", "..") should be true`, () => {
     expect(isMatch("ab", "..")).toBe(true);
   });
+});
 
+describe(`isMatch("a.")`, () => {
   test(`isMatch("ba", "a.") should be false`, () => {
     expect(isMatch("ba", "a.")).toBe(false);
   });
@@ -157,6 +169,10 @@ describe(`isMatch(".*.")`, () => {
 
   test(`isMatch("ab", ".*.") should be true`, () => {
     expect(isMatch("ab", ".*.")).toBe(true);
+  });
+
+  test(`isMatch("abc", ".*.") should be true`, () => {
+    expect(isMatch("abc", ".*.")).toBe(true);
   });
 });
 

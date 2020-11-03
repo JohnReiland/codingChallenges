@@ -318,14 +318,9 @@ the []* element to "pull forward" into the dots.
 */
 
 let isMatch = (string, pattern) => {
-  if (string === "" && pattern === "") {
-    return true;
-  }
-  let patternArray = [];
-
   let buildPatternArray = () => {
     // convert pattern to pattern element array
-    for (let i = patternArrayStart; i < pattern.length; i++) {
+    for (let i = 0; i < pattern.length; i++) {
       if (pattern[i + 1] === "*") {
         patternArray.push(pattern.substr(i, 2));
         i++;
@@ -399,8 +394,8 @@ let isMatch = (string, pattern) => {
     }
   };
 
-  let optimizePatternArray = () => {
-    // clean patternArray of redundant elements -- TAKE THIS FURTHER!
+  let reducePatternArray = () => {
+    // clear patternArray of redundant elements
     for (let i = patternArrayStart; i <= patternArrayEnd; i++) {
       if (patternArray[i] === ".*") {
         // (.* elements absorb adjacent []* elements)
@@ -448,19 +443,13 @@ let isMatch = (string, pattern) => {
       if (stringStart > stringEnd) {
         return false;
       }
-      let currentElement = patternArray[patternArrayStart];
-      for (let i = 0; i <= currentElement.length - 1; i++) {
-        if (stringStart > stringEnd) {
-          return false;
-        } else if (
-          string[stringStart] !== currentElement[i] &&
-          currentElement[i] !== "."
-        ) {
-          return null;
-        } else {
-          stringStart++;
-        }
+      if (
+        string[stringStart] !== patternArray[patternArrayStart] &&
+        patternArray[patternArrayStart] !== "."
+      ) {
+        return null;
       }
+      stringStart++;
       patternArrayStart++;
     }
     return recurse(stringStart, stringEnd, patternArrayStart, patternArrayEnd);
@@ -479,19 +468,13 @@ let isMatch = (string, pattern) => {
       if (stringStart > stringEnd) {
         return false;
       }
-      let currentElement = patternArray[patternArrayEnd];
-      for (let i = currentElement.length - 1; i >= 0; i--) {
-        if (stringStart > stringEnd) {
-          return false;
-        } else if (
-          string[stringEnd] !== currentElement[i] &&
-          currentElement[i] !== "."
-        ) {
-          return null;
-        } else {
-          stringEnd--;
-        }
+      if (
+        string[stringEnd] !== patternArray[patternArrayEnd] &&
+        patternArray[patternArrayEnd] !== "."
+      ) {
+        return null;
       }
+      stringEnd--;
       patternArrayEnd--;
     }
     return recurse(stringStart, stringEnd, patternArrayStart, patternArrayEnd);
@@ -504,62 +487,29 @@ let isMatch = (string, pattern) => {
     patternArrayEnd
   ) => {
     // make array of base chars for all adjacent []* elements
-    let scanList = [];
-    let i = patternArrayStart;
-
+    let baseList = [];
     while (
-      i <= patternArrayEnd &&
-      patternArray[i] &&
-      patternArray[i][1] === "*" &&
-      patternArray[i][0] !== "."
+      patternArrayStart <= patternArrayEnd &&
+      patternArray[patternArrayStart][1] === "*" &&
+      patternArray[patternArrayStart][0] !== "."
     ) {
-      scanList.push(patternArray[i][0]);
-      i++;
+      baseList.push(patternArray[patternArrayStart][0]);
+      patternArrayStart++;
     }
-
-    let needle = null;
-    let dotCount = 0;
-    while (i <= patternArrayEnd) {
-      if (patternArray[i][1] !== "*") {
-        if (patternArray[i] === ".") {
-          dotCount++;
-        } else {
-          needle = patternArray[i];
-          break;
-        }
-      }
-      i++;
-    }
-
-    if (dotCount > stringEnd + 1 - stringStart) {
-      // if # dots > unread string length, string doesn't match
-      return false;
-    }
-
-    let retries = 0; // # of retries allowed
-
-    while (scanList[0]) {
-      // 1 or more []* element is potentially unfinished
-      while (
-        // the first unread char is valid for the considered []*
-        stringStart <= stringEnd &&
-        string[stringStart] === scanList[0]
-      ) {
-        retries++;
-        stringStart++; // advance the string start pointer
-      }
-      scanList.shift(); // non-mathching char, current []* must be finished
-      patternArrayStart++; // consider associated pattern element resolved
-    }
-
     if (patternArrayStart > patternArrayEnd) {
-      return stringStart <= stringEnd ? false : true;
+      // all elements were []*
+      while (stringStart <= stringEnd) {
+        while (string[stringStart] !== baseList[0] && baseList[0]) {
+          baseList.shift();
+        }
+        if (!baseList[0]) {
+          return false;
+        }
+        stringStart++;
+      }
+      return true;
     }
 
-    stringStart -= retries;
-    //let backsteps = Math.min(retries, dotCount); // # of backsteps to take
-
-    // make recursive call, attempt to validate string with current values
     let result = recurse(
       stringStart,
       stringEnd,
@@ -567,16 +517,18 @@ let isMatch = (string, pattern) => {
       patternArrayEnd
     );
 
-    while (result === null && retries > 0) {
-      // string validation failed, but reattempt resources exist
-      retries--;
-      stringStart++;
-      result = recurse(
-        stringStart,
-        stringEnd,
-        patternArrayStart,
-        patternArrayEnd
-      );
+    while (result === null && baseList[0]) {
+      if (string[stringStart] === baseList[0]) {
+        stringStart++;
+        result = recurse(
+          stringStart,
+          stringEnd,
+          patternArrayStart,
+          patternArrayEnd
+        );
+      } else {
+        baseList.shift();
+      }
     }
 
     return result;
@@ -589,76 +541,49 @@ let isMatch = (string, pattern) => {
     patternArrayEnd
   ) => {
     // make array of base chars for first element and adjacent []* elements
-    let scanList = [];
-    let i = patternArrayEnd;
-
+    let baseList = [];
     while (
-      i >= patternArrayStart &&
-      patternArray[i] &&
-      patternArray[i][1] === "*" &&
-      patternArray[i][0] !== "."
+      patternArrayEnd >= patternArrayStart &&
+      patternArray[patternArrayEnd][1] === "*" &&
+      patternArray[patternArrayEnd][0] !== "."
     ) {
-      scanList.push(patternArray[i][0]);
-      i--;
-    }
-
-    let needle = null;
-    let dotCount = 0;
-    while (i >= patternArrayStart) {
-      if (patternArray[i][1] !== "*") {
-        if (patternArray[i] === ".") {
-          dotCount++;
-        } else {
-          needle = patternArray[i];
-          break;
-        }
-      }
-      i--;
-    }
-
-    if (dotCount > stringEnd + 1 - stringStart) {
-      // if # dots > unread string length, string doesn't match
-      return false;
-    }
-
-    let retries = 0; // # of retries allowed
-
-    while (scanList[0]) {
-      // 1 or more []* element is potentially unfinished
-      while (stringStart <= stringEnd && string[stringEnd] === scanList[0]) {
-        // the last unread char is valid for the considered []*
-        retries++;
-        stringEnd--; // retreat the string end pointer
-      }
-      scanList.shift(); // non-matching char, current []* must be finished
-      patternArrayEnd--; // consider associated pattern element resolved
+      baseList.push(patternArray[patternArrayEnd][0]);
+      patternArrayEnd--;
     }
 
     if (patternArrayStart > patternArrayEnd) {
-      return stringStart <= stringEnd ? false : true;
+      // all elements were []*
+      while (stringStart <= stringEnd) {
+        while (string[stringEnd] !== baseList[0] && baseList[0]) {
+          baseList.shift();
+        }
+        if (!baseList[0]) {
+          return false;
+        }
+        stringEnd--;
+      }
+      return true;
     }
-    stringEnd += retries;
-    //let backsteps = Math.min(retries, dotCount); // # of backsteps allowed
 
-    // make recursive call, attempt to validate string with current values
     let result = recurse(
       stringStart,
       stringEnd,
       patternArrayStart,
       patternArrayEnd
     );
-    while (result === null && retries > 0) {
-      // string validation failed, but reattempt resources exist
-      retries--;
-      stringEnd--;
-      result = recurse(
-        stringStart,
-        stringEnd,
-        patternArrayStart,
-        patternArrayEnd
-      );
+    while (result === null && baseList[0]) {
+      if (string[stringEnd] === baseList[0]) {
+        stringEnd--;
+        result = recurse(
+          stringStart,
+          stringEnd,
+          patternArrayStart,
+          patternArrayEnd
+        );
+      } else {
+        baseList.shift();
+      }
     }
-
     return result;
   };
 
@@ -672,8 +597,7 @@ let isMatch = (string, pattern) => {
     if (patternArrayStart === patternArrayEnd) {
       return true;
     }
-    // find first non-dot, non-[]*.
-    // if none exists && lengthMinimum is still valid, string matches
+    // identify needle to search through string for
     let i = patternArrayStart;
     let needle = null;
     let dotCount = 0;
@@ -696,19 +620,19 @@ let isMatch = (string, pattern) => {
       return dotCount > stringEnd + 1 - stringStart ? false : true;
     }
 
-    // look for the needle
-    while (
-      stringStart <= stringEnd &&
-      string[stringStart + dotCount] !== needle
-    ) {
+    // search for the needle
+    stringStart += dotCount; // only need to search past # chars needed for dots
+    while (stringStart <= stringEnd && string[stringStart] !== needle) {
       stringStart++;
     }
+
     if (stringStart > stringEnd) {
       // if needle not found by end of string string doesn't match
       return false;
     }
-    // resolve the .* element
-    patternArrayStart++;
+
+    stringStart -= dotCount; // rewind for recurse, so 1st char goes in 1st dot
+    patternArrayStart++; // resolve the .* element
 
     let result = recurse(
       stringStart,
@@ -716,15 +640,17 @@ let isMatch = (string, pattern) => {
       patternArrayStart,
       patternArrayEnd
     );
-    // needed because near-matches are allowed to hide in .* elements
+
+    // needed because wrong turns are allowed to hide in .* elements
     while (result === null) {
       stringStart++;
       while (stringStart <= stringEnd && string[stringStart] !== needle) {
         stringStart++;
       }
       if (stringStart > stringEnd) {
-        return null; // should this be false?
+        return false;
       }
+
       result = recurse(
         stringStart,
         stringEnd,
@@ -741,12 +667,11 @@ let isMatch = (string, pattern) => {
     patternArrayStart,
     patternArrayEnd
   ) => {
-    if (patternArrayStart > patternArrayEnd && stringStart > stringEnd) {
-      return true;
+    if (patternArrayStart > patternArrayEnd) {
+      return stringStart > stringEnd ? true : false;
     }
 
     leanPatternArrayForward(patternArrayStart, patternArrayEnd);
-
     if (
       // first element in pattern element array is fixed-length
       patternArrayStart <= patternArrayEnd &&
@@ -761,7 +686,6 @@ let isMatch = (string, pattern) => {
     }
 
     leanPatternArrayBack(patternArrayStart, patternArrayEnd);
-
     if (
       // last element in pattern element array is fixed-length
       patternArrayStart <= patternArrayEnd &&
@@ -776,7 +700,7 @@ let isMatch = (string, pattern) => {
     }
 
     if (
-      // first element in pattern element array is known-char, variable-length
+      // first element in pattern element array is []*
       patternArrayStart <= patternArrayEnd &&
       patternArray[patternArrayStart][0] !== "." &&
       stringStart <= stringEnd
@@ -790,7 +714,7 @@ let isMatch = (string, pattern) => {
     }
 
     if (
-      // last element in pattern element array is known-char, variable-length
+      // last element in pattern element array is []*]
       patternArrayStart <= patternArrayEnd &&
       patternArray[patternArrayEnd][0] !== "." &&
       stringStart <= stringEnd
@@ -804,7 +728,7 @@ let isMatch = (string, pattern) => {
     }
 
     if (patternArrayStart <= patternArrayEnd) {
-      // first and last element (possibly same element) are both .*
+      // first and last element are both .* (possibly same element)
       return variableLengthDots(
         stringStart,
         stringEnd,
@@ -815,24 +739,25 @@ let isMatch = (string, pattern) => {
   };
 
   // MAIN EXECUTION START
+  let patternArray = [];
+  buildPatternArray();
+
+  let patternArrayStart = 0;
+  let patternArrayEnd = patternArray.length - 1;
+  let previousLength = patternArray.length + 1;
+  while (patternArray.length < previousLength) {
+    previousLength = patternArray.length;
+    leanPatternArrayForward(patternArrayStart, patternArrayEnd);
+    reducePatternArray();
+    leanDotStarsBack();
+    reducePatternArray();
+    leanPatternArrayBack(patternArrayStart, patternArrayEnd);
+    reducePatternArray();
+    leanDotStarsForward();
+    reducePatternArray();
+  }
   let stringStart = 0;
   let stringEnd = string.length - 1;
-  let patternArrayStart = 0;
-  buildPatternArray();
-  let patternArrayEnd = patternArray.length - 1;
-  let rawArrayLength = patternArray.length + 1;
-  while (patternArray.length < rawArrayLength) {
-    rawArrayLength = patternArray.length;
-    leanPatternArrayForward(patternArrayStart, patternArrayEnd);
-    optimizePatternArray();
-    leanDotStarsBack();
-    optimizePatternArray();
-    leanPatternArrayBack(patternArrayStart, patternArrayEnd);
-    optimizePatternArray();
-    leanDotStarsForward();
-    optimizePatternArray();
-  }
-
   // top level recurse call
   let result = recurse(
     stringStart,
