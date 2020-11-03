@@ -318,85 +318,138 @@ the []* element to "pull forward" into the dots.
 */
 
 let isMatch = (string, pattern) => {
-  let lengthMinimum = 0;
-  let minimumIsExact = true;
-  let patternElementArray = [];
+  if (string === "" && pattern === "") {
+    return true;
+  }
+  let patternArray = [];
 
-  // convert pattern to pattern eleement array
-  // identify minimum string length for match to be possible
-  // identify exact string length needed, if able
-  for (let i = 0; i < pattern.length; ) {
-    if (pattern[i + 1] === "*") {
-      minimumIsExact = false;
-      patternElementArray.push(pattern.substr(i, 2));
-      i += 2;
-    } else {
-      let element = "";
-      while (pattern[i + 1] !== "*" && i < pattern.length) {
-        element = element + pattern[i];
+  let buildPatternArray = () => {
+    // convert pattern to pattern element array
+    for (let i = patternArrayStart; i < pattern.length; i++) {
+      if (pattern[i + 1] === "*") {
+        patternArray.push(pattern.substr(i, 2));
         i++;
-      }
-      lengthMinimum += element.length;
-      patternElementArray.push(element);
-    }
-  }
-
-  // fail if actual string length renders match impossible
-  if (string.length < lengthMinimum) {
-    return false;
-  } else if (minimumIsExact && string.length !== lengthMinimum) {
-    return false;
-  }
-
-  // clean patternElementArray of redundant elements
-  for (let i = 0; i < patternElementArray.length; i++) {
-    if (patternElementArray[i] === ".*") {
-      // (.* elements absorb adjacent []* elements)
-      while (
-        patternElementArray[i - 1] &&
-        patternElementArray[i - 1][1] === "*"
-      ) {
-        patternElementArray.splice(i - 1, 1);
-        i--;
-      }
-      while (
-        patternElementArray[i + 1] &&
-        patternElementArray[i + 1][1] === "*"
-      ) {
-        patternElementArray.splice(i + 1, 1);
-      }
-    } else if (patternElementArray[i][1] === "*") {
-      // (non-dot []* elements absorbs alike adjacent []* elements)
-      while (
-        patternElementArray[i + 1] &&
-        patternElementArray[i + 1] === patternElementArray[i]
-      ) {
-        patternElementArray.splice(i + 1, 1);
+      } else {
+        patternArray.push(pattern[i]);
       }
     }
-  }
+  };
 
-  let recurse = (
-    lengthMinimum,
-    stringStart = 0,
-    stringEnd = string.length - 1,
-    patternArrayStart = 0,
-    patternArrayEnd = patternElementArray.length - 1
+  let leanPatternArrayForward = (patternArrayStart, patternArrayEnd) => {
+    for (let i = patternArrayEnd; i >= patternArrayStart; i--) {
+      if (patternArray[i][1] === "*") {
+        while (
+          i + 1 <= patternArrayEnd &&
+          patternArray[i + 1] &&
+          patternArray[i][0] === patternArray[i + 1]
+        ) {
+          [patternArray[i], patternArray[i + 1]] = [
+            patternArray[i + 1],
+            patternArray[i],
+          ];
+          i++;
+        }
+      }
+    }
+  };
+
+  let leanPatternArrayBack = (patternArrayStart, patternArrayEnd) => {
+    for (let i = patternArrayStart; i <= patternArrayEnd; i++) {
+      if (patternArray[i][1] === "*") {
+        while (
+          i - 1 >= patternArrayStart &&
+          patternArray[i - 1] &&
+          patternArray[i][0] === patternArray[i - 1]
+        ) {
+          [patternArray[i - 1], patternArray[i]] = [
+            patternArray[i],
+            patternArray[i - 1],
+          ];
+          i--;
+        }
+      }
+    }
+  };
+
+  let leanDotStarsForward = () => {
+    for (let i = patternArrayEnd; i >= patternArrayStart; i--) {
+      if (patternArray[i] === ".*") {
+        while (i + 1 <= patternArrayEnd && patternArray[i + 1] === ".") {
+          [patternArray[i], patternArray[i + 1]] = [
+            patternArray[i + 1],
+            patternArray[i],
+          ];
+          i++;
+        }
+      }
+    }
+  };
+
+  let leanDotStarsBack = () => {
+    for (let i = patternArrayStart; i <= patternArrayEnd; i++) {
+      if (patternArray[i] === ".*") {
+        while (i - 1 >= patternArrayStart && patternArray[i - 1] === ".") {
+          [patternArray[i - 1], patternArray[i]] = [
+            patternArray[i],
+            patternArray[i - 1],
+          ];
+          i--;
+        }
+      }
+    }
+  };
+
+  let optimizePatternArray = () => {
+    // clean patternArray of redundant elements -- TAKE THIS FURTHER!
+    for (let i = patternArrayStart; i <= patternArrayEnd; i++) {
+      if (patternArray[i] === ".*") {
+        // (.* elements absorb adjacent []* elements)
+        while (
+          i - 1 >= patternArrayStart &&
+          patternArray[i - 1] &&
+          patternArray[i - 1][1] === "*"
+        ) {
+          patternArray.splice(i - 1, 1);
+          patternArrayEnd--;
+          i--;
+        }
+        while (
+          i + 1 <= patternArrayEnd &&
+          patternArray[i + 1] &&
+          patternArray[i + 1][1] === "*"
+        ) {
+          patternArray.splice(i + 1, 1);
+          patternArrayEnd--;
+        }
+      } else if (patternArray[i][1] === "*") {
+        // (non-dot []* elements absorbs alike adjacent []* elements)
+        while (
+          i + 1 <= patternArrayEnd &&
+          patternArray[i + 1] &&
+          patternArray[i + 1] === patternArray[i]
+        ) {
+          patternArray.splice(i + 1, 1);
+          patternArrayEnd--;
+        }
+      }
+    }
+  };
+
+  let fixedLengthFirst = (
+    stringStart,
+    stringEnd,
+    patternArrayStart,
+    patternArrayEnd
   ) => {
-    // length of string yet unread is too short for possible match
-    if (stringEnd + 1 - stringStart < lengthMinimum) {
-      return false;
-    }
-
-    let result;
-
     while (
-      // first element in pattern element array is fixed-length
       patternArrayStart <= patternArrayEnd &&
-      patternElementArray[patternArrayStart][1] !== "*"
+      patternArray[patternArrayStart][1] !== "*"
     ) {
-      let currentElement = patternElementArray[patternArrayStart];
-      for (let i = 0; i < currentElement.length; i++) {
+      if (stringStart > stringEnd) {
+        return false;
+      }
+      let currentElement = patternArray[patternArrayStart];
+      for (let i = 0; i <= currentElement.length - 1; i++) {
         if (stringStart > stringEnd) {
           return false;
         } else if (
@@ -405,19 +458,28 @@ let isMatch = (string, pattern) => {
         ) {
           return null;
         } else {
-          lengthMinimum--;
           stringStart++;
         }
       }
       patternArrayStart++;
     }
+    return recurse(stringStart, stringEnd, patternArrayStart, patternArrayEnd);
+  };
 
+  let fixedLengthLast = (
+    stringStart,
+    stringEnd,
+    patternArrayStart,
+    patternArrayEnd
+  ) => {
     while (
-      // last element in pattern element array is fixed-length
       patternArrayStart <= patternArrayEnd &&
-      patternElementArray[patternArrayEnd][1] !== "*"
+      patternArray[patternArrayEnd][1] !== "*"
     ) {
-      let currentElement = patternElementArray[patternArrayEnd];
+      if (stringStart > stringEnd) {
+        return false;
+      }
+      let currentElement = patternArray[patternArrayEnd];
       for (let i = currentElement.length - 1; i >= 0; i--) {
         if (stringStart > stringEnd) {
           return false;
@@ -427,233 +489,229 @@ let isMatch = (string, pattern) => {
         ) {
           return null;
         } else {
-          lengthMinimum--;
           stringEnd--;
         }
       }
       patternArrayEnd--;
     }
+    return recurse(stringStart, stringEnd, patternArrayStart, patternArrayEnd);
+  };
 
-    if (
-      // first element in pattern element array is known-char, variable-length
-      patternArrayStart <= patternArrayEnd &&
-      patternElementArray[patternArrayStart][0] !== "." &&
-      stringStart <= stringEnd
-    ) {
-      // make array of base chars for first element and adjacent []* elements
-      let scanList = [];
-      let i = patternArrayStart;
-
-      while (
-        i <= patternArrayEnd &&
-        patternElementArray[i] &&
-        patternElementArray[i][1] === "*" &&
-        patternElementArray[i][0] !== "."
-      ) {
-        scanList.push(patternElementArray[i][0]);
-        i++;
-      }
-
-      let backstepMax = 0; // maximum possible # of backsteps allowed
-      if (patternElementArray[i]) {
-        let j = 0;
-        while (patternElementArray[i][j] === ".") {
-          backstepMax++;
-          j++;
-        }
-      }
-
-      let retries = 0; // # of retries allowed
-      while (scanList[0]) {
-        // 1 or more []* element is potentially unfinished
-        while (
-          // the first unread char is valid for the considered []*
-          stringStart <= stringEnd &&
-          string[stringStart] === scanList[0]
-        ) {
-          retries++;
-          stringStart++; // advance the string start pointer
-        }
-        scanList.shift(); // non-mathching char, current []* must be finished
-        patternArrayStart++; // consider associated pattern element resolved
-      }
-      let backsteps = Math.min(retries, backstepMax); // # of backsteps allowed
-
-      // make recursive call, attempt to validate string with current values
-      result = recurse(
-        lengthMinimum,
-        stringStart,
-        stringEnd,
-        patternArrayStart,
-        patternArrayEnd
-      );
-
-      while (result !== true && (backsteps > 0 || retries > 0)) {
-        // string validation failed, but reattempt resources exist
-
-        if (result === null && retries > 0) {
-          // invalid char encountered, use retry
-          retries--;
-          stringStart++;
-          result = recurse(
-            lengthMinimum,
-            stringStart,
-            stringEnd,
-            patternArrayStart,
-            patternArrayEnd
-          );
-        } else if (result === false && backsteps > 0) {
-          // end of string without encountering needed char, use a backstep
-          backsteps--;
-          stringStart--;
-          result = recurse(
-            lengthMinimum,
-            stringStart,
-            stringEnd,
-            patternArrayStart,
-            patternArrayEnd
-          );
-        } else {
-          // no more of a needed reattempt resource, deplete both to end loop
-          backsteps = 0;
-          retries = 0;
-        }
-      }
-
-      return result; // final answer
-    }
-
-    if (
-      // last element in pattern element array is known-char, variable-length
-      patternArrayStart <= patternArrayEnd &&
-      patternElementArray[patternArrayEnd][0] !== "." &&
-      stringStart <= stringEnd
-    ) {
-      // make array of base chars for first element and adjacent []* elements
-      let scanList = [];
-      let i = patternArrayEnd;
-      while (
-        i >= patternArrayStart &&
-        patternElementArray[i] &&
-        patternElementArray[i][1] === "*" &&
-        patternElementArray[i][0] !== "."
-      ) {
-        scanList.push(patternElementArray[i][0]);
-        i--;
-      }
-      let backstepMax = 0; // maximum possible # of backsteps allowed
-      if (patternElementArray[i]) {
-        let j = patternElementArray[i].length - 1;
-        while (patternElementArray[i][j] === ".") {
-          backstepMax++;
-          j--;
-        }
-      }
-      let retries = 0; // # of retries allowed
-      while (scanList[0]) {
-        // 1 or more []* element is potentially unfinished
-        while (stringStart <= stringEnd && string[stringEnd] === scanList[0]) {
-          // the last unread char is valid for the considered []*
-          retries++;
-          stringEnd--; // retreat the string end pointer
-        }
-        scanList.shift(); // non-matching char, current []* must be finished
-        patternArrayEnd--; // consider associated pattern element resolved
-      }
-
-      let backsteps = Math.min(retries, backstepMax); // # of backsteps allowed
-
-      // make recursive call, attempt to validate string with current values
-      result = recurse(
-        lengthMinimum,
-        stringStart,
-        stringEnd,
-        patternArrayStart,
-        patternArrayEnd
-      );
-      while (result !== true && (backsteps > 0 || retries > 0)) {
-        // string validation failed, but reattempt resources exist
-        if (result === null && retries > 0) {
-          // invalid char encountered, use retry
-          retries--;
-          stringEnd--;
-          result = recurse(
-            lengthMinimum,
-            stringStart,
-            stringEnd,
-            patternArrayStart,
-            patternArrayEnd
-          );
-        } else if (result === false && backsteps > 0) {
-          // end of string without encountering needed char, use a backstep
-          backsteps--;
-          stringEnd++;
-          result = recurse(
-            lengthMinimum,
-            stringStart,
-            stringEnd,
-            patternArrayStart,
-            patternArrayEnd
-          );
-        } else {
-          // no more of a needed reattempt resource, deplete both to end loop
-          backsteps = 0;
-          retries = 0;
-        }
-      }
-
-      return result; // final answer
-    }
-    if (patternArrayStart > patternArrayEnd && stringStart <= stringEnd) {
-      return false;
-    }
-    // first and last elements are both .* (may be same element)
-    // if same element, only single .* remains; string matches
-    if (patternArrayStart === patternArrayEnd) {
-      return true;
-    }
-    // find first non-dot, non-[]*.
-    // If none exists && lengthMinimum is still valid, string matches
+  let variableLengthCharFirst = (
+    stringStart,
+    stringEnd,
+    patternArrayStart,
+    patternArrayEnd
+  ) => {
+    // make array of base chars for all adjacent []* elements
+    let scanList = [];
     let i = patternArrayStart;
+
+    while (
+      i <= patternArrayEnd &&
+      patternArray[i] &&
+      patternArray[i][1] === "*" &&
+      patternArray[i][0] !== "."
+    ) {
+      scanList.push(patternArray[i][0]);
+      i++;
+    }
+
     let needle = null;
-    let totalDots = 0;
-    let leadingDots;
-    while (i <= patternArrayEnd && needle === null) {
-      if (patternElementArray[i][1] !== "*") {
-        let j = 0;
-        while (patternElementArray[i][j] === ".") {
-          j++;
-          totalDots++;
-          lengthMinimum--;
-        }
-        if (patternElementArray[i][j] !== undefined) {
-          needle = patternElementArray[i][j];
-          leadingDots = j;
+    let dotCount = 0;
+    while (i <= patternArrayEnd) {
+      if (patternArray[i][1] !== "*") {
+        if (patternArray[i] === ".") {
+          dotCount++;
+        } else {
+          needle = patternArray[i];
           break;
         }
       }
       i++;
     }
 
-    if (needle === null && stringEnd + 1 - stringStart >= lengthMinimum) {
-      // if no non-dots remain and lengthMinimum is met, string matches
-      return true;
+    if (dotCount > stringEnd + 1 - stringStart) {
+      // if # dots > unread string length, string doesn't match
+      return false;
     }
 
-    // look for value of first non-dot non-[]*
-    while (stringStart <= stringEnd && string[stringStart] !== needle) {
+    let retries = 0; // # of retries allowed
+
+    while (scanList[0]) {
+      // 1 or more []* element is potentially unfinished
+      while (
+        // the first unread char is valid for the considered []*
+        stringStart <= stringEnd &&
+        string[stringStart] === scanList[0]
+      ) {
+        retries++;
+        stringStart++; // advance the string start pointer
+      }
+      scanList.shift(); // non-mathching char, current []* must be finished
+      patternArrayStart++; // consider associated pattern element resolved
+    }
+
+    if (patternArrayStart > patternArrayEnd) {
+      return stringStart <= stringEnd ? false : true;
+    }
+
+    stringStart -= retries;
+    //let backsteps = Math.min(retries, dotCount); // # of backsteps to take
+
+    // make recursive call, attempt to validate string with current values
+    let result = recurse(
+      stringStart,
+      stringEnd,
+      patternArrayStart,
+      patternArrayEnd
+    );
+
+    while (result === null && retries > 0) {
+      // string validation failed, but reattempt resources exist
+      retries--;
+      stringStart++;
+      result = recurse(
+        stringStart,
+        stringEnd,
+        patternArrayStart,
+        patternArrayEnd
+      );
+    }
+
+    return result;
+  };
+
+  let variableLengthCharLast = (
+    stringStart,
+    stringEnd,
+    patternArrayStart,
+    patternArrayEnd
+  ) => {
+    // make array of base chars for first element and adjacent []* elements
+    let scanList = [];
+    let i = patternArrayEnd;
+
+    while (
+      i >= patternArrayStart &&
+      patternArray[i] &&
+      patternArray[i][1] === "*" &&
+      patternArray[i][0] !== "."
+    ) {
+      scanList.push(patternArray[i][0]);
+      i--;
+    }
+
+    let needle = null;
+    let dotCount = 0;
+    while (i >= patternArrayStart) {
+      if (patternArray[i][1] !== "*") {
+        if (patternArray[i] === ".") {
+          dotCount++;
+        } else {
+          needle = patternArray[i];
+          break;
+        }
+      }
+      i--;
+    }
+
+    if (dotCount > stringEnd + 1 - stringStart) {
+      // if # dots > unread string length, string doesn't match
+      return false;
+    }
+
+    let retries = 0; // # of retries allowed
+
+    while (scanList[0]) {
+      // 1 or more []* element is potentially unfinished
+      while (stringStart <= stringEnd && string[stringEnd] === scanList[0]) {
+        // the last unread char is valid for the considered []*
+        retries++;
+        stringEnd--; // retreat the string end pointer
+      }
+      scanList.shift(); // non-matching char, current []* must be finished
+      patternArrayEnd--; // consider associated pattern element resolved
+    }
+
+    if (patternArrayStart > patternArrayEnd) {
+      return stringStart <= stringEnd ? false : true;
+    }
+    stringEnd += retries;
+    //let backsteps = Math.min(retries, dotCount); // # of backsteps allowed
+
+    // make recursive call, attempt to validate string with current values
+    let result = recurse(
+      stringStart,
+      stringEnd,
+      patternArrayStart,
+      patternArrayEnd
+    );
+    while (result === null && retries > 0) {
+      // string validation failed, but reattempt resources exist
+      retries--;
+      stringEnd--;
+      result = recurse(
+        stringStart,
+        stringEnd,
+        patternArrayStart,
+        patternArrayEnd
+      );
+    }
+
+    return result;
+  };
+
+  let variableLengthDots = (
+    stringStart,
+    stringEnd,
+    patternArrayStart,
+    patternArrayEnd
+  ) => {
+    // if first and last pattern element are the same element, string matches
+    if (patternArrayStart === patternArrayEnd) {
+      return true;
+    }
+    // find first non-dot, non-[]*.
+    // if none exists && lengthMinimum is still valid, string matches
+    let i = patternArrayStart;
+    let needle = null;
+    let dotCount = 0;
+    while (i <= patternArrayEnd) {
+      if (patternArray[i][1] !== "*") {
+        if (patternArray[i] === ".") {
+          dotCount++;
+        } else {
+          needle = patternArray[i];
+          break;
+        }
+      }
+      i++;
+    }
+
+    if (needle === null) {
+      // the only fixed-length elements are dots
+      // if # dots > unread string length, string doesn't match
+      // otherwise, it does
+      return dotCount > stringEnd + 1 - stringStart ? false : true;
+    }
+
+    // look for the needle
+    while (
+      stringStart <= stringEnd &&
+      string[stringStart + dotCount] !== needle
+    ) {
       stringStart++;
     }
     if (stringStart > stringEnd) {
-      // if not found and end of string
+      // if needle not found by end of string string doesn't match
       return false;
     }
-    // consider relevent variable-length and all-dot search elements resolved
-    patternArrayStart = i;
+    // resolve the .* element
+    patternArrayStart++;
 
-    result = recurse(
-      lengthMinimum,
-      stringStart + totalDots - leadingDots,
+    let result = recurse(
+      stringStart,
       stringEnd,
       patternArrayStart,
       patternArrayEnd
@@ -665,11 +723,10 @@ let isMatch = (string, pattern) => {
         stringStart++;
       }
       if (stringStart > stringEnd) {
-        return null;
+        return null; // should this be false?
       }
       result = recurse(
-        lengthMinimum,
-        stringStart - leadingDots,
+        stringStart,
         stringEnd,
         patternArrayStart,
         patternArrayEnd
@@ -677,9 +734,112 @@ let isMatch = (string, pattern) => {
     }
     return result;
   };
-  // END OF RECURSIVE FUNCTION
 
-  let result = recurse(lengthMinimum); // top level recurse call
+  let recurse = (
+    stringStart,
+    stringEnd,
+    patternArrayStart,
+    patternArrayEnd
+  ) => {
+    if (patternArrayStart > patternArrayEnd && stringStart > stringEnd) {
+      return true;
+    }
+
+    leanPatternArrayForward(patternArrayStart, patternArrayEnd);
+
+    if (
+      // first element in pattern element array is fixed-length
+      patternArrayStart <= patternArrayEnd &&
+      patternArray[patternArrayStart][1] !== "*"
+    ) {
+      return fixedLengthFirst(
+        stringStart,
+        stringEnd,
+        patternArrayStart,
+        patternArrayEnd
+      );
+    }
+
+    leanPatternArrayBack(patternArrayStart, patternArrayEnd);
+
+    if (
+      // last element in pattern element array is fixed-length
+      patternArrayStart <= patternArrayEnd &&
+      patternArray[patternArrayEnd][1] !== "*"
+    ) {
+      return fixedLengthLast(
+        stringStart,
+        stringEnd,
+        patternArrayStart,
+        patternArrayEnd
+      );
+    }
+
+    if (
+      // first element in pattern element array is known-char, variable-length
+      patternArrayStart <= patternArrayEnd &&
+      patternArray[patternArrayStart][0] !== "." &&
+      stringStart <= stringEnd
+    ) {
+      return variableLengthCharFirst(
+        stringStart,
+        stringEnd,
+        patternArrayStart,
+        patternArrayEnd
+      );
+    }
+
+    if (
+      // last element in pattern element array is known-char, variable-length
+      patternArrayStart <= patternArrayEnd &&
+      patternArray[patternArrayEnd][0] !== "." &&
+      stringStart <= stringEnd
+    ) {
+      return variableLengthCharLast(
+        stringStart,
+        stringEnd,
+        patternArrayStart,
+        patternArrayEnd
+      );
+    }
+
+    if (patternArrayStart <= patternArrayEnd) {
+      // first and last element (possibly same element) are both .*
+      return variableLengthDots(
+        stringStart,
+        stringEnd,
+        patternArrayStart,
+        patternArrayEnd
+      );
+    }
+  };
+
+  // MAIN EXECUTION START
+  let stringStart = 0;
+  let stringEnd = string.length - 1;
+  let patternArrayStart = 0;
+  buildPatternArray();
+  let patternArrayEnd = patternArray.length - 1;
+  let rawArrayLength = patternArray.length + 1;
+  while (patternArray.length < rawArrayLength) {
+    rawArrayLength = patternArray.length;
+    leanPatternArrayForward(patternArrayStart, patternArrayEnd);
+    optimizePatternArray();
+    leanDotStarsBack();
+    optimizePatternArray();
+    leanPatternArrayBack(patternArrayStart, patternArrayEnd);
+    optimizePatternArray();
+    leanDotStarsForward();
+    optimizePatternArray();
+  }
+
+  // top level recurse call
+  let result = recurse(
+    stringStart,
+    stringEnd,
+    patternArrayStart,
+    patternArrayEnd
+  );
 
   return result === true ? true : false; // null and false both return false
 };

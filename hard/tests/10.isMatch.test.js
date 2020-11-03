@@ -254,12 +254,60 @@ describe(`isMatch("ab*a.*ba*ca.*b")`, () => {
 
 describe(`isMatch("a*.*b.c.*b")`, () => {
   test(`isMatch("bicb", "a*.*b.c.*b") should be true`, () => {
-    expect(isMatch("bikibicb", "a*.*b.c.*b")).toBe(true);
+    expect(isMatch("bicb", "a*.*b.c.*b")).toBe(true);
   });
 });
 
 describe(`isMatch("a*..b.*")`, () => {
   test(`isMatch("zbsoijfoie", "a*..b.*") should be false`, () => {
     expect(isMatch("zbsoijfoie", "a*..b.*")).toBe(false);
+  });
+});
+
+describe(`isMatch("c*..b*a*a.*a..*c")`, () => {
+  test(`isMatch("baabbbaccbccacacc", "c*..b*a*a.*a..*c") should be true`, () => {
+    expect(isMatch("baabbbaccbccacacc", "c*..b*a*a.*a..*c")).toBe(true);
+  });
+});
+
+describe(`isMatch(".*c*a*b.*a*ba*bb*")`, () => {
+  test(`isMatch("aabccbcbacabaab", ".*c*a*b.*a*ba*bb*") should be true`, () => {
+    expect(isMatch("aabccbcbacabaab", ".*c*a*b.*a*ba*bb*")).toBe(true);
+  });
+});
+
+describe(`isMatch("a*.*b*.*a*aa*a*")`, () => {
+  test(`isMatch("acaabbaccbbacaabbbb", "a*.*b*.*a*aa*a*") should be false`, () => {
+    expect(isMatch("acaabbaccbbacaabbbb", "a*.*b*.*a*aa*a*")).toBe(false);
+  });
+});
+
+describe(`isMatch("ac*.a*ac*.*ab*b*ac")`, () => {
+  test(`isMatch("acbbcbcbcbaaacaac", "ac*.a*ac*.*ab*b*ac") should be false`, () => {
+    expect(isMatch("acbbcbcbcbaaacaac", "ac*.a*ac*.*ab*b*ac")).toBe(false);
+  });
+});
+
+describe(`isMatch(".*..a*")`, () => {
+  test(`isMatch("a", ".*..a*") should be false`, () => {
+    expect(isMatch("a", ".*..a*")).toBe(false);
+  });
+});
+
+describe(`isMatch("a*.*ba.*c*..a*.a*.")`, () => {
+  test(`isMatch("abbaaaabaabbcba", "a*.*ba.*c*..a*.a*.") should be true`, () => {
+    expect(isMatch("abbaaaabaabbcba", "a*.*ba.*c*..a*.a*.")).toBe(true);
+  });
+});
+
+describe(`isMatch("b*c*c*.*.*bba*b*")`, () => {
+  test(`isMatch("baaabaacaacaacbca", "b*c*c*.*.*bba*b*") should be false`, () => {
+    expect(isMatch("baaabaacaacaacbca", "b*c*c*.*.*bba*b*")).toBe(false);
+  });
+});
+
+describe(`isMatch("ab*.*c*b*ac*c*c*.")`, () => {
+  test(`isMatch("acbccccacccaabcc", "ab*.*c*b*ac*c*c*.") should be false`, () => {
+    expect(isMatch("acbccccacccaabcc", "ab*.*c*b*ac*c*c*.")).toBe(false);
   });
 });
