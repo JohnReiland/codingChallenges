@@ -30,28 +30,91 @@ The total number of calls to queryRange in a single test case is at most 5000.
 The total number of calls to removeRange in a single test case is at most 1000.
 */
 
-var RangeModule = function () {};
-
 /*
-@param {number} left 
-@param {number} right
-@return {void}
-*/
-RangeModule.prototype.addRange = function (left, right) {};
+Initial thoughts:
+Very interesting. A significant amount of time might need to be spent just
+deciding on the best data structure to use.
 
-/*
-@param {number} left 
-@param {number} right
-@return {boolean}
-*/
-RangeModule.prototype.queryRange = function (left, right) {};
+Some aspects from different data structures that seem well suited:
+One feature of a doubly-linked list is that, when you adjust two nodes to point
+at each other, all nodes between them are removed for free. They stop becoming
+accessable, and are deleted automatically by garbage collection. Imagine having
+a numbner of nodes in a doubly-linked list, keeping track of the borders of
+added or removed ranges, and then calling an addRange function that covers most
+of them. It would be ideal to remove the ranges eclipsed by the new addRange in
+constant time.
 
-/*
-@param {number} left 
-@param {number} right
-@return {void}
+One problem with using a doubly-linked list, however, is finding out how a new
+addRange or removeRange call interacts with the existing set of ranges. If a new
+range is value x, and there is no range bordering x, how can the node nearest to
+x be quickly found? A binary search?
+
+Doing research I've discovered a data structure that's new to me, the interval
+tree. This is perfect. Each node keeps track of a range. New nodes are able to
+find their proper place in the tree in log(n) time, and removing a node removes
+the entire subtree beneath it in constant time. Solving the challenge will
+require a familiarity with interval trees I don't yet have, but I think I'm
+ready to start playing with it and learning.
 */
-RangeModule.prototype.removeRange = function (left, right) {};
+
+function Node(from, to) {
+  this.from = from;
+  this.to = to;
+  this.left = null;
+  this.right = null;
+}
+
+function RangeModule() {
+  this.root = null;
+}
+
+RangeModule.prototype.addRange = function (left, right) {
+  /*
+  if this.root === null
+    this.root = new Node(left, right)
+  else
+    integrate new range into tree, starting at root
+
+
+  Possible scenarios:
+  new range overlaps existing range(s)
+    modify existing range(s) to max size of all
+
+  new range doesn't overlap existing range
+    insert new range into interval tree
+  */
+  return null;
+};
+
+RangeModule.prototype.queryRange = function (left, right) {
+  /*
+    let currentNode = this.root
+    while currentNode !== null
+      search for data to answer query
+  */
+};
+
+RangeModule.prototype.removeRange = function (left, right) {
+  /*
+  if this.root !== null
+    integrate new range into tree, starting at root
+
+  Possible scenarios:
+  new range overlaps existing range(s)
+    modify existing range to min size, or delete range, or modify and create new
+
+  new range doesn't overlap existing range
+    do nothing
+  */
+  return null;
+};
+
+RangeModule.prototype.balanceTree = function () {
+  return null;
+};
+/*
+
+*/
 
 /** 
 Your RangeModule object will be instantiated and called as such:
