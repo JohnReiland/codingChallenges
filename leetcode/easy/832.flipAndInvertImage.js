@@ -25,6 +25,14 @@ Notes:
 0 <= A[i][j] <= 1
 */
 
-let flipAndInvertImage = (A) => {};
+let flipAndInvertImage = (A) => {
+  for (let i = 0; i < A.length; i++) {
+    for (let j = 0; j < A[i].length; j++) {
+      A[i][j] = A[i][j] === 1 ? 0 : 1;
+    }
+    A[i].reverse();
+  }
+  return A;
+};
 
-module.exports = {};
+module.exports = { flipAndInvertImage };
