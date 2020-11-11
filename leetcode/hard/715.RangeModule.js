@@ -55,11 +55,17 @@ find their proper place in the tree in log(n) time, and removing a node removes
 the entire subtree beneath it in constant time. Solving the challenge will
 require a familiarity with interval trees I don't yet have, but I think I'm
 ready to start playing with it and learning.
+
+Add: n log(n)
+Delete: n log(n)
+Query: n log(n)
 */
 
-function Node(from, to) {
-  this.from = from;
-  this.to = to;
+function Node(lower, upper) {
+  this.lower = lower;
+  this.upper = upper;
+  this.min = lower;
+  this.max = upper;
   this.left = null;
   this.right = null;
 }
@@ -68,25 +74,48 @@ function RangeModule() {
   this.root = null;
 }
 
-RangeModule.prototype.addRange = function (left, right) {
-  /*
-  if this.root === null
-    this.root = new Node(left, right)
-  else
-    integrate new range into tree, starting at root
+RangeModule.prototype.addRange = function (lower, upper) {
+  let newNode = new Node(lower, upper);
+  if (this.root === null) {
+    this.root = newNode;
+    return null;
+  }
+  let currentNode = this.root;
+  while (true) {
+    // find correct place for lower value
+    if (lower < this.lower) {
+      if (this.left === null) {
+        this.left = newNode;
+        // TODO: find correct place for upper value
+      }
+      currentNode = this.left;
+    } else if (lower > this.lower) {
+      if (this.right === null) {
+        this.right = newNode;
+        // TODO: find correct place for upper value
+      }
+      currentNode = this.right;
+    } else {
+      // collision, kind of
+      // TODO: find correct place for upper value
+    }
+  }
 
-
-  Possible scenarios:
-  new range overlaps existing range(s)
-    modify existing range(s) to max size of all
-
-  new range doesn't overlap existing range
-    insert new range into interval tree
-  */
   return null;
 };
+/*
+Possible scenarios:
+new range overlaps (partially or totally) existing range(s)
+  identify node overlapping lower bound, if any
+  identify node overlapping upper bound, if any
+  modify bounds of newNode (and idenitified others, if any) to max size of all
+  delete any obsolete nodes (automatic)
 
-RangeModule.prototype.queryRange = function (left, right) {
+new range doesn't overlap existing range
+  insert new range into interval tree
+*/
+
+RangeModule.prototype.queryRange = function (low, high) {
   /*
     let currentNode = this.root
     while currentNode !== null
@@ -94,7 +123,7 @@ RangeModule.prototype.queryRange = function (left, right) {
   */
 };
 
-RangeModule.prototype.removeRange = function (left, right) {
+RangeModule.prototype.removeRange = function (low, high) {
   /*
   if this.root !== null
     integrate new range into tree, starting at root
