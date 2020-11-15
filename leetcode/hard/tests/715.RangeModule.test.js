@@ -1,4 +1,4 @@
-const { RangeModule } = require("../715.RangeModule");
+const { Node, RangeModule } = require("../715.RangeModule");
 
 describe.skip("functionName()", () => {
   test("functionName(value)", () => {

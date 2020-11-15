@@ -30,6 +30,8 @@ The total number of calls to queryRange in a single test case is at most 5000.
 The total number of calls to removeRange in a single test case is at most 1000.
 */
 
+//                 *                *                *
+
 /*
 Initial thoughts:
 Very interesting. A significant amount of time might need to be spent just
@@ -38,7 +40,7 @@ deciding on the best data structure to use.
 Some aspects from different data structures that seem well suited:
 One feature of a doubly-linked list is that, when you adjust two nodes to point
 at each other, all nodes between them are removed for free. They stop becoming
-accessable, and are deleted automatically by garbage collection. Imagine having
+accessible, and are deleted automatically by garbage collection. Imagine having
 a numbner of nodes in a doubly-linked list, keeping track of the borders of
 added or removed ranges, and then calling an addRange function that covers most
 of them. It would be ideal to remove the ranges eclipsed by the new addRange in
@@ -47,110 +49,198 @@ constant time.
 One problem with using a doubly-linked list, however, is finding out how a new
 addRange or removeRange call interacts with the existing set of ranges. If a new
 range is value x, and there is no range bordering x, how can the node nearest to
-x be quickly found? A binary search?
+x be quickly found?
 
 Doing research I've discovered a data structure that's new to me, the interval
-tree. This is perfect. Each node keeps track of a range. New nodes are able to
-find their proper place in the tree in log(n) time, and removing a node removes
-the entire subtree beneath it in constant time. Solving the challenge will
-require a familiarity with interval trees I don't yet have, but I think I'm
-ready to start playing with it and learning.
+tree. This is perfect. It's like a binary search tree, but ach node keeps track
+of a range. New nodes are able to find their proper place in the tree in log(n)
+time, and removing a node removes the entire subtree beneath it in constant
+time. Solving the challenge will require a familiarity with interval trees I
+don't yet have, but I think I'm ready to start playing with it and learning.
 
-Add: n log(n)
-Delete: n log(n)
-Query: n log(n)
+Add: log(n)
+Delete: log(n)
+Query: log(n)
 */
 
-function Node(lower, upper) {
-  this.lower = lower;
-  this.upper = upper;
-  this.min = lower;
-  this.max = upper;
+function Node(lo, hi) {
+  this.lo = lo;
+  this.hi = hi;
+  this.height = 1;
   this.left = null;
   this.right = null;
 }
+
+Node.addRange = function (currentNode, lo, hi) {
+  if (hi < currentNode.lo) {
+    // new range is entirely below range of currentNode, recurse left
+    currentNode.left =
+      currentNode.left === null
+        ? new Node(lo, hi)
+        : Node.addRange(currentNode.left, lo, hi);
+  } else if (lo > currentNode.hi) {
+    // new range is entirely above range of currentNode, recurse right
+    currentNode.right =
+      currentNode.right === null
+        ? new Node(lo, hi)
+        : Node.addRange(currentNode.right, lo, hi);
+  } else {
+    // new range overlaps with range of currentNode**
+    if (lo < currentNode.lo) {
+      // find node in left subtree that intersects lo, if any
+      currentNode.left =
+        currentNode.left === null ? null : Node.search(currentNode.left, lo);
+      // set currentNode.lo currentNode.left.lo, if appropriate
+      currentNode.lo =
+        currentNode.left && currentNode.left.hi >= lo
+          ? currentNode.left.lo
+          : lo;
+      // absorb currentNode.left, if appropriate
+      currentNode.left =
+        currentNode.left && currentNode.left.hi >= lo
+          ? currentNode.left.left
+          : currentNode.left;
+    }
+    if (hi > currentNode.hi) {
+      // find node in left subtree that intersects hi, if any
+      currentNode.right =
+        currentNode.right === null ? null : Node.search(currentNode.right, hi);
+      // set currentNode.hi currentNode.left.hi, if appropriate
+      currentNode.hi =
+        currentNode.right && currentNode.right.lo <= hi
+          ? currentNode.right.hi
+          : hi;
+      // absorb currentNode.left, if appropriate
+      currentNode.right =
+        currentNode.right && currentNode.right.lo <= hi
+          ? currentNode.right.right
+          : currentNode.right;
+    }
+  }
+  currentNode = Node.balanceTree(currentNode);
+  currentNode.height = Node.getHeight(currentNode);
+  return currentNode;
+};
+
+Node.search = function (currentNode, value) {
+  if (value < currentNode.lo) {
+    if (currentNode.left === null) {
+      return currentNode;
+    }
+    currentNode.left = Node.search(currentNode.left, value);
+    return currentNode.left.hi > value
+      ? Node.rotate(currentNode, "RR")
+      : currentNode;
+  }
+  if (value > currentNode.hi) {
+    if (currentNode.right === null) {
+      return currentNode;
+    }
+    currentNode.right = Node.search(currentNode.right, value);
+    return currentNode.right.lo < value
+      ? Node.rotate(currentNode, "LL")
+      : currentNode;
+  }
+  return currentNode;
+};
+
+Node.getHeight = function (currentNode) {
+  return (
+    Math.max(
+      currentNode.left ? currentNode.left.height : 0,
+      currentNode.right ? currentNode.right.height : 0
+    ) + 1
+  );
+};
+
+Node.getBalance = function (currentNode) {
+  return (
+    (currentNode.left ? currentNode.left.height : 0) -
+    (currentNode.right ? currentNode.right.height : 0)
+  );
+};
+
+Node.balanceTree = function (currentNode) {
+  let balance = Node.getBalance(currentNode);
+  if (balance < -1) {
+    if (Node.getBalance(currentNode.right) > 0) {
+      return Node.rotate(currentNode, "LR");
+    } else {
+      return Node.rotate(currentNode, "LL");
+    }
+  }
+  if (balance > 1) {
+    if (Node.getBalance(currentNode.left < 0)) {
+      return Node.rotate(currentNode, "RL");
+    } else {
+      return Node.rotate(currentNode, "RR");
+    }
+  }
+  return currentNode;
+};
+
+Node.rotate = function (currentNode, type) {
+  switch (type) {
+    case "LL": {
+      let rightNode = currentNode.right;
+      rightNode.left = currentNode;
+      currentNode.right = null;
+      currentNode.height = Node.getHeight(currentNode);
+      rightNode.height = Node.getHeight(rightNode);
+      return rightNode;
+    }
+    case "LR": {
+      let rightNode = currentNode.right;
+      let leftNode = rightNode.left;
+      rightNode.left = leftNode.right;
+      currentNode.right = leftNode.left;
+      leftNode.left = currentNode;
+      leftNode.right = rightNode;
+      currentNode.height = Node.getHeight(currentNode);
+      rightNode.height = Node.getHeight(rightNode);
+      leftNode.height = Node.getHeight(leftNode);
+      return leftNode;
+    }
+    case "RL": {
+      let leftNode = currentNode.left;
+      let rightNode = leftNode.right;
+      leftNode.right = rightNode.left;
+      currentNode.left = rightNode.right;
+      rightNode.right = currentNode;
+      rightNode.left = leftNode;
+      currentNode.height = Node.getHeight(currentNode);
+      leftNode.height = Node.getHeight(leftNode);
+      rightNode.height = Node.getHeight(rightNode);
+      return rightNode;
+    }
+    case "RR": {
+      let leftNode = currentNode.left;
+      leftNode.right = currentNode;
+      currentNode.left = null;
+      currentNode.height = Node.getHeight(currentNode);
+      leftNode.height = Node.getHeight(leftNode);
+      return leftNode;
+    }
+    default: {
+      return;
+    }
+  }
+};
 
 function RangeModule() {
   this.root = null;
 }
 
-RangeModule.prototype.addRange = function (lower, upper) {
-  let newNode = new Node(lower, upper);
-  if (this.root === null) {
-    this.root = newNode;
-    return null;
-  }
-  let currentNode = this.root;
-  while (true) {
-    // find correct place for lower value
-    if (lower < this.lower) {
-      if (this.left === null) {
-        this.left = newNode;
-        // TODO: find correct place for upper value
-      }
-      currentNode = this.left;
-    } else if (lower > this.lower) {
-      if (this.right === null) {
-        this.right = newNode;
-        // TODO: find correct place for upper value
-      }
-      currentNode = this.right;
-    } else {
-      // collision, kind of
-      // TODO: find correct place for upper value
-    }
-  }
-
-  return null;
-};
-/*
-Possible scenarios:
-new range overlaps (partially or totally) existing range(s)
-  identify node overlapping lower bound, if any
-  identify node overlapping upper bound, if any
-  modify bounds of newNode (and idenitified others, if any) to max size of all
-  delete any obsolete nodes (automatic)
-
-new range doesn't overlap existing range
-  insert new range into interval tree
-*/
-
-RangeModule.prototype.queryRange = function (low, high) {
-  /*
-    let currentNode = this.root
-    while currentNode !== null
-      search for data to answer query
-  */
-};
-
-RangeModule.prototype.removeRange = function (low, high) {
-  /*
-  if this.root !== null
-    integrate new range into tree, starting at root
-
-  Possible scenarios:
-  new range overlaps existing range(s)
-    modify existing range to min size, or delete range, or modify and create new
-
-  new range doesn't overlap existing range
-    do nothing
-  */
+RangeModule.prototype.addRange = function (lo, hi) {
+  this.root =
+    this.root === null ? new Node(lo, hi) : Node.addRange(this.root, lo, hi);
   return null;
 };
 
-RangeModule.prototype.balanceTree = function () {
+RangeModule.prototype.queryRange = (lo, hi) => {};
+
+RangeModule.prototype.removeRange = (lo, hi) => {
   return null;
 };
-/*
 
-*/
-
-/** 
-Your RangeModule object will be instantiated and called as such:
-var obj = new RangeModule()
-obj.addRange(left,right)
-var param_2 = obj.queryRange(left,right)
-obj.removeRange(left,right)
-*/
-
-module.exports = { RangeModule };
+module.exports = { Node, RangeModule };
