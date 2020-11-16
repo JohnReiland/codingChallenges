@@ -1,7 +1,11 @@
-const {poorPigs} = require('../458.poorPigs');
+const { poorPigs } = require("../458.poorPigs");
 
-describe.skip('poorPigs()', () => {
-  test('poorPigs(buckets, minutesToDie, minutesToTest) should be result', () => {
-    expect(poorPigs(buckets, minutesToDie, minutesToTest)).toBe(result);
-  }
-})
+describe("poorPigs()", () => {
+  test("poorPigs(1000, 15, 60) should be 5", () => {
+    expect(poorPigs(1000, 15, 60)).toBe(5);
+  });
+
+  test("poorPigs(10000, 15, 60) should be 5", () => {
+    expect(poorPigs(1000, 15, 60)).toBe(5);
+  });
+});

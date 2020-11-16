@@ -23,6 +23,22 @@ Any given bucket can be sampled an infinite number of times (by an unlimited
 number of pigs).
 */
 
-let poorPigs = (buckets, minutesToDie, minutesToTest) => {};
+/*
+I feel like I stumbled upon a solution for this in a very blind way. I kind of
+just trusted my intuition and starting playing around with base number
+converters in online browsers, looking for a pattern. I found one between the
+number of buckets (given in base 10), and the number of digits in that same
+number, converted to a different base. The convert-to base being 1, plus the
+floor of the minutesToTest divided by minutesToDie. The only case where this
+doesn't work is when buckets === 1, as that's always 0, regardless of any other
+input.
+*/
+
+let poorPigs = (buckets, minutesToDie, minutesToTest) => {
+  return buckets === 1
+    ? 0
+    : (buckets - 1).toString(Math.floor(minutesToTest / minutesToDie) + 1)
+        .length;
+};
 
 module.exports = { poorPigs };
