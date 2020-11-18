@@ -21,4 +21,24 @@ intervals[i].length == 2
 0 <= starti <= endi <= 104
 */
 
-const merge = (intervals) => {};
+const merge = (intervals) => {
+  const sorted = intervals.sort(function (a, b) {
+    return a[0] - b[0];
+  });
+  const merged = [];
+  let currentInterval = sorted[0];
+  for (let i = 1; i < sorted.length; i++) {
+    if (sorted[i][0] <= currentInterval[1]) {
+      currentInterval[1] = Math.max(sorted[i][1], currentInterval[1]);
+    } else {
+      merged.push(currentInterval);
+      currentInterval = sorted[i];
+    }
+  }
+  if (!merged.length || currentInterval[1] !== merged[merged.length - 1][1]) {
+    merged.push(currentInterval);
+  }
+  return merged;
+};
+
+module.exports = { merge };
