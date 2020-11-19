@@ -37,6 +37,54 @@ s is guaranteed to be a valid input.
 All the integers in s are in the range [1, 300].
 */
 
-const decodeString = (input) => {};
+/*
+Example 2 is the really interesting one, as it makes plain the way encoded
+strings can be nested inside other encoded strings. This problem is likely
+solved easiest using recusrion.
+
+Because I don't want to compare every char to all numbers or all letters, a
+look-ahead approach watching for an open square bracket is best. As soon as one
+is recognized, any unencoded string is added to the result, and then each char
+is examined only to find a valid bracket closure. The possibility of nested
+encoded strings means each char will have to be compared to both open bracket
+and close bracket, until a valid input is found.
+*/
+
+const decodeString = (input) => {
+  let result = "";
+  let substring = "";
+  for (let i = 0; i < input.length; i++) {
+    if (!isNaN(parseInt(input[i], 10))) {
+      result += substring;
+      substring = "";
+      while (input[i] !== "[") {
+        substring += input[i];
+        i++;
+      }
+      let repeat = parseInt(substring, 10);
+      let bracketCount = 1;
+      substring = "";
+      while (bracketCount > 0) {
+        i++;
+        if (input[i] === "[" || input[i] === "]") {
+          bracketCount = input[i] === "[" ? bracketCount + 1 : bracketCount - 1;
+        }
+        substring = bracketCount > 0 ? substring + input[i] : substring;
+      }
+      let decoded = decodeString(substring);
+      substring = "";
+      while (repeat > 0) {
+        substring += decoded;
+        repeat--;
+      }
+      result += substring;
+      substring = "";
+    } else {
+      substring += input[i];
+    }
+  }
+  result += substring;
+  return result;
+};
 
 module.exports = { decodeString };
