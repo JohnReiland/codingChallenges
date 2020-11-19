@@ -1,4 +1,4 @@
-const { deckRevealedIncreasing } = require("../950.deackRevealedIncreasing");
+const { deckRevealedIncreasing } = require("../950.deckRevealedIncreasing");
 
 describe("deckRevealedIncreasing()", () => {
   test("deckRevealedIncreasing([0,1,2,3,4,5])", () => {
