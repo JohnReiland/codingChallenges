@@ -17,8 +17,8 @@ l and r, representing the m range queries, where the ith query is the range
 [l[i], r[i]]. All the arrays are 0-indexed.
 
 Return a list of boolean elements answer, where answer[i] is true if the
-subarray array[l[i]], array[l[i]+1], ... , array[r[i]] can be rearranged to form an
-arithmetic sequence, and false otherwise.
+subarray array[l[i]], array[l[i]+1], ... , array[r[i]] can be rearranged to form
+an arithmetic sequence, and false otherwise.
 
 Example 1:
 Input: array = [4,6,5,9,3,7], l = [0,0,2], r = [2,3,5]
@@ -47,6 +47,26 @@ m == r.length
 -10^5 <= array[i] <= 10^5
 */
 
-const checkArithmeticSubarrays = function (array, l, r) {};
+const checkArithmeticSubarrays = (array, l, r) => {
+  const checkSlice = (slice) => {
+    slice.sort((a, b) => a - b);
+
+    const difference = slice[1] - slice[0];
+    for (let i = 1; i < slice.length - 1; i++) {
+      if (difference !== slice[i + 1] - slice[i]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const result = [];
+
+  for (let i = 0; i < l.length; i++) {
+    result.push(checkSlice(array.slice(l[i], r[i] + 1)));
+  }
+
+  return result;
+};
 
 module.exports = { checkArithmeticSubarrays };
