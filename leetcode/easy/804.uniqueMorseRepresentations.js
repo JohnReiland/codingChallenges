@@ -60,6 +60,21 @@ const table = {
   z: "--..",
 };
 
-const uniqueMorseRepresentations = (words) => {};
+const transform = (word) => {
+  let result = "";
+  for (let i = 0; i < word.length; i++) {
+    result += table[word[i]];
+  }
+  return result;
+};
 
-module.exports = { uniqueMorseRepresentations };
+const uniqueMorseRepresentations = (words) => {
+  const result = new Set();
+  for (let i = 0; i < words.length; i++) {
+    result.add(transform(words[i]));
+  }
+
+  return result.size;
+};
+
+module.exports = { transform, uniqueMorseRepresentations };
