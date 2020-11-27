@@ -53,31 +53,30 @@ const longestSubstring = (string, k) => {
       }
     }
     if (valid.size === Object.keys(counts).length) {
-      return string.length;
-    }
-    let substringArray = [];
-    let currentSubstring = "";
-    for (let i = 0; i < string.length; i++) {
-      if (valid.has(string[i])) {
-        currentSubstring += string[i];
-      } else {
-        if (currentSubstring.length >= k) {
-          substringArray.push(currentSubstring);
+      result = string.length;
+    } else {
+      let substringArray = [];
+      let currentSubstring = "";
+      for (let i = 0; i < string.length; i++) {
+        if (valid.has(string[i])) {
+          currentSubstring += string[i];
+        } else {
+          if (currentSubstring.length >= k) {
+            substringArray.push(currentSubstring);
+          }
+          currentSubstring = "";
         }
-        currentSubstring = "";
       }
-    }
-    if (currentSubstring.length >= k) {
-      substringArray.push(currentSubstring);
-    }
+      if (currentSubstring.length >= k) {
+        substringArray.push(currentSubstring);
+      }
 
-    if (substringArray.length) {
-      let validSubstringLengths = substringArray.map((string) =>
-        longestSubstring(string, k)
-      );
-      result = validSubstringLengths.reduce(function (a, b) {
-        return Math.max(a, b);
-      });
+      if (substringArray.length) {
+        let validSubstringLengths = substringArray.map((string) =>
+          longestSubstring(string, k)
+        );
+        result = Math.max(...validSubstringLengths);
+      }
     }
   }
   return result;
