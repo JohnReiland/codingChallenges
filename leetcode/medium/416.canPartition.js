@@ -78,7 +78,11 @@ const sumArray = (nums) => {
 };
 */
 
+/*
 const canMake = (nums, target) => {
+  if (target === 0) {
+    return true;
+  }
   let made = new Set();
   made.add(0);
   for (let i = 0; i < nums.length; i++) {
@@ -95,7 +99,9 @@ const canMake = (nums, target) => {
   }
   return false;
 };
+*/
 
+/*
 const canPartition = (nums) => {
   const sum = nums.reduce((acc, cur) => acc + cur);
   if (sum % 2 === 0) {
@@ -118,4 +124,159 @@ const canPartition = (nums) => {
   }
   return false;
 };
-module.exports = { canMake, canPartition };
+*/
+/*
+function Node(val) {
+  this.val = val;
+  this.left = null;
+  this.right = null;
+}
+
+Node.prototype.add = function (val) {
+  if (val < this.val) {
+    this.left = this.left ? this.left.add(val) : new Node(val);
+  } else if (val > this.val) {
+    this.right = this.right ? this.right.add(val) : new Node(val);
+  }
+  return this;
+};
+
+Node.prototype.output = function (array) {
+  if (this.left) {
+    this.left.output(array);
+  }
+  array.push(this.val);
+  if (this.right) {
+    this.right.output(array);
+  }
+  return array;
+};
+*/
+
+/*
+function BinarySearchTree() {
+  this.root = null;
+}
+
+BinarySearchTree.prototype.add = function (val) {
+  this.root = this.root === null ? new Node(val) : this.root.add(val);
+};
+
+BinarySearchTree.prototype.output = function () {
+  let result = [];
+  return this.root.output(result);
+};
+*/
+/*
+class Node {
+  constructor(val) {
+    this.val = val;
+    this.left = null;
+    this.right = null;
+  }
+
+  add(val) {
+    if (val < this.val) {
+      this.left = this.left ? this.left.add(val) : new Node(val);
+    } else if (val > this.val) {
+      this.right = this.right ? this.right.add(val) : new Node(val);
+    }
+    return this;
+  }
+
+  output(array) {
+    if (this.left) {
+      this.left.output(array);
+    }
+    array.push(this.val);
+    if (this.right) {
+      this.right.output(array);
+    }
+    return array;
+  }
+}
+
+class BinarySearchTree {
+  constructor() {
+    this.root = null;
+  }
+
+  add(val) {
+    this.root = this.root === null ? new Node(val) : this.root.add(val);
+  }
+
+  output() {
+    let result = [];
+    return this.root.output(result);
+  }
+}
+
+const canPartition = (nums) => {
+  const sum = nums.reduce((acc, cur) => acc + cur);
+  if (sum % 2 === 0) {
+    const half = sum / 2;
+    let made = new BinarySearchTree();
+    if (nums[0] === half) {
+      return true;
+    }
+    made.add(nums[0]);
+    for (let i = 1; i < nums.length; i++) {
+      let madeArray = made.output();
+      for (let j = 0; j < madeArray.length; j++) {
+        let next = madeArray[j] + nums[i];
+        if (next === half) {
+          return true;
+        } else if (next < half) {
+          made.add(next);
+        } else {
+          break;
+        }
+      }
+    }
+  }
+  return false;
+};
+*/
+
+const canPartition = (nums) => {
+  const sum = nums.reduce((acc, cur) => acc + cur);
+  if (sum % 2 === 0) {
+    nums.sort((a, b) => a - b);
+    const half = sum / 2;
+    let madeSet = new Set();
+    madeSet.add(0);
+    for (let i = 0; i < nums.length; i++) {
+      let madeArray = [];
+      for (let item of madeSet) madeArray.push(item);
+      let nextArray = [];
+      for (let j = 0; j < madeArray.length; j++) {
+        let next = madeArray[j] + nums[i];
+        if (next === half) {
+          return true;
+        } else if (next > half) {
+          return false;
+        } else if (!madeSet.has(next)) {
+          nextArray.push(next);
+        }
+      }
+      let nextSet = new Set();
+      for (
+        let k = 0, m = 0, n = 0;
+        m < madeArray.length || n < nextArray.length;
+        k++
+      ) {
+        if (!nextArray[n] || madeArray[m] < nextArray[n]) {
+          nextSet.add(madeArray[m]);
+          m++;
+        } else if (!madeArray[m] || nextArray[n] < madeArray[m]) {
+          nextSet.add(nextArray[n]);
+          n++;
+        }
+      }
+      madeSet = nextSet;
+    }
+  }
+  return false;
+};
+
+module.exports = { canPartition };
