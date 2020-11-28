@@ -1,12 +1,16 @@
-const { sumArray, canPartition } = require("../416.canPartition");
+const { canMake, canPartition } = require("../416.canPartition");
 
-describe("sumArray()", () => {
-  test("sumArray[1, 2, 3, 4] should be 10", () => {
-    expect(sumArray([1, 2, 3, 4])).toBe(10);
+describe("canMake()", () => {
+  test("canMake([1, 2, 3, 4, 5, 6, 7], 5) should be true", () => {
+    expect(canMake([1, 2, 3, 4, 5, 6, 7], 5)).toBe(true);
   });
 
-  test("sumArray[] should be 0", () => {
-    expect(sumArray([])).toBe(0);
+  test("canMake([3, 5, 6, 9], 15) should be true", () => {
+    expect(canMake([3, 5, 6, 9], 15)).toBe(true);
+  });
+
+  test.skip("canMake(array, target) should be result", () => {
+    expect(canMake(array, target)).toBe(result);
   });
 });
 
@@ -17,6 +21,10 @@ describe("canPartition()", () => {
 
   test("canPartition([5, 5, 15, 24, 24, 27]) should be false", () => {
     expect(canPartition([5, 5, 15, 24, 24, 27])).toBe(false);
+  });
+
+  test("canPartition([1, 5, 11, 5]) should be true", () => {
+    expect(canPartition([1, 5, 11, 5])).toBe(true);
   });
 
   test("canPartition([1, 5, 11, 5]) should be true", () => {

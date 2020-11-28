@@ -57,6 +57,7 @@ the array is doubly even, the number of odd numbers must also be doubly even.
 If it is singly even, must the number of odd numbers be single even?
 
 50 is singly even. Must the number of odd numbers, divided by two, be odd? YES.
+40 is doubly even. Must the number of odd numbers, divided by two, be even? NO. 
 */
 
 /*
@@ -71,111 +72,50 @@ const countOdd = (nums) => {
 };
 */
 
+/*
 const sumArray = (nums) => {
   return nums.length ? nums.reduce((acc, cur) => acc + cur) : 0;
 };
-
-const combinations = (length, isEven) => {
-  /*
-(3, true)
-[
-  [],
-  [0, 1],
-  [0, 2],
-  [1, 2],
-]
-
-(3, false)
-[
-  [0],
-  [1],
-  [2],
-  [0, 1, 2],
-]
-
-(3, null)
-[
-  [],
-  [0],
-  [1],
-  [2],
-  [0, 1],
-  [0, 2],
-  [1, 2],
-  [0, 1, 2],
-]
-
-(4, true)
-[
-  [],
-  [0, 1], 
-  [0, 2], 
-  [0, 3], 
-  [1, 2],
-  [1, 3],
-  [2, 3],
-  [0, 1, 2, 3],
-]
-
-(4, false)
-[
-  [0],
-  [1],
-  [2], 
-  [3], 
-  [0, 1, 2],
-  [0, 1, 3],
-  [0, 2, 3],
-  [1, 2, 3],
-]
-
-(4, null)
-[
-  [],
-  [0],
-  [1],
-  [2], 
-  [3],
-  [0, 1], 
-  [0, 2], 
-  [0, 3], 
-  [1, 2],
-  [1, 3],
-  [2, 3],
-  [0, 1, 2],
-  [0, 1, 3],
-  [0, 2, 3],
-  [1, 2, 3],
-  [0, 1, 2, 3],
-]
 */
+
+const canMake = (nums, target) => {
+  let made = new Set();
+  made.add(0);
+  for (let i = 0; i < nums.length; i++) {
+    let madeArray = [];
+    for (let value of made) madeArray.push(value);
+    for (let j = 0; j < madeArray.length; j++) {
+      let next = madeArray[j] + nums[i];
+      if (next === target) {
+        return true;
+      } else if (next < target) {
+        made.add(next);
+      }
+    }
+  }
+  return false;
 };
 
 const canPartition = (nums) => {
-  let result = false;
-  const sum = sumArray(nums);
+  const sum = nums.reduce((acc, cur) => acc + cur);
   if (sum % 2 === 0) {
     const half = sum / 2;
-    const evens = [];
-    const odds = [];
+    nums.sort((a, b) => a - b);
+    let made = new Set();
+    made.add(0);
     for (let i = 0; i < nums.length; i++) {
-      if (nums[i] % 2 === 0) {
-        evens.push(nums[i]);
-      } else {
-        odds.push(nums[i]);
+      let madeArray = [];
+      for (let value of made) madeArray.push(value);
+      for (let j = 0; j < madeArray.length; j++) {
+        let next = madeArray[j] + nums[i];
+        if (next === half) {
+          return true;
+        } else if (next < half) {
+          made.add(next);
+        }
       }
     }
-    evens.sort((a, b) => a - b);
-    odds.sort((a, b) => a - b);
-
-    // Try to group elements from evens and odds such that the sum of all
-    // elments in the group equals half.
-    // If half is even, only test groupings with an even number of elements
-    // from odds.
-    // If half is odd, only test groupings with an odd number of elements from
-    // odds.
   }
-  return result;
+  return false;
 };
-
-module.exports = { sumArray, canPartition };
+module.exports = { canMake, canPartition };
