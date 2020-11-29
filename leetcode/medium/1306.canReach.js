@@ -32,6 +32,42 @@ Constraints:
 0 <= start < arr.length
 */
 
-var canReach = function (arr, start) {};
+/*
+It would be my default to solve this recursively, but the performance advantages
+of solving such problems iteritively are becoming more and more clear to me. As
+such, I'll try to solve this with an iterive approach.
+
+This can be solved with an array and a set. A set to keep track of indcies
+already visitied, and an array to use as a stack, storing indicies to visit
+later. This will result in incidicies being visited in the same order they would
+with a recursive solution, but without recursion.
+*/
+
+var canReach = function (arr, start) {
+  const log = new Set();
+  const stack = [start];
+  while (stack.length) {
+    let currentIndex = stack.pop();
+    let currentValue = arr[currentIndex];
+    if (currentValue === 0) {
+      return true;
+    }
+    if (
+      !log.has(currentIndex + currentValue) &&
+      currentIndex + currentValue < arr.length
+    ) {
+      log.add(currentIndex + currentValue);
+      stack.push(currentIndex + currentValue);
+    }
+    if (
+      !log.has(currentIndex - currentValue) &&
+      currentIndex - currentValue >= 0
+    ) {
+      log.add(currentIndex - currentValue);
+      stack.push(currentIndex - currentValue);
+    }
+  }
+  return false;
+};
 
 module.exports = { canReach };
