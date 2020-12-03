@@ -29,28 +29,20 @@ value the right leaf of the index before it.
 
 Unless I'm misunderstanding the challenge, this should result in a valid
 solution.
+
+UPDATE: I did misunderstand the challenge. It needs to be height-balanced, with
+no node having a child tree more than one node longer than the other.
 */
 
-let sortedArrayToBST = (nums) => {
-  if (!nums) {
-    return;
+const sortedArrayToBST = (nums) => {
+  if (nums == null || !nums.length) {
+    return null;
   }
-  let middlemostIndex = Math.floor(nums.length / 2);
-  let currentIndex = middlemostIndex - 1;
-  let root = new TreeNode(nums[middlemostIndex]);
-  let currentNode = root;
-  while (nums[currentIndex] !== undefined) {
-    currentNode.left = new TreeNode(nums[currentIndex]);
-    currentNode = currentNode.left;
-    currentIndex--;
-  }
-  currentIndex = middlemostIndex + 1;
-  currentNode = root;
-  while (nums[currentIndex] !== undefined) {
-    currentNode.right = new TreeNode(nums[currentIndex]);
-    currentNode = currentNode.right;
-    currentIndex++;
-  }
+
+  const mid = Math.floor(nums.length / 2);
+  const root = new TreeNode(nums[mid]);
+  root.left = sortedArrayToBST(nums.slice(0, mid));
+  root.right = sortedArrayToBST(nums.slice(mid + 1, nums.length));
   return root;
 };
 
