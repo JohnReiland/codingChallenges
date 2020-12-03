@@ -18,11 +18,6 @@ Constraints:
 The number of nodes in the given tree will be in the range [1, 100].
 0 <= Node.val <= 1000
 */
-function TreeNode(val, left, right) {
-  this.val = val === undefined ? 0 : val;
-  this.left = left === undefined ? null : left;
-  this.right = right === undefined ? null : right;
-}
 
 const sortedArrayToBST = (nums) => {
   if (nums == null || !nums.length) {
@@ -35,6 +30,47 @@ const sortedArrayToBST = (nums) => {
   return root;
 };
 
-const increasingBST = (root) => {};
+const sortedArrayToAllRightBST = (nums) => {
+  const result = nums.length ? new TreeNode(nums[0]) : new TreeNode(0);
+  let current = result;
+  for (let i = 1; i < nums.length; i++) {
+    current.right = new TreeNode(nums[i]);
+    current = current.right;
+  }
+  return result;
+};
 
-module.exports = { TreeNode, sortedArrayToBST, increasingBST };
+function TreeNode(val, left, right) {
+  this.val = val === undefined ? 0 : val;
+  this.left = left === undefined ? null : left;
+  this.right = right === undefined ? null : right;
+}
+
+const increasingBST = (root) => {
+  const result = new TreeNode();
+  const recurse = (node, current) => {
+    if (node.left) {
+      current = recurse(node.left, current);
+    }
+    if (current) {
+      current.right = new TreeNode(node.val);
+      current = current.right;
+    } else {
+      current = result;
+      current.val = node.val;
+    }
+    if (node.right) {
+      current = recurse(node.right, current);
+    }
+    return current;
+  };
+  recurse(root);
+  return result;
+};
+
+module.exports = {
+  TreeNode,
+  sortedArrayToBST,
+  sortedArrayToAllRightBST,
+  increasingBST,
+};
