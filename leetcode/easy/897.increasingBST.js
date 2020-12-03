@@ -12,33 +12,11 @@ Example 2:
 Input: root = [5,1,7]
 Output: [1,null,5,null,7]
 
-
 Constraints:
 
 The number of nodes in the given tree will be in the range [1, 100].
 0 <= Node.val <= 1000
 */
-
-const sortedArrayToBST = (nums) => {
-  if (nums == null || !nums.length) {
-    return null;
-  }
-  const mid = Math.floor(nums.length / 2);
-  const root = new TreeNode(nums[mid]);
-  root.left = sortedArrayToBST(nums.slice(0, mid));
-  root.right = sortedArrayToBST(nums.slice(mid + 1, nums.length));
-  return root;
-};
-
-const sortedArrayToAllRightBST = (nums) => {
-  const result = nums.length ? new TreeNode(nums[0]) : new TreeNode(0);
-  let current = result;
-  for (let i = 1; i < nums.length; i++) {
-    current.right = new TreeNode(nums[i]);
-    current = current.right;
-  }
-  return result;
-};
 
 function TreeNode(val, left, right) {
   this.val = val === undefined ? 0 : val;
@@ -68,9 +46,4 @@ const increasingBST = (root) => {
   return result;
 };
 
-module.exports = {
-  TreeNode,
-  sortedArrayToBST,
-  sortedArrayToAllRightBST,
-  increasingBST,
-};
+module.exports = { TreeNode, increasingBST };
