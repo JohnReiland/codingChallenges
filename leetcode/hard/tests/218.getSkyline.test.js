@@ -21,6 +21,18 @@ describe("getSkyline()", () => {
     ]);
   });
 
+  test("getSkyline([[0, 2, 3], [2, 5, 3]]) should be [[0, 3], [5, 0]]", () => {
+    expect(
+      getSkyline([
+        [0, 2, 3],
+        [2, 5, 3],
+      ])
+    ).toStrictEqual([
+      [0, 3],
+      [5, 0],
+    ]);
+  });
+
   test.skip("getSkyline(buildings) should be result", () => {
     expect(getSkyline(buildings)).toStrictEqual(result);
   });
