@@ -20,8 +20,4 @@ describe("kthFactor()", () => {
   test("kthFactor(1000, 3) should be 4", () => {
     expect(kthFactor(1000, 3)).toBe(4);
   });
-
-  test.skip("kthFactor(nValue, kValue) should be result", () => {
-    expect(kthFactor(nValue, kValue)).toBe(result);
-  });
 });

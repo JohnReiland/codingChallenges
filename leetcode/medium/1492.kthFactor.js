@@ -33,12 +33,36 @@ Output: 4
 Explanation: Factors list is [1, 2, 4, 5, 8, 10, 20, 25, 40, 50, 100, 125, 200,
   250, 500, 1000].
 
-
 Constraints:
 
 1 <= k <= n <= 1000
 */
 
-const kthFactor = (n, k) => {};
+/*
+This problem looks like a lot of fun, in that there are multiple parts, each of
+which can be solved in a number of ways that differ greatly in how easy or
+difficult they are to design and code, as well in how well they perform.
+
+To find the kth factor of n, does one need to know all factors of n?
+To find all the factors on n, does one need to test every value between 1 and n?
+
+While the answer to the second question above is "no," as prime factorization is
+a better way to find all factors of n, because n is so small, due to the
+constraints of the chellenge, brute force might be a better way to attack this
+challenge, as factors are certain to be found in order, and so the search can be
+terminated as soon as the kth factor is found.
+
+This solution is less object-oriented than one using prime factorization would
+be, but I believe it might yeild a faster result.
+*/
+
+const kthFactor = (n, k) => {
+  let result, found;
+  result = found = 1;
+  for (let i = 2; found < k && i <= n; i++) {
+    [result, found] = n % i === 0 ? [i, found + 1] : [result, found];
+  }
+  return found === k ? result : -1;
+};
 
 module.exports = { kthFactor };
