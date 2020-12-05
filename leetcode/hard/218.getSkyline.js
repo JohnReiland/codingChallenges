@@ -50,11 +50,28 @@ Output: [[0,3],[5,0]]
 
 Constraints:
 
-1 <= buildings.length <= 104
-0 <= lefti < righti <= 231 - 1
-1 <= heighti <= 231 - 1
+1 <= buildings.length <= 10^4
+0 <= lefti < righti <= 2^31 - 1
+1 <= heighti <= 2^31 - 1
 buildings is sorted by lefti in non-decreasing order.
 
+*/
+
+/*
+This one is very interesting. I think that while individual elements are
+described as rectangles, what solving this challenege might really boil down to
+are pairs of values, each of which is handled seperately. One value is height,
+and a number of heights must be tracked in a sorted fashion, but only the
+largest valid one matters.
+The other value is width, which represents a sort of expiration date for a
+given height. As the considered point on the horizonal increases, particular
+heights stop being valid.
+
+I imagine a linke dlist of height-end pairs, kept sorted by height in decreasing
+order.
+As new values are added to the array, if they are taller than the currently
+tallest valid value they take their place at the head of the linked list.
+Otherwise they are passed through the list until they reach their proper place. 
 */
 
 const getSkyline = (buildings) => {
