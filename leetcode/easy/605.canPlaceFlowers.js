@@ -22,6 +22,15 @@ There are no two adjacent flowers in flowerbed.
 0 <= num <= flowerbed.length
 */
 
-const canPlaceFlowers = (flowerbed, num) => {};
+const canPlaceFlowers = (flowerbed, num) => {
+  let remaining = num;
+  for (let i = 0; remaining && i < flowerbed.length; i++) {
+    [remaining, i] =
+      (flowerbed[i - 1] || 0) + flowerbed[i] + (flowerbed[i + 1] || 0) === 0
+        ? [remaining - 1, i + 1]
+        : [remaining, i];
+  }
+  return remaining === 0 ? true : false;
+};
 
 module.exports = { canPlaceFlowers };
