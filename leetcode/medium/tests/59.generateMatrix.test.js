@@ -5,7 +5,7 @@ describe("generateMatrix()", () => {
     expect(generateMatrix(1)).toStrictEqual([[1]]);
   });
 
-  test("generateMatrix(2) should be [[1, 2], [4, 3]]", () => {
+  test("generateMatrix(2) should be [[1,2], [4,3]]", () => {
     expect(generateMatrix(2)).toStrictEqual([
       [1, 2],
       [4, 3],
