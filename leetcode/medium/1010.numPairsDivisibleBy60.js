@@ -28,7 +28,7 @@ Constraints:
 
 const numPairsDivisibleBy60 = (time) => {
   let result = 0;
-  const table = [];
+  const table = new Array(60);
   for (let i = 0; i < time.length; i++) {
     let remainder = time[i] % 60;
     result += table[(60 - remainder) % 60] ? table[(60 - remainder) % 60] : 0;
