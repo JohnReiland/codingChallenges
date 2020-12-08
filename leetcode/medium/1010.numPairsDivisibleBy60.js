@@ -26,6 +26,21 @@ Constraints:
 1 <= time[i] <= 500
 */
 
-const numPairsDivisibleBy60 = (time) => {};
+const numPairsDivisibleBy60 = (time) => {
+  let result = 0;
+  const table = {};
+  for (let i = 0; i < time.length; i++) {
+    if (time[i] % 60 === 0) {
+      table[0] = table[0] ? table[0] : 0;
+      result += table[0];
+      table[0]++;
+    } else {
+      let remainder = 60 - (time[i] % 60);
+      result += table[60 - remainder] ? table[60 - remainder] : 0;
+      table[remainder] = table[remainder] ? table[remainder] + 1 : 1;
+    }
+  }
+  return result;
+};
 
 module.exports = { numPairsDivisibleBy60 };
