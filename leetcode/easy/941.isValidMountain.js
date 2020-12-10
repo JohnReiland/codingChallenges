@@ -29,6 +29,21 @@ Constraints:
 
 const isValidMountain = (arr) => {
   let result = false;
+  if (
+    arr.length >= 3 &&
+    arr[1] > arr[0] &&
+    arr[arr.length - 1] < arr[arr.length - 2]
+  ) {
+    let i = 1;
+    while (arr[i + 1] > arr[i]) {
+      i++;
+    }
+    while (arr[i + 1] < arr[i]) {
+      i++;
+    }
+    result = i === arr.length - 1 ? true : result;
+  }
+  return result;
 };
 
 module.exports = { isValidMountain };
