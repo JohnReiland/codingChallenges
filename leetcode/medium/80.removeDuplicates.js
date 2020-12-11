@@ -39,10 +39,37 @@ doesn't matter what values are set beyond the returned length.
 
 Constraints:
 0 <= nums.length <= 3 * 10^4
--104 <= nums[i] <= 10^4
+-10^4 <= nums[i] <= 10^4
 nums is sorted in ascending order.
 */
 
-const removeDuplicates = (nums) => {};
+/*
+This seems very straightforward. About the only twist is that an integer is
+returned instead of the array, but this makes complete sense given the nature
+of the challenge.
+
+The way I see of solving this is to have two pointers, one reading values and
+testing whether they've been encountered twice before, the other writing values
+when they haven't been. Then the position of the second pointer, plus one, is
+returned.
+
+UPDATE:
+I missed a huge savings opportunity in that the array is already sorted.
+Thankfully, I caught this before submitting. Only one value need be considered
+at a time, as it will never be encountered again once a different value is
+encountered. 
+*/
+
+const removeDuplicates = (nums) => {
+  let j = 0;
+  for (let i = 0, lastValue, count; i < nums.length; i++) {
+    if (nums[i] !== lastValue || count < 2) {
+      nums[j++] = nums[i];
+      count = nums[i] === lastValue ? count + 1 : 1;
+    }
+    lastValue = nums[i];
+  }
+  return j;
+};
 
 module.exports = { removeDuplicates };
