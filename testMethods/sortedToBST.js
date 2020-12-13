@@ -10,8 +10,8 @@ Object.defineProperty(Array.prototype, "sortedToBST", {
     }
     const mid = Math.floor(this.length / 2);
     const root = new TreeNode(this[mid]);
-    root.left = this.slice(0, mid).toBST();
-    root.right = this.slice(mid + 1, this.length).toBST();
+    root.left = this.slice(0, mid).sortedToBST();
+    root.right = this.slice(mid + 1, this.length).sortedToBST();
     return root;
   },
 });
