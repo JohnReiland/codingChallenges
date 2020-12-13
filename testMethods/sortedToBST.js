@@ -15,5 +15,3 @@ Object.defineProperty(Array.prototype, "sortedToBST", {
     return root;
   },
 });
-
-module.exports = { sortedToBST };
