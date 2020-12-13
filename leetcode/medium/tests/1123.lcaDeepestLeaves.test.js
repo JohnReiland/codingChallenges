@@ -1,4 +1,23 @@
-const { TreeNode, lcaDeepestLeaves } = require("../1123.lcaDeepestLeaves");
+const {
+  TreeNode,
+  maxDepth,
+  lcaDeepestLeaves,
+} = require("../1123.lcaDeepestLeaves");
+
+describe("maxDepth()", () => {
+  const root0 = new TreeNode(
+    3,
+    new TreeNode(
+      5,
+      new TreeNode(6),
+      new TreeNode(2, new TreeNode(7), new TreeNode(4))
+    ),
+    new TreeNode(1, new TreeNode(0), new TreeNode(8))
+  );
+  test("maxDepth(root0) should be 3", () => {
+    expect(maxDepth(root0)).toBe(3);
+  });
+});
 
 describe("lcaDeepestLeaves()", () => {
   const root1 = new TreeNode(

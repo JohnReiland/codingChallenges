@@ -36,12 +36,73 @@ The number of nodes in the tree will be in the range [1, 1000].
 The values of the nodes in the tree are unique.
 */
 
+/*
+This is one of those rare great problems where a little extra time spent
+thinking about a strategy for the solution can result in a lot less time and
+work spent building it. The way I see it, every node has a depth in the tree,
+and a node may be the deepest leaf or one of the deepest leaves, may be an
+ancestor to one or more deepest leaves, or may not be any of those things.
+
+Of the nodes that are one of those things, there will be one or more nodes that
+are the only node of that depth to be one of those things. The deepest such node
+is the lca.
+
+I think a good strategy will be to identify the depth of the deepest leaves in
+one pass, then identify all nodes that are the deepest leaves, or are ancestor
+to one or more deepest leaf, and push them into a matrix indexed by their depth.
+Testing from highest index to lowest, the first array found of length 1
+contains the lca as its only element. If these steps can be combined it would
+improve performance significantly, but I don't yet see how that can be
+accomplished.
+*/
+
 function TreeNode(val, left, right) {
   this.val = val === undefined ? 0 : val;
   this.left = left === undefined ? null : left;
   this.right = right === undefined ? null : right;
 }
 
-const lcaDeepestLeaves = (root) => {};
+const maxDepth = (root) => {
+  let result = 0;
+  let stack = [[root, 0]];
+  while (stack.length) {
+    let currentNode = stack.pop();
+    result = Math.max(currentNode[1], result);
+    if (currentNode[0].right) {
+      stack.push([currentNode[0].right, currentNode[1] + 1]);
+    }
+    if (currentNode[0].left) {
+      stack.push([currentNode[0].left, currentNode[1] + 1]);
+    }
+  }
+  return result;
+};
 
-module.exports = { TreeNode, lcaDeepestLeaves };
+const lcaDeepestLeaves = (root) => {
+  const max = maxDepth(root);
+  const ancestors = [...Array(max + 1)].map(() => []);
+  const recurse = (node, depth) => {
+    let isAncestor = false;
+    if (depth === max) {
+      isAncestor = true;
+    }
+    if (node.left && recurse(node.left, depth + 1)) {
+      isAncestor = true;
+    }
+    if (node.right && recurse(node.right, depth + 1)) {
+      isAncestor = true;
+    }
+    if (isAncestor) {
+      ancestors[depth].push(node);
+    }
+    return isAncestor;
+  };
+  recurse(root, 0, max);
+  for (let i = ancestors.length - 1; i >= 0; i--) {
+    if (ancestors[i].length === 1) {
+      return ancestors[i][0];
+    }
+  }
+};
+
+module.exports = { TreeNode, maxDepth, lcaDeepestLeaves };
