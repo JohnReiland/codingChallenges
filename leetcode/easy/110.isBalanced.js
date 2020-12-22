@@ -30,6 +30,27 @@ function TreeNode(val, left, right) {
   this.right = right === undefined ? null : right;
 }
 
-const isBalanced = (root) => {};
+const isBalanced = (root) => {
+  const recurse = (root) => {
+    let result = true;
+    let left = 0;
+    let right = 0;
+    let max = 0;
+    if (root) {
+      if (root.left) {
+        [result, left] = recurse(root.left);
+      }
+      if (result && root.right) {
+        [result, right] = recurse(root.right);
+      }
+      if (result) {
+        max = Math.max(left, right);
+        result = Math.abs(left - right) < 2 ? result : false;
+      }
+    }
+    return [result, max + 1];
+  };
+  return recurse(root)[0];
+};
 
 module.exports = { TreeNode, isBalanced };
