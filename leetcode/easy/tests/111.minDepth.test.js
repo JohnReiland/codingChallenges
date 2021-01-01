@@ -12,15 +12,11 @@ describe("minDepth()", () => {
 
   const root2 = new TreeNode(
     2,
-    new TreeNode(),
+    null,
     new TreeNode(
       3,
-      new TreeNode(),
-      new TreeNode(
-        4,
-        new TreeNode(),
-        new TreeNode(5, new TreeNode(), new TreeNode(6))
-      )
+      null,
+      new TreeNode(4, null, new TreeNode(5, null, new TreeNode(6)))
     )
   );
   test("minDepth(root2) should be 5", () => {
