@@ -37,12 +37,51 @@ The values of the nodes of the tree are unique.
 target node is a node from the original tree and is not null.
 */
 
+/*
+I'm eager to create a solution that works with the follow-up challenge (Solve
+the problem if repeated values on the tree are allowed), right off the bat.
+Such challenges are best solved, I think, not by examining the values of any
+nodes or even collections of values from collections of nodes, because it's very
+difficult to tell for certain whether you're looking at the right node, or
+merely one that is like it in every, or nearly every, way. The better strategy
+is to compare by reference; not, "is this node like the node I'm looking for?"
+but instead, "is the point in memory this references the same point in memory
+that references". The latter is entirely concrete and totally reliable.
+
+The solution, then, is very straightfoward. Create twin pointers, pointing at
+the roots of the twin trees. Move them in a synchronized manner through their
+respective trees, testing each node in the original to see if it is the target
+node. When the target node in the original tree is found, return the twin node
+found by the twin pointer.
+*/
+
 function TreeNode(val, left, right) {
   this.val = val === undefined ? 0 : val;
   this.left = left === undefined ? null : left;
   this.right = right === undefined ? null : right;
 }
 
-const getTargetCopy = (original, cloned, target) => {};
+const getTargetCopy = (original, cloned, target) => {
+  let currentNode;
+  let currentTwin;
+  const stack = [original];
+  const stackTwin = [cloned];
+  while (stack.length) {
+    currentNode = stack.pop();
+    currentTwin = stackTwin.pop();
+    if (currentNode === target) {
+      return currentTwin;
+    }
+    if (currentNode.right) {
+      stack.push(currentNode.right);
+      stackTwin.push(currentTwin.right);
+    }
+    if (currentNode.left) {
+      stack.push(currentNode.left);
+      stackTwin.push(currentTwin.left);
+    }
+  }
+  return null; // target node is not in original tree; should not be possible
+};
 
 module.exports = { getTargetCopy, TreeNode };
