@@ -10,6 +10,12 @@ describe("hasPathSum()", () => {
     expect(hasPathSum(root1, 22)).toBe(true);
   });
 
+  const root2 = new TreeNode(1, new TreeNode(2));
+
+  test("hasPathSum(root2, 1) should be false", () => {
+    expect(hasPathSum(root2, 1)).toBe(false);
+  });
+
   test.skip("hasPathSum(root, sum1) should be result", () => {
     expect(hasPathSum(root, sum1)).toBe(result);
   });
