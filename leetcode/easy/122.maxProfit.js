@@ -36,6 +36,25 @@ Constraints:
 0 <= prices[i] <= 10 ^ 4
 */
 
-const maxProfit = (prices) => {};
+const maxProfit = (prices) => {
+  let result = 0;
+  let highest = 0;
+  let currentProfit = 0;
+  let currentLow = 0;
+  for (let i = prices.length - 1; i >= 0; i--) {
+    if (prices[i] > currentLow) {
+      result += currentProfit;
+      currentProfit = 0;
+      highest = prices[i];
+      currentLow = prices[i];
+    }
+    if (highest - prices[i] > currentProfit) {
+      currentProfit = highest - prices[i];
+      currentLow = prices[i];
+    }
+  }
+  result += currentProfit;
+  return result;
+};
 
 module.exports = { maxProfit };
