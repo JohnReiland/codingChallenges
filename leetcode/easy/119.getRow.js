@@ -20,6 +20,25 @@ Constraints:
 0 <= rowIndex <= 33
 */
 
-const getRow = (rowIndex) => {};
+/*
+The follow-up to this problem asks whether I can implement a solution that uses
+O(k) extra space. I'm going to go for that straightaway, though I can see it
+won't be the fastest solution, as that should employ memoization. 
+*/
+
+const getRow = (rowIndex) => {
+  let result = [1];
+  let currentRow = 0;
+  while (currentRow < rowIndex) {
+    let next = [1];
+    for (let i = 0; i < result.length - 1; i++) {
+      next.push(result[i] + result[i + 1]);
+    }
+    next.push(1);
+    result = next;
+    currentRow++;
+  }
+  return result;
+};
 
 module.exports = { getRow };
