@@ -9,6 +9,22 @@ describe("isPalindrome()", () => {
     expect(isPalindrome("race a car")).toBe(false);
   });
 
+  test(`isPalindrome(" ") should be true`, () => {
+    expect(isPalindrome(" ")).toBe(true);
+  });
+
+  test(`isPalindrome("  ") should be true`, () => {
+    expect(isPalindrome("  ")).toBe(true);
+  });
+
+  test(`isPalindrome(".,") should be true`, () => {
+    expect(isPalindrome(".,")).toBe(true);
+  });
+
+  test('isPalindrome(`"Sue," Tom smiles, "Selim smote us."`) should be true', () => {
+    expect(isPalindrome(`"Sue," Tom smiles, "Selim smote us."`)).toBe(true);
+  });
+
   test.skip(`isPalindrome("str") should be result`, () => {
     expect(isPalindrome("str")).toBe(result);
   });
