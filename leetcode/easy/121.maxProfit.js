@@ -20,6 +20,14 @@ Output: 0
 Explanation: In this case, no transaction is done, i.e. max profit = 0.
 */
 
-const maxProfit = function (prices) {};
+const maxProfit = function (prices) {
+  let result = 0;
+  let highest = 0;
+  for (let i = prices.length - 1; i >= 0; i--) {
+    highest = Math.max(highest, prices[i]);
+    result = Math.max(result, highest - prices[i]);
+  }
+  return result;
+};
 
 module.exports = { maxProfit };
