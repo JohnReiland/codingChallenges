@@ -59,8 +59,18 @@ prioroty.
 /*
 UPDATE:
 Okay, I've got a working solution, next: tackle the follow-up.
+Bitwise! Whoever wrote this was trying to give me a hint with the element
+values (1, 2, and 4). When you perform a bitwise XOR operation it does something
+entirely unlike multiplying two primes, *and yet* it achieves the same end,
+where the running value is changed in a unique and reversible way. Crucially,
+performing two XOR operations returns a number to its starting value, and this
+can be done with many different XOR operations, and in any order.
+This means that 100 XOR 10 XOR 1 = 111 and 111 XOR 10 XOR 1 = 100. It didn't
+matter that the 10 and 1 weren't reversed in order when the XOR operation was
+performed the second time. 111 XOR 1 XOR 10 would also = 100.
 */
 
+/*
 const singleNumber = (nums) => {
   const record = [];
   for (let i = 0; i < nums.length; i++) {
@@ -71,6 +81,12 @@ const singleNumber = (nums) => {
       return parseInt(test, 10);
     }
   }
+};
+*/
+
+const singleNumber = (nums) => {
+  const reducer = (accumulator, currentValue) => accumulator ^ currentValue;
+  return nums.reduce(reducer);
 };
 
 module.exports = { singleNumber };
