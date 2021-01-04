@@ -13,6 +13,10 @@ describe("singleNumber()", () => {
     expect(singleNumber([1])).toBe(1);
   });
 
+  test("singleNumber([-2, 1, -2]) should be 1", () => {
+    expect(singleNumber([-2, 1, -2])).toBe(1);
+  });
+
   test.skip("singleNumber(nums) should be result", () => {
     expect(singleNumber(nums)).toBe(result);
   });
