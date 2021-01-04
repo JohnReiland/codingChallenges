@@ -35,7 +35,39 @@ pos is -1 or a valid index in the linked-list.
 Follow up: Can you solve it using O(1) (i.e. constant) memory?
 */
 
-const hasCycle = (head) => {};
+/*
+I've encountered this challenge or one very similar to it before, and the
+constant memory solution for it might be my favorite solution for any challenge.
+Different minds think in different ways, and so an example of lateral thinking
+to one person might not be one to another, but, to me, the constant time
+solution for this challenge takes brilliant lateral thinking, and it expanded
+the way I think both about lists specifically and challenge solving generally.
+
+The linear memory solution is to create a Map to store every node, and if you
+encounter the same node twice, you know instantly that the list has a cycle
+(just storing the nodes' values in an object literal doesn't work, as lists can
+contain duplicate values).
+
+The constant space solution is to use two pointers, moving at different rates.
+One moves fast and one moves slow. If the fast poninter reaches the end of the
+list, it must not contain a cycle. If, however, the list contains a cycle, then
+the slow and fast pointers will eventually be pointing at the same node. If ever
+they are, then the list must contain a cycle. It's so simple and yet so clever.
+*/
+
+const hasCycle = (head) => {
+  if (!head) {
+    return false;
+  }
+  let slow = head;
+  let fast = head.next;
+  let wait = true;
+  while (fast && slow !== fast) {
+    fast = fast.next;
+    [slow, wait] = wait ? [slow, !wait] : [slow.next, !wait];
+  }
+  return fast !== null;
+};
 
 function ListNode(val) {
   this.val = val;
