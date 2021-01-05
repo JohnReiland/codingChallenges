@@ -21,6 +21,26 @@ function ListNode(val, next) {
   this.next = next === undefined ? null : next;
 }
 
-const deleteDuplicates = (head) => {};
+const deleteDuplicates = (head) => {
+  if (!head) {
+    return null;
+  }
+  let hat = new ListNode(null, head);
+  let currentNode = hat;
+  while (currentNode.next !== null && currentNode.next.next !== null) {
+    if (currentNode.next.val === currentNode.next.next.val) {
+      while (
+        currentNode.next.next &&
+        currentNode.next.next.val === currentNode.next.val
+      ) {
+        currentNode.next.next = currentNode.next.next.next;
+      }
+      currentNode.next = currentNode.next.next;
+    } else {
+      currentNode = currentNode.next;
+    }
+  }
+  return hat.next;
+};
 
 module.exports = { deleteDuplicates, ListNode };

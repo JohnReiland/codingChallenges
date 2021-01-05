@@ -25,6 +25,10 @@ describe("deleteDuplicates()", () => {
     expect(deleteDuplicates(head2)).toStrictEqual(result2);
   });
 
+  test("deleteDuplicates() should be null", () => {
+    expect(deleteDuplicates()).toStrictEqual(null);
+  });
+
   test.skip("deleteDuplicates(head) should be result", () => {
     expect(deleteDuplicates(head)).toStrictEqual(result);
   });
