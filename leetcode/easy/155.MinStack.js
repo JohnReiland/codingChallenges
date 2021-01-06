@@ -31,29 +31,37 @@ pop(), top() and getMin() will always be called on non-empty stacks.
 */
 
 const MinStack = function () {
-  const stack = [];
-  const minStack = [];
+  this.stack = [];
+  this.minStack = [];
 };
 
-/**
- * @param {number} x
- * @return {void}
- */
-MinStack.prototype.push = function (x) {};
+MinStack.prototype.push = function (x) {
+  this.stack.push(x);
+  if (
+    this.minStack.length === 0 ||
+    x <= this.minStack[this.minStack.length - 1]
+  ) {
+    this.minStack.push(x);
+  }
+  return;
+};
 
-/**
- * @return {void}
- */
-MinStack.prototype.pop = function () {};
+MinStack.prototype.pop = function () {
+  if (
+    this.minStack[this.minStack.length - 1] ===
+    this.stack[this.stack.length - 1]
+  ) {
+    this.minStack.pop();
+  }
+  this.stack.pop();
+};
 
-/**
- * @return {number}
- */
-MinStack.prototype.top = function () {};
+MinStack.prototype.top = function () {
+  return this.stack[this.stack.length - 1];
+};
 
-/**
- * @return {number}
- */
-MinStack.prototype.getMin = function () {};
+MinStack.prototype.getMin = function () {
+  return this.minStack[this.minStack.length - 1];
+};
 
 module.exports = { MinStack };

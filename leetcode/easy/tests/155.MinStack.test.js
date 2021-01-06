@@ -19,7 +19,7 @@ describe("MinStack()", () => {
     expect(stack1.getMin()).toBe(-2);
   });
   stack1.pop();
-  test.skip(".pop() should pop the top value of MinStack object", () => {
+  test(".pop() should pop the top value of MinStack object", () => {
     expect(stack1.top()).toBe(2);
     expect(stack1.getMin()).toBe(1);
   });
