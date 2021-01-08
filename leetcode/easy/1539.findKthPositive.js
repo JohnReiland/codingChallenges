@@ -47,7 +47,7 @@ const findKthPositive = (arr, target) => {
     missed += arr[i] - 1 - last;
     last = arr[i];
   }
-  return last + (target >= missed ? target - missed : target - (missed + 1));
+  return last + (target > missed ? target - missed : target - (missed + 1));
 };
 
 module.exports = { findKthPositive };
