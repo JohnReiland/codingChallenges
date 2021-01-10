@@ -75,29 +75,32 @@ const psuedoWords = (string) => {
 };
 
 const ladderLength = (beginWord, endWord, wordList) => {
-  const transformations = {};
-  let canTransform = false;
-  for (let i = 0; i < wordList.length; i++) {
-    canTransform = wordList[i] === endWord ? true : canTransform;
-    let temp = psuedoWords(wordList[i]);
-    for (let j = 0; j < temp.length; j++) {
-      if (!transformations[temp[j]]) {
-        transformations[temp[j]] = [];
-      }
-      transformations[temp[j]].push(i);
-    }
-  }
   let result = 0;
+  let canTransform = false;
+  for (let i = 0; !canTransform && i < wordList.length; i++) {
+    canTransform = wordList[i] === endWord ? true : canTransform;
+  }
   if (canTransform) {
-    const startWords = psuedoWords(beginWord);
-    let seen = [];
+    const chart = {};
+    const psuedos = [];
+    for (let i = 0; i < wordList.length; i++) {
+      psuedos[i] = psuedoWords(wordList[i]);
+      for (let j = 0; j < psuedos[i].length; j++) {
+        if (!chart[psuedos[i][j]]) {
+          chart[psuedos[i][j]] = [];
+        }
+        chart[psuedos[i][j]].push(i);
+      }
+    }
     let stack = [];
+    const tried = [];
+    const startWords = psuedoWords(beginWord);
     for (let i = 0; i < startWords.length; i++) {
-      if (transformations[startWords[i]]) {
-        for (let j = 0; j < transformations[startWords[i]].length; j++) {
-          if (seen[transformations[startWords[i]][j]] !== true) {
-            seen[transformations[startWords[i]][j]] = true;
-            stack.push(transformations[startWords[i]][j]);
+      if (chart[startWords[i]]) {
+        for (let j = 0; j < chart[startWords[i]].length; j++) {
+          if (tried[chart[startWords[i]][j]] !== true) {
+            tried[chart[startWords[i]][j]] = true;
+            stack.push(chart[startWords[i]][j]);
           }
         }
       }
@@ -105,17 +108,16 @@ const ladderLength = (beginWord, endWord, wordList) => {
     let next = [];
     let distance = 2;
     while (stack.length) {
-      let currentWord = wordList[stack.pop()];
-      if (currentWord === endWord) {
+      let current = stack.pop();
+      if (wordList[current] === endWord) {
         result = distance;
         break;
       } else {
-        let temp = psuedoWords(currentWord);
-        for (let i = 0; i < temp.length; i++) {
-          for (let j = 0; j < transformations[temp[i]].length; j++) {
-            if (seen[transformations[temp[i]][j]] !== true) {
-              seen[transformations[temp[i]][j]] = true;
-              next.push(transformations[temp[i]][j]);
+        for (let i = 0; i < psuedos[current].length; i++) {
+          for (let j = 0; j < chart[psuedos[current][i]].length; j++) {
+            if (tried[chart[psuedos[current][i]][j]] !== true) {
+              tried[chart[psuedos[current][i]][j]] = true;
+              next.push(chart[psuedos[current][i]][j]);
             }
           }
         }
