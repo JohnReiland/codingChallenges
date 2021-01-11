@@ -23,6 +23,17 @@ nums2.length == count2
 -10^9 <= nums1[i], nums2[i] <= 10^9
 */
 
-const merge = (nums1, count1, nums2, count2) => {};
+const merge = (nums1, count1, nums2, count2) => {
+  let i = nums1.length;
+  while (count1 && count2) {
+    [nums1[i - 1], count1, count2, i] =
+      nums1[count1 - 1] > nums2[count2 - 1]
+        ? [nums1[count1 - 1], count1 - 1, count2, i - 1]
+        : [nums2[count2 - 1], count1, count2 - 1, i - 1];
+  }
+  while (count2) {
+    [nums1[i - 1], i, count2] = [nums2[count2 - 1], i - 1, count2 - 1];
+  }
+};
 
 module.exports = { merge };

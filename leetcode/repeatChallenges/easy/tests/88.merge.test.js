@@ -19,12 +19,12 @@ describe("merge()", () => {
     expect(nums1B).toStrictEqual([1]);
   });
 
-  const nums1C = [];
+  const nums1C = [0];
   const nums2C = [1];
   let count1C = 0;
   let count2C = 1;
   merge(nums1C, count1C, nums2C, count2C);
-  test("merge([], 0, [1], 1) should be [1]", () => {
+  test("merge([0], 0, [1], 1) should be [1]", () => {
     expect(nums1C).toStrictEqual([1]);
   });
 
