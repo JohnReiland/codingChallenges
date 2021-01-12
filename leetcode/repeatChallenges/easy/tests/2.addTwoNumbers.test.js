@@ -1,7 +1,7 @@
 const { addTwoNumbers, ListNode } = require("../2.addTwoNumbers");
 
 describe("addTwoNumbers()", () => {
-  const l1A = new ListNode(2, new ListNode(3, new ListNode(4)));
+  const l1A = new ListNode(2, new ListNode(4, new ListNode(3)));
   const l2A = new ListNode(5, new ListNode(6, new ListNode(4)));
   const resultA = new ListNode(7, new ListNode(0, new ListNode(8)));
   test("addTwoNumbers([2,4,3], [5,6,4]) should be [7,0,8]", () => {

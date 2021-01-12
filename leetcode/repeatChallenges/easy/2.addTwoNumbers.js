@@ -32,6 +32,21 @@ function ListNode(val, next) {
   this.next = next === undefined ? null : next;
 }
 
-const addTwoNumbers = (l1, l2) => {};
+const addTwoNumbers = (l1, l2) => {
+  const hat = new ListNode();
+  const end = new ListNode();
+  end.next = end;
+  let currentNode = hat;
+  let carry = 0;
+  while (l1 !== end || l2 !== end || carry) {
+    carry += l1.val + l2.val;
+    currentNode.next = new ListNode(carry % 10);
+    currentNode = currentNode.next;
+    l1 = l1.next || end;
+    l2 = l2.next || end;
+    carry = (carry - currentNode.val) / 10;
+  }
+  return hat.next;
+};
 
 module.exports = { ListNode, addTwoNumbers };
