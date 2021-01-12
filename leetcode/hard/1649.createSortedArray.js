@@ -91,7 +91,7 @@ function Node(val) {
   this.height = 1;
 }
 
-Node.prototype.insert = function (val) {
+Node.prototype.insert = (val) => {
   let result = [this, 1];
   if (this.val === val) {
     this.count++;
@@ -113,17 +113,17 @@ Node.prototype.insert = function (val) {
   return result;
 };
 
-Node.prototype.setSubCount = function () {
+Node.prototype.setSubCount = () => {
   this.subCount =
     (this.left ? this.left.count + this.left.subCount : 0) +
     (this.right ? this.right.count + this.right.subCount : 0);
 };
 
-Node.prototype.setMax = function () {
+Node.prototype.setMax = () => {
   this.max = this.right ? this.right.max : this.val;
 };
 
-Node.prototype.setHeight = function () {
+Node.prototype.setHeight = () => {
   this.height =
     Math.max(
       this.left ? this.left.height : 0,
@@ -131,13 +131,13 @@ Node.prototype.setHeight = function () {
     ) + 1;
 };
 
-Node.prototype.tilt = function () {
+Node.prototype.tilt = () => {
   return (
     (this.left ? this.left.height : 0) - (this.right ? this.right.height : 0)
   );
 };
 
-Node.prototype.balanceTree = function () {
+Node.prototype.balanceTree = () => {
   let result = this;
   let type;
   let balance = this.tilt();
@@ -160,13 +160,13 @@ Node.prototype.balanceTree = function () {
   return result;
 };
 
-Node.prototype.update = function () {
+Node.prototype.update = () => {
   this.setMax();
   this.setSubCount();
   this.setHeight();
 };
 
-Node.prototype.rotate = function (type) {
+Node.prototype.rotate = (type) => {
   switch (type) {
     case "LL": {
       let rightNode = this.right;
@@ -214,7 +214,7 @@ Node.prototype.rotate = function (type) {
   }
 };
 
-Node.prototype.smaller = function (val) {
+Node.prototype.smaller = (val) => {
   let result = 0;
   if (this.left) {
     if (val > this.left.max) {
@@ -236,7 +236,7 @@ function Tree() {
   this.root = null;
 }
 
-Tree.prototype.insert = function (val) {
+Tree.prototype.insert = (val) => {
   let result = 1;
   if (this.root === null) {
     this.root = new Node(val);
@@ -246,7 +246,7 @@ Tree.prototype.insert = function (val) {
   return result;
 };
 
-Tree.prototype.smaller = function (val) {
+Tree.prototype.smaller = (val) => {
   return this.root.smaller(val);
 };
 
