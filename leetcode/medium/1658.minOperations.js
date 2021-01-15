@@ -29,6 +29,68 @@ Constraints:
 1 <= x <= 10^9
 */
 
-const minOperations = (nums, x) => {};
+const minOperations = (nums, x) => {
+  let result = -1;
+  if (nums[0] <= x || nums[nums.length - 1] <= x) {
+    const matchL = { [x]: 0 };
+    const matchR = { [x]: 0 };
+    let sumL = 0;
+    let sumR = 0;
+    let isValidL = true;
+    let isValidR = true;
+    for (
+      let left = 0, right = nums.length - 1;
+      (isValidL || isValidR) && left < nums.length && right >= 0;
+
+    ) {
+      if (isValidL) {
+        if (nums[left] > x - sumL) {
+          isValidL = false;
+        } else {
+          sumL += nums[left];
+          if (sumL > x) {
+            isValidL = false;
+          } else if (sumL === x) {
+            result = result === -1 ? left + 1 : Math.min(result, left + 1);
+            isValidL = false;
+          } else if (matchR[sumL] && matchR[sumL] < nums.length - (left + 1)) {
+            result =
+              result === -1
+                ? matchR[sumL] + left + 1
+                : Math.min(result, matchR[sumL] + left + 1);
+          } else {
+            matchL[x - sumL] = left + 1;
+          }
+        }
+      }
+      if (isValidR) {
+        if (nums[right] > x - sumR) {
+          isValidR = false;
+        } else {
+          sumR += nums[right];
+          if (sumR > x) {
+            isValidR = false;
+          } else if (sumR === x) {
+            result =
+              result === -1
+                ? nums.length - right
+                : Math.min(result, nums.length - right);
+            isValidR = false;
+          } else if (matchL[sumR] && matchL[sumR] < right) {
+            result =
+              result === -1
+                ? matchL[sumR] + (nums.length - right)
+                : Math.min(result, matchL[sumR] + (nums.length - right));
+          } else {
+            matchR[x - sumR] = nums.length - right;
+          }
+        }
+      }
+      left = isValidL ? left + 1 : left;
+      right = isValidR ? right - 1 : right;
+    }
+  }
+  return result;
+};
 
 module.exports = { minOperations };
