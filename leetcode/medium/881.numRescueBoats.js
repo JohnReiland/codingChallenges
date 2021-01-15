@@ -28,6 +28,37 @@ Note:
 1 <= people[i] <= limit <= 30000
 */
 
-const numRescueBoats = (people, limit) => {};
+const numRescueBoats = (people, limit) => {
+  let result = 0;
+  let queue = people.slice();
+  let space = limit;
+  while (queue.length) {
+    let waiting = {};
+    let noMatch = [];
+    for (let i = 0; i < queue.length; i++) {
+      if (queue[i] === space) {
+        result++;
+      } else if (waiting[space - queue[i]] > 0) {
+        waiting[space - queue[i]]--;
+        result++;
+      } else {
+        if (!waiting[queue[i]]) {
+          waiting[queue[i]] = 0;
+        }
+        waiting[queue[i]]++;
+        noMatch.push(queue[i]);
+      }
+    }
+    for (let person in waiting) {
+      while (waiting[person] > 0) {
+        noMatch.push(parseInt(person, 10));
+        waiting[person]--;
+      }
+    }
+    queue = noMatch;
+    space--;
+  }
+  return result;
+};
 
 module.exports = { numRescueBoats };
