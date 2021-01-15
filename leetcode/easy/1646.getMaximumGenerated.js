@@ -38,6 +38,41 @@ Constraints:
 0 <= int <= 100
 */
 
-const getMaximumGenerated = (int) => {};
+/*
+I feel like the largest part of this challenge is understanding the array
+generation method, which I don't think is described in a clear or logical way.
+I would describe it as follows:
+nums[0] = 0
+nums[1] = 1
+nums[i] = i % 2 === 0
+? nums[i / 2]
+: nums[(i - 1) / 2] + nums[((i - 1) / 2) + 1]
+
+Written this way, a solution is very straightforward.
+*/
+
+const getMaximumGenerated = (int) => {
+  getMaximumGenerated.array = getMaximumGenerated.array || [0, 1];
+  getMaximumGenerated.result = getMaximumGenerated.result || [0, 1];
+  getMaximumGenerated.highest = getMaximumGenerated.highest || 1;
+  while (getMaximumGenerated.array.length < int + 1) {
+    getMaximumGenerated.array[getMaximumGenerated.array.length] =
+      getMaximumGenerated.array.length % 2 === 0
+        ? getMaximumGenerated.array[getMaximumGenerated.array.length / 2]
+        : getMaximumGenerated.array[
+            (getMaximumGenerated.array.length - 1) / 2
+          ] +
+          getMaximumGenerated.array[
+            (getMaximumGenerated.array.length - 1) / 2 + 1
+          ];
+    getMaximumGenerated.highest = Math.max(
+      getMaximumGenerated.highest,
+      getMaximumGenerated.array[getMaximumGenerated.array.length - 1]
+    );
+    getMaximumGenerated.result[getMaximumGenerated.result.length] =
+      getMaximumGenerated.highest;
+  }
+  return getMaximumGenerated.result[int];
+};
 
 module.exports = { getMaximumGenerated };
