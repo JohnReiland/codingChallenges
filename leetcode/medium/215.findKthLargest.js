@@ -14,6 +14,10 @@ Note:
 You may assume kTarget is always valid, 1 ≤ kTarget ≤ array's length.
 */
 
-const findKthLargest = (nums, kTarget) => {};
+const findKthLargest = (nums, kTarget) => {
+  return nums.slice().sort((a, b) => {
+    return b - a;
+  })[kTarget - 1];
+};
 
 module.exports = { findKthLargest };
