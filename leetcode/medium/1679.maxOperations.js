@@ -27,6 +27,20 @@ Constraints:
 1 <= k <= 109
 */
 
-const maxOperations = (nums, k) => {};
+const maxOperations = (nums, k) => {
+  const holding = {};
+  let result = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] < k) {
+      if (holding[k - nums[i]] && holding[k - nums[i]] > 0) {
+        holding[k - nums[i]]--;
+        result++;
+      } else {
+        holding[nums[i]] = holding[nums[i]] ? holding[nums[i]] + 1 : 1;
+      }
+    }
+  }
+  return result;
+};
 
 module.exports = { maxOperations };
