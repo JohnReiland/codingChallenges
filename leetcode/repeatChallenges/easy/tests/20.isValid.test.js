@@ -21,6 +21,10 @@ describe("isValid()", () => {
     expect(isValid("{[]}")).toBe(true);
   });
 
+  test(`isValid("()[]{") should be false`, () => {
+    expect(isValid("()[]{")).toBe(false);
+  });
+
   test.skip(`isValid("string") should be result`, () => {
     expect(isValid("string")).toBe(result);
   });

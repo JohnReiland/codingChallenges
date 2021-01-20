@@ -32,6 +32,25 @@ Constraints:
 string consists of parentheses only '()[]{}'.
 */
 
-const isValid = (string) => {};
+const isValid = (string) => {
+  const stack = [];
+  const table = {
+    ")": "(",
+    "}": "{",
+    "]": "[",
+  };
+  let result = true;
+  for (let i = 0; i < string.length; i++) {
+    if (table[string[i]]) {
+      if (table[string[i]] !== stack.pop()) {
+        result = false;
+        break;
+      }
+    } else {
+      stack.push(string[i]);
+    }
+  }
+  return stack.length === 0 ? result : false;
+};
 
 module.exports = { isValid };
