@@ -44,6 +44,68 @@ Constraints:
 word1 and word2 contain only lowercase English letters.
 */
 
-const closeStrings = (word1, word2) => {};
+/*
+So this is definitely a case where building out a system to brute force the
+solution is possible, but it's much more effective to glean the rules that can
+be derived from the details of the challenge, and use that to uncover a faster
+solution.
+
+The first operation effectively means that the order of characters in a string
+doesn't matter.
+
+The second operation effectively means that which characters are present or not
+present in a string matters, and what counts exist for instances of various
+characters in a string matters, but any one count for any one character doesn't
+matter.
+
+A string therefore has two traits relevant for analysis: The characters of which
+it's made up, and the various counts of instances of characters. If these two
+traits match for two different strings, those strings are close.
+*/
+
+const traits = (word) => {
+  const count = {};
+  const chars = [];
+  for (let i = 0; i < word.length; i++) {
+    if (count[word[i]]) {
+      count[word[i]]++;
+    } else {
+      chars.push(word[i]);
+      count[word[i]] = 1;
+    }
+  }
+  const result = [[], []];
+  for (let i = 0; i < chars.length; i++) {
+    result[0].push(chars[i]);
+    result[1].push(count[chars[i]]);
+  }
+  result[0].sort();
+  result[1].sort();
+  return result;
+};
+
+const closeStrings = (word1, word2) => {
+  let result = false;
+  if (word1.length === word2.length) {
+    result = true;
+    const traits1 = traits(word1);
+    const traits2 = traits(word2);
+    for (let i = 0; i < traits1[0].length; i++) {
+      if (traits1[0][i] !== traits2[0][i]) {
+        result = false;
+        break;
+      }
+    }
+    if (result) {
+      for (let i = 0; i < traits1[1].length; i++) {
+        if (traits1[1][i] !== traits2[1][i]) {
+          result = false;
+          break;
+        }
+      }
+    }
+  }
+  return result;
+};
 
 module.exports = { closeStrings };
