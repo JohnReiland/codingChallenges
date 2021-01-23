@@ -44,6 +44,7 @@ Constraints:
 word1 and word2 contain only lowercase English letters.
 */
 
+<<<<<<< HEAD
 /*
 So this is definitely a case where building out a system to brute force the
 solution is possible, but it's much more effective to glean the rules that can
@@ -107,5 +108,8 @@ const closeStrings = (word1, word2) => {
   }
   return result;
 };
+=======
+const closeStrings = (word1, word2) => {};
+>>>>>>> ee00582a8badad2405914b3dbb52519434411173
 
 module.exports = { closeStrings };
