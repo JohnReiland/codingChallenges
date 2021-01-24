@@ -48,7 +48,7 @@ const diagonalSort = (mat) => {
   for (let i = m - 1; i >= 0; i--) {
     result.push([]);
     let tmp = [];
-    for (let j = i, k = 0; j < m; j++, k++) {
+    for (let j = i, k = 0; j < m && k < n; j++, k++) {
       tmp.push(mat[j][k]);
     }
     diag.push(tmp.sort(asc));
