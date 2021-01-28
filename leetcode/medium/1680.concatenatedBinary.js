@@ -26,6 +26,17 @@ Constraints:
 1 <= n <= 10^5
 */
 
-const concatenatedBinary = (num) => {};
-
+const concatenatedBinary = (num) => {
+  const mod = 1000000007;
+  let result = 0;
+  for (let i = 1, length = 1; i <= num; i++) {
+    for (let j = 0; j < length; j++) {
+      result = (result << 1) % mod;
+    }
+    result += i;
+    result = result % mod;
+    length = (i & (i + 1)) === 0 ? length + 1 : length;
+  }
+  return result;
+};
 module.exports = { concatenatedBinary };
