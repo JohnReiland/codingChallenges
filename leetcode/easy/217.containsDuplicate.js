@@ -17,6 +17,17 @@ Input: [1,1,1,3,3,4,3,2,4,2]
 Output: true
 */
 
-const containsDuplicate = (nums) => {};
+const containsDuplicate = (nums) => {
+  const test = {};
+  let result = false;
+  for (let i = 0; i < nums.length; i++) {
+    if (test[nums[i]]) {
+      result = true;
+      break;
+    }
+    test[nums[i]] = true;
+  }
+  return result;
+};
 
 module.exports = { containsDuplicate };
