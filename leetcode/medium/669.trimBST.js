@@ -36,12 +36,48 @@ root is guaranteed to be a valid binary search tree.
 0 <= low <= high <= 10^4
 */
 
+/*
+I can sort of feel a recursive solution begining to form in my mind. Sometimes
+it's best for me to just go with my intuition for a bit, so long as I don't lose
+too much time that way. If I don't solve the challenge exploring it like this, I
+usually gain a better understanding of it and am better prepared to design a
+solution.
+
+UPDATE:
+I hit on a solution fairly quickly, but it's extremely slow. I'm going to submit
+it as it does pass, but will try to find a faster solution. Perhaps switching
+from recursive to iterative would be a good start.
+*/
+
 function TreeNode(val, left, right) {
   this.val = val === undefined ? 0 : val;
   this.left = left === undefined ? null : left;
   this.right = right === undefined ? null : right;
 }
 
-const trimBST = (root, low, high) => {};
+const trimBST = (root, low, high) => {
+  let currentNode = root;
+  if (currentNode.val > high) {
+    if (currentNode.left) {
+      currentNode = trimBST(currentNode.left, low, high);
+    } else {
+      currentNode = null;
+    }
+  } else if (currentNode.val < low) {
+    if (currentNode.right) {
+      currentNode = trimBST(currentNode.right, low, high);
+    } else {
+      currentNode = null;
+    }
+  } else {
+    if (currentNode.left) {
+      currentNode.left = trimBST(currentNode.left, low, high);
+    }
+    if (currentNode.right) {
+      currentNode.right = trimBST(currentNode.right, low, high);
+    }
+  }
+  return currentNode;
+};
 
 module.exports = { TreeNode, trimBST };
