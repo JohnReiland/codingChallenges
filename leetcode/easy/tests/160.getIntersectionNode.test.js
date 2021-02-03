@@ -1,4 +1,8 @@
-const { ListNode, getIntersectionNode } = require("../160.getIntersectionNode");
+const {
+  ListNode,
+  listLength,
+  getIntersectionNode,
+} = require("../160.getIntersectionNode");
 
 describe("getIntersectionNode()", () => {
   const headA1 = new ListNode(
