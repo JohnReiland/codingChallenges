@@ -45,6 +45,25 @@ function ListNode(val, next = null) {
   this.next = next;
 }
 
-const hasCycle = (head) => {};
+const hasCycle = (head) => {
+  let result = false;
+  if (head) {
+    let slow = head;
+    let fast = head.next;
+    let wait = true;
+    while (fast) {
+      if (slow === fast) {
+        result = true;
+        break;
+      }
+      fast = fast.next;
+      if (!wait) {
+        slow = slow.next;
+      }
+      wait = !wait;
+    }
+  }
+  return result;
+};
 
 module.exports = { ListNode, hasCycle };
