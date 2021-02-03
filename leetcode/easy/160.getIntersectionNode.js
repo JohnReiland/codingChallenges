@@ -30,10 +30,24 @@ Explanation: The two lists do not intersect, so return null.
 
 Notes:
 If the two linked lists have no intersection at all, return null.
-The linked lists must retain their original structure after the function returns.
+The linked lists must retain their original structure after the function
+returns.
 You may assume there are no cycles anywhere in the entire linked structure.
 Each value on each linked list is in the range [1, 10^9].
 Your code should preferably run in O(n) time and use only O(1) memory.
+*/
+
+/*
+Lots of parallels between this challenge and my personal favorite challenge,
+141, hasCycle. No immediate solution occurs to me unless I misunderstand what is
+meant by O(n) time. A soution that requires much more memory than O(1) but
+should be the fastest solution would be a Map. Nodes would be added to the Map
+one at a time from each list. As soon as a node is found which already exists in
+the Map, it would be returned. If none is found, null is returned.
+
+UPDATE:
+This solution passes, but isn't as fast of a solution as I expected. I'll study
+other solutions to learn new ways of looking at the challenge.
 */
 
 function ListNode(val, next = null) {
@@ -41,6 +55,34 @@ function ListNode(val, next = null) {
   this.next = next;
 }
 
-const getIntersectionNode = (headA, headB) => {};
+const getIntersectionNode = (headA, headB) => {
+  const map = new Map();
+  let result = null;
+  let nodeA = headA;
+  let nodeB = headB;
+  if (nodeA && nodeB) {
+    while (nodeA || nodeB) {
+      if (nodeA) {
+        if (map.has(nodeA)) {
+          result = nodeA;
+          break;
+        } else {
+          map.set(nodeA, true);
+          nodeA = nodeA.next;
+        }
+      }
+      if (nodeB) {
+        if (map.has(nodeB)) {
+          result = nodeB;
+          break;
+        } else {
+          map.set(nodeB, true);
+          nodeB = nodeB.next;
+        }
+      }
+    }
+  }
+  return result;
+};
 
 module.exports = { ListNode, getIntersectionNode };
