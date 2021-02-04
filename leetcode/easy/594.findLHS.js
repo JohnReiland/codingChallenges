@@ -27,6 +27,19 @@ Constraints:
 -10^9 <= nums[i] <= 10^9
 */
 
-const findLHS = (nums) => {};
+const findLHS = (nums) => {
+  const partners = [];
+  let result = 0;
+  for (let i = 0; i < nums.length; i++) {
+    partners[nums[i]] = 1 + (partners[nums[i]] || 0);
+    if (partners[nums[i] + 1]) {
+      result = Math.max(result, partners[nums[i]] + partners[nums[i] + 1]);
+    }
+    if (partners[nums[i] - 1]) {
+      result = Math.max(result, partners[nums[i]] + partners[nums[i] - 1]);
+    }
+  }
+  return result;
+};
 
 module.exports = { findLHS };
