@@ -29,6 +29,14 @@ numbers is sorted in increasing order.
 Only one valid answer exists.
 */
 
-const twoSum = (numbers, target) => {};
+const twoSum = (numbers, target) => {
+  const partners = {};
+  for (let i = 0; i < numbers.length; i++) {
+    if (partners[numbers[i]] !== undefined) {
+      return [partners[numbers[i]], i + 1];
+    }
+    partners[target - numbers[i]] = i + 1;
+  }
+};
 
 module.exports = { twoSum };
