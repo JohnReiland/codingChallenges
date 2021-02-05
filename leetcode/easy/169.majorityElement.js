@@ -20,6 +20,15 @@ n == nums.length
 Follow-up: Could you solve the problem in linear time and in O(1) space?
 */
 
-const majorityElement = (nums) => {};
+const majorityElement = (nums) => {
+  const limit = Math.floor(nums.length / 2) + 1;
+  const tally = [];
+  for (let i = 0; i < nums.length; i++) {
+    tally[nums[i]] = 1 + (tally[nums[i]] || 0);
+    if (tally[nums[i]] === limit) {
+      return nums[i];
+    }
+  }
+};
 
 module.exports = { majorityElement };

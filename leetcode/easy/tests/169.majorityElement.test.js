@@ -9,6 +9,10 @@ describe("majorityElement()", () => {
     expect(majorityElement([2, 2, 1, 1, 1, 2, 2])).toBe(2);
   });
 
+  test("majorityElement([-2,-2,1,1,1,-2,-2]) should be -2", () => {
+    expect(majorityElement([-2, -2, 1, 1, 1, -2, -2])).toBe(-2);
+  });
+
   test.skip("majorityElement(nums) should be result", () => {
     expect(majorityElement(nums)).toBe(result);
   });
