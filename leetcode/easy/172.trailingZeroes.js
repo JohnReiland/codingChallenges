@@ -21,6 +21,8 @@ Constraints:
 0 <= n <= 10^4
 */
 
-const trailingZeroes = (num) => {};
+const trailingZeroes = (num) => {
+  return num ? Math.floor(num / 5) + trailingZeroes(num / 5) : 0;
+};
 
 module.exports = { trailingZeroes };
