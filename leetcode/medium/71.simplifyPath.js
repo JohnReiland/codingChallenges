@@ -47,6 +47,28 @@ path consists of English letters, digits, period '.', slash '/' or '_'.
 path is a valid absolute Unix path.
 */
 
-const simplifyPath = (path) => {};
+const simplifyPath = (path) => {
+  const separated = path.split("/");
+  const stack = [];
+  for (let i = 1; i < separated.length; i++) {
+    switch (separated[i]) {
+      case "":
+        break;
+      case ".":
+        break;
+      case "..":
+        stack.pop();
+        break;
+      default:
+        stack.push(separated[i] + "/");
+        break;
+    }
+  }
+  let result = "/";
+  for (let i = 0; i < stack.length; i++) {
+    result += stack[i];
+  }
+  return result.substring(0, Math.max(1, result.length - 1));
+};
 
 module.exports = { simplifyPath };
