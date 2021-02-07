@@ -10,6 +10,15 @@ describe("rightSideView()", () => {
     expect(rightSideView(root)).toStrictEqual([1, 3, 4]);
   });
 
+  const root1 = new TreeNode(
+    1,
+    new TreeNode(2, null, new TreeNode(5)),
+    new TreeNode(3)
+  );
+  test("rightSideView(root1) should be [1, 3, 5]", () => {
+    expect(rightSideView(root1)).toStrictEqual([1, 3, 5]);
+  });
+
   test.skip("rightSideView(root) should be result", () => {
     expect(rightSideView(root)).toStrictEqual(result);
   });
