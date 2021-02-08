@@ -18,12 +18,43 @@ types, not just integer?
 
 */
 
-const PeekingIterator = function (iterator) {};
+const Iterate = function (array) {
+  Iterate.index = Iterate.index || 0;
+  this.array = array;
+};
 
-PeekingIterator.prototype.peek = function () {};
+Iterate.prototype.next = function () {
+  return Iterate.index < this.array.length ? this.array[Iterate.index++] : null;
+};
 
-PeekingIterator.prototype.next = function () {};
+Iterate.prototype.hasNext = function () {
+  return Iterate.index < this.array.length;
+};
 
-PeekingIterator.prototype.hasNext = function () {};
+const PeekingIterator = function (iterator) {
+  this.iter = iterator;
+  this.queue = [];
+};
 
-module.exports = { PeekingIterator };
+PeekingIterator.prototype.peek = function () {
+  if (!this.queue.length && this.iter.hasNext()) {
+    this.queue.push(this.iter.next());
+  }
+  return this.queue.length ? this.queue[0] : null;
+};
+
+PeekingIterator.prototype.next = function () {
+  let result = null;
+  if (this.queue.length) {
+    result = this.queue.pop();
+  } else if (this.iter.hasNext()) {
+    result = this.iter.next();
+  }
+  return result;
+};
+
+PeekingIterator.prototype.hasNext = function () {
+  return this.queue.length > 0 || this.iter.hasNext();
+};
+
+module.exports = { Iterate, PeekingIterator };
