@@ -45,6 +45,10 @@ describe("convertBST()", () => {
     expect(convertBST(root4)).toStrictEqual(result4);
   });
 
+  test("convertBST() should be null", () => {
+    expect(convertBST()).toStrictEqual(null);
+  });
+
   test.skip("convertBST(root) should be result", () => {
     expect(convertBST(root)).toStrictEqual(result);
   });
