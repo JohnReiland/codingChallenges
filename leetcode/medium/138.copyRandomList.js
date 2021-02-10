@@ -52,6 +52,20 @@ function Node(val, next, random) {
   this.random = random || null;
 }
 
-const copyRandomList = (head) => {};
+const copyRandomList = (head) => {
+  const mirror = new Map([[null, null]]);
+  let currentNode = head;
+  while (currentNode) {
+    mirror.set(currentNode, new Node(currentNode.val));
+    currentNode = currentNode.next;
+  }
+  currentNode = head;
+  while (currentNode) {
+    mirror.get(currentNode).next = mirror.get(currentNode.next);
+    mirror.get(currentNode).random = mirror.get(currentNode.random);
+    currentNode = currentNode.next;
+  }
+  return mirror.get(head);
+};
 
 module.exports = { Node, copyRandomList };
