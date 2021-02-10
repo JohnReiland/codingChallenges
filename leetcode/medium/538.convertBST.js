@@ -40,29 +40,27 @@ function TreeNode(val, left, right) {
   this.right = right === undefined ? null : right;
 }
 
-const convertRecurse = ([root, sum = 0]) => {
+const convertRecurse = ([root, sum]) => {
   const newRoot = new TreeNode(root.val);
   const result = [newRoot];
-  let nextSum = sum;
-  let newVals;
   if (root.right) {
-    newVals = convertRecurse([root.right, nextSum]);
+    let newVals = convertRecurse([root.right, sum]);
     newRoot.right = newVals[0];
-    nextSum = newVals[1];
+    sum = newVals[1];
   }
-  nextSum += newRoot.val;
-  newRoot.val = nextSum;
+  sum += newRoot.val;
+  newRoot.val = sum;
   if (root.left) {
-    newVals = convertRecurse([root.left, nextSum]);
+    let newVals = convertRecurse([root.left, sum]);
     newRoot.left = newVals[0];
-    nextSum = newVals[1];
+    sum = newVals[1];
   }
-  result.push(nextSum);
+  result.push(sum);
   return result;
 };
 
 const convertBST = (root) => {
-  return root ? convertRecurse([root])[0] : null;
+  return root ? convertRecurse([root, 0])[0] : null;
 };
 
 module.exports = { TreeNode, convertBST };
