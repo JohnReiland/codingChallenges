@@ -1,15 +1,15 @@
 const { isAnagram } = require("../242.isAnagram");
 
 describe("isAnagram()", () => {
-  test(`isAnagram("string", "test") should be true`, () => {
-    expect(isAnagram("string", "test")).toBe(true);
+  test(`isAnagram("anagram", "nagaram") should be true`, () => {
+    expect(isAnagram("anagram", "nagaram")).toBe(true);
   });
 
-  test(`isAnagram("string", "test") should be false`, () => {
-    expect(isAnagram("string", "test")).toBe(false);
+  test(`isAnagram("rat", "car") should be false`, () => {
+    expect(isAnagram("rat", "car")).toBe(false);
   });
 
-  test(`isAnagram("string", "test") should be result`, () => {
+  test.skip(`isAnagram("string", "test") should be result`, () => {
     expect(isAnagram("string", "test")).toBe(result);
   });
 });
