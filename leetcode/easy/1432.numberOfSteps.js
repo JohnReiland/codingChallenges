@@ -32,6 +32,14 @@ Constraints:
 0 <= num <= 10^6
 */
 
-const numberOfSteps = (target) => {};
+const numberOfSteps = (target) => {
+  numberOfSteps.memo = numberOfSteps.memo || [0, 1];
+  while (numberOfSteps.memo.length - 1 < target) {
+    let nextEven = numberOfSteps.memo[numberOfSteps.memo.length / 2] + 1;
+    numberOfSteps.memo.push(nextEven++);
+    numberOfSteps.memo.push(nextEven);
+  }
+  return numberOfSteps.memo[target];
+};
 
 module.exports = { numberOfSteps };
