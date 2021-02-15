@@ -55,28 +55,27 @@ to be bipartite or not, respecivtely.
 */
 
 const isBipartite = (graph) => {
-  const sort = Array(graph.length);
-  let stack = [];
-  let next = [];
+  const charge = Array(graph.length);
   let result = true;
   for (let i = 0; result && i < graph.length; i++) {
-    if (sort[i] === undefined) {
-      sort[i] = true;
-      let other = true;
+    if (charge[i] === undefined) {
+      let stack = [];
+      let next = [];
+      let same = (charge[i] = true);
       stack.push(...graph[i]);
-      while (result && stack.length) {
+      while (stack.length) {
         let currentNode = stack.pop();
-        if (sort[currentNode] === undefined) {
-          sort[currentNode] = !other;
-          next.push(...graph[currentNode]);
-        } else if (sort[currentNode] === !other) {
-        } else {
+        if (charge[currentNode] === same) {
           result = false;
+          break;
+        } else if (charge[currentNode] === undefined) {
+          charge[currentNode] = !same;
+          next.push(...graph[currentNode]);
         }
         if (stack.length === 0) {
           stack = next;
           next = [];
-          other = !other;
+          same = !same;
         }
       }
     }
