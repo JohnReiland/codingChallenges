@@ -54,6 +54,34 @@ the graph is bipartate. Succeeding or failing in that task will reveal the graph
 to be bipartite or not, respecivtely.
 */
 
-const isBipartite = (graph) => {};
+const isBipartite = (graph) => {
+  const sort = Array(graph.length);
+  let stack = [];
+  let next = [];
+  let result = true;
+  for (let i = 0; result && i < graph.length; i++) {
+    if (sort[i] === undefined) {
+      sort[i] = true;
+      let other = true;
+      stack.push(...graph[i]);
+      while (result && stack.length) {
+        let currentNode = stack.pop();
+        if (sort[currentNode] === undefined) {
+          sort[currentNode] = !other;
+          next.push(...graph[currentNode]);
+        } else if (sort[currentNode] === !other) {
+        } else {
+          result = false;
+        }
+        if (stack.length === 0) {
+          stack = next;
+          next = [];
+          other = !other;
+        }
+      }
+    }
+  }
+  return result;
+};
 
 module.exports = { isBipartite };
