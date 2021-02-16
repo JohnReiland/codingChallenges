@@ -54,6 +54,17 @@ n == mat[i].length
 matrix[i][j] is either 0 or 1.
 */
 
-const kWeakestRows = (mat, k) => {};
+const kWeakestRows = (mat, k) => {
+  const converted = [];
+  for (let i = 0; i < mat.length; i++) {
+    converted.push([i, mat[i].reduce((a, c) => a + c)]);
+  }
+  converted.sort((a, b) => a[1] - b[1]);
+  const result = [];
+  for (let i = 0; i < k; i++) {
+    result.push(converted[i][0]);
+  }
+  return result;
+};
 
 module.exports = { kWeakestRows };
