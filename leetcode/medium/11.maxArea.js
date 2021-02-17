@@ -31,6 +31,30 @@ n == heights.length
 0 <= heights[i] <= 3 * 10^4
 */
 
-const maxArea = (heights) => {};
+const maxArea = (heights) => {
+  let result = 0;
+  let left = 0;
+  let right = heights.length - 1;
+  while (left < right) {
+    result = Math.max(
+      result,
+      Math.min(heights[left], heights[right]) * (right - left)
+    );
+    if (heights[left] > heights[right]) {
+      let last = heights[right];
+      right--;
+      while (heights[right] < last) {
+        right--;
+      }
+    } else {
+      let last = heights[left];
+      left++;
+      while (heights[left] < last) {
+        left++;
+      }
+    }
+  }
+  return result;
+};
 
 module.exports = { maxArea };
