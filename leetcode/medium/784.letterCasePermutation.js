@@ -26,35 +26,51 @@ S will be a string with length between 1 and 12.
 S will consist only of letters or digits.
 */
 
-const letterCasePermutation = (string) => {
+const recurse = (string) => {
   let result = [];
-  if (string.length) {
-    let index = 0;
-    let cap = "";
+  let index = 0;
+  let body = "";
+  const letter = string[index].toLowerCase();
+  if (index < string.length) {
+    index++;
     while (!isNaN(parseInt(string[index]))) {
-      cap += string[index];
+      body += string[index];
       index++;
     }
-    let letter;
-    if (index < string.length) {
-      letter = string[index].toLowerCase();
+  }
+  let tail;
+  if (index < string.length) {
+    tail = recurse(string.slice(index));
+  } else {
+    tail = [""];
+  }
+  for (let i = 0; i < tail.length; i++) {
+    result.push(letter + body + tail[i]);
+    result.push(letter.toUpperCase() + body + tail[i]);
+  }
+  return result;
+};
+
+const letterCasePermutation = (string) => {
+  let result = [];
+  let index = 0;
+  let cap = "";
+  let body;
+  while (!isNaN(parseInt(string[index]))) {
+    cap += string[index];
+    index++;
+  }
+  if (index < string.length) {
+    body = recurse(string.slice(index));
+  } else {
+    body = [""];
+  }
+  if (cap.length) {
+    for (let i = 0; i < body.length; i++) {
+      result.push(cap + body[i]);
     }
-    const tail = letterCasePermutation(string.slice(index + 1));
-    if (!tail.length) {
-      if (letter) {
-        result.push(cap + (letter || ""));
-        result.push(cap + (letter ? letter.toUpperCase() : ""));
-      } else {
-        result.push(cap);
-      }
-    } else if (letter) {
-      for (let i = 0; i < tail.length; i++) {
-        result.push(cap + (letter || "") + tail[i]);
-        result.push(cap + (letter ? letter.toUpperCase() : "") + tail[i]);
-      }
-    } else {
-      result = tail;
-    }
+  } else {
+    result = body;
   }
   return result;
 };
