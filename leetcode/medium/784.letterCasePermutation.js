@@ -26,6 +26,8 @@ S will be a string with length between 1 and 12.
 S will consist only of letters or digits.
 */
 
-const letterCasePermutation = (string) => {};
+const letterCasePermutation = (string, result = []) => {
+  return result;
+};
 
 module.exports = { letterCasePermutation };
