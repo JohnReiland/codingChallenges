@@ -37,7 +37,29 @@ The other challenge is figuring out how to correctly identify the start and end
 of arithmetic sequences within a larger array of elements, some of which may
 belong to two arithmetic sequences simultaneously. This should be easily solved.
 */
+const numberOfValidSlices = (num) => {
+  return num ? (num * (num + 1)) / 2 : 0;
+};
 
-const numberOfArithmeticSlices = (array) => {};
+const numberOfArithmeticSlices = (array) => {
+  let result = 0;
+  if (array && array.length > 2) {
+    let last = array[1];
+    let dif = last - array[0];
+    let count = 0;
+    for (let i = 2; i < array.length; i++) {
+      while (array[i] === last + dif) {
+        count++;
+        last = array[i];
+        i++;
+      }
+      result += numberOfValidSlices(count);
+      count = 0;
+      dif = (array[i] || last) - last;
+      last = array[i];
+    }
+  }
+  return result;
+};
 
 module.exports = { numberOfArithmeticSlices };
