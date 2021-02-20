@@ -36,6 +36,33 @@ Constraints:
 s[i] is one of  '(' , ')' and lowercase English letters.
 */
 
-const minRemoveToMakeValid = (string) => {};
+const minRemoveToMakeValid = (string) => {
+  const stack = [];
+  const kill = [];
+  for (let i = 0; i < string.length; i++) {
+    if (string[i] === "(") {
+      stack.push(i);
+    } else if (string[i] === ")") {
+      if (stack.length) {
+        stack.pop();
+      } else {
+        kill.push(i);
+      }
+    }
+  }
+  let result = "";
+  let stackIndex = 0;
+  let killIndex = 0;
+  for (let i = 0; i < string.length; i++) {
+    if (i === stack[stackIndex]) {
+      stackIndex++;
+    } else if (i === kill[killIndex]) {
+      killIndex++;
+    } else {
+      result += string[i];
+    }
+  }
+  return result;
+};
 
 module.exports = { minRemoveToMakeValid };
