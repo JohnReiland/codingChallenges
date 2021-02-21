@@ -5,12 +5,12 @@ describe("brokenCalc()", () => {
     expect(brokenCalc(2, 3)).toBe(2);
   });
 
-  test("brokenCalc(5, 8) should be result", () => {
-    expect(brokenCalc(5, 8)).toBe(result);
+  test("brokenCalc(5, 8) should be 2", () => {
+    expect(brokenCalc(5, 8)).toBe(2);
   });
 
-  test("brokenCalc(3, 10) should be result", () => {
-    expect(brokenCalc(3, 10)).toBe(result);
+  test("brokenCalc(3, 10) should be 3", () => {
+    expect(brokenCalc(3, 10)).toBe(3);
   });
 
   test("brokenCalc(1024, 1) should be 1023", () => {
