@@ -23,6 +23,47 @@ The size of the dictionary won't exceed 1,000.
 The length of all the strings in the input won't exceed 1,000.
 */
 
-const findLongestWord = (string, dictionary) => {};
+const isSmaller = (champion, challenger) => {
+  let result = true;
+  for (let i = 0; i < challenger.length; i++) {
+    if (challenger[i] < champion[i]) {
+      break;
+    } else if (challenger[i] > champion[i]) {
+      result = false;
+      break;
+    }
+  }
+  return result;
+};
+
+const canBeMadeFrom = (whole, part) => {
+  let result = true;
+  let pointer = 0;
+  for (let i = 0; i < part.length; i++, pointer++) {
+    while (whole[pointer] && whole[pointer] !== part[i]) {
+      pointer++;
+    }
+    if (!whole[pointer]) {
+      result = false;
+      break;
+    }
+  }
+  return result;
+};
+
+const findLongestWord = (string, dictionary) => {
+  let result = "";
+  for (let i = 0; i < dictionary.length; i++) {
+    if (
+      (dictionary[i].length > result.length ||
+        (dictionary[i].length === result.length &&
+          isSmaller(result, dictionary[i]))) &&
+      canBeMadeFrom(string, dictionary[i])
+    ) {
+      result = dictionary[i];
+    }
+  }
+  return result;
+};
 
 module.exports = { findLongestWord };
