@@ -53,14 +53,14 @@ const canBeMadeFrom = (whole, part) => {
 
 const findLongestWord = (string, dictionary) => {
   let result = "";
+  dictionary.sort(function (a, b) {
+    return b.length - a.length;
+  });
+
   for (let i = 0; i < dictionary.length; i++) {
-    if (
-      (dictionary[i].length > result.length ||
-        (dictionary[i].length === result.length &&
-          isSmaller(result, dictionary[i]))) &&
-      canBeMadeFrom(string, dictionary[i])
-    ) {
+    if (canBeMadeFrom(string, dictionary[i])) {
       result = dictionary[i];
+      break;
     }
   }
   return result;

@@ -7,6 +7,12 @@ describe("findLongestWord()", () => {
     ).toBe("apple");
   });
 
+  test(`findLongestWord("mabpcplea", ["maple","apple","monkey","plea"]) should be "apple"`, () => {
+    expect(
+      findLongestWord("mabpcplea", ["maple", "apple", "monkey", "plea"])
+    ).toBe("apple");
+  });
+
   test(`findLongestWord("abpcplea", ["a","b","c"]) should be "a"`, () => {
     expect(findLongestWord("abpcplea", ["a", "b", "c"])).toBe("a");
   });
