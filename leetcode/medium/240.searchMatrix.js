@@ -47,51 +47,46 @@ above and to the right of an element, or below and to the left of an element.
 */
 
 const searchMatrix = (matrix, target) => {
-  let result = false;
-  let left = 0;
-  let right = matrix.length - 1;
-  let cut = Math.floor((left + right) / 2);
-  while (left < right - 1) {
-    if (matrix[cut][cut] >= target) {
-      right = cut;
-    } else {
-      left = cut;
-    }
-    cut = Math.floor((left + right) / 2);
-  }
-  cut++;
-  let edge = cut;
-  result = matrix[edge][edge] === target ? true : result;
-  if (!result) {
-    if (matrix[edge][matrix.length - 1] > target) {
-      edge++;
-    }
-    left = 0;
-    right = matrix.length - 1;
-    cut = Math.floor((left + right) / 2);
-    while (left < right - 1) {
-      if (matrix[edge][cut] >= target) {
-        right = cut;
-      } else {
-        left = cut;
+  let result =
+    matrix[0][0] > target ||
+    matrix[matrix.length - 1][matrix[0].length - 1] < target
+      ? false
+      : true;
+  if (result) {
+    let left;
+    let right;
+    let top;
+    let bottom;
+    let stack = [[0, matrix[0].length - 1, 0, matrix.length - 1]];
+    let next = [];
+    result = false;
+    while (!result && stack.length) {
+      // check whether target < min || target > max
+      let currentBox = stack.pop();
+      [left, right, top, bottom] = currentBox;
+      let cutH = Math.floor((left + right) / 2);
+      let cutV = Math.floor((top + bottom) / 2);
+      while (left + 1 < right) {
+        if (matrix[cutH][cutV] < target) {
+          left = cutH;
+          top = cutV;
+        } else if (matrix[cutH][cutV] > target) {
+          right = cutH;
+          bottom = cutV;
+        } else {
+          result = true;
+          break;
+        }
+        cutH = Math.floor((left + right) / 2);
+        cutV = Math.floor((top + bottom) / 2);
       }
-      cut = Math.floor((left + right) / 2);
-    }
-    result = matrix[edge][cut] === target ? true : result;
-  }
-  if (!result) {
-    left = 0;
-    right = matrix.length - 1;
-    cut = Math.floor((left + right) / 2);
-    while (left < right - 1) {
-      if (matrix[cut][edge] >= target) {
-        right = cut;
-      } else {
-        left = cut;
+      next.push([currentBox[0], left, bottom, currentBox[3]]);
+      next.push([right, currentBox[1], currentBox[2], top]);
+      if (!stack.length) {
+        stack = next;
+        next = [];
       }
-      cut = Math.floor((left + right) / 2);
     }
-    result = matrix[cut][edge] === target ? true : result;
   }
   return result;
 };
