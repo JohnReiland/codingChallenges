@@ -27,6 +27,24 @@ Constraints:
 Follow up: Can you solve it in O(n) time complexity?
 */
 
-const findUnsortedSubarray = (nums) => {};
+const findUnsortedSubarray = function (nums) {
+  let result = 0;
+  let largestRun = 1;
+  let largest = nums[0];
+  for (let i = 1; i < nums.length; i++) {
+    [largest, largestRun] =
+      nums[i] >= largest ? [nums[i], largestRun + 1] : [largest, 0];
+  }
+  if (largestRun < nums.length) {
+    let smallestRun = 1;
+    let smallest = nums[nums.length - 1];
+    for (let i = nums.length - 2; i >= 0; i--) {
+      [smallest, smallestRun] =
+        nums[i] <= smallest ? [nums[i], smallestRun + 1] : [smallest, 0];
+    }
+    result = nums.length - (largestRun + smallestRun);
+  }
+  return result;
+};
 
 module.exports = { findUnsortedSubarray };
