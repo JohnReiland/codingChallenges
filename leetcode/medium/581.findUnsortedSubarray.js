@@ -28,23 +28,20 @@ Follow up: Can you solve it in O(n) time complexity?
 */
 
 const findUnsortedSubarray = function (nums) {
-  let result = 0;
+  const length = nums.length;
   let largestRun = 1;
+  let smallestRun = 1;
   let largest = nums[0];
-  for (let i = 1; i < nums.length; i++) {
+  let smallest = nums[length - 1];
+  for (let i = 1; i < length; i++) {
     [largest, largestRun] =
       nums[i] >= largest ? [nums[i], largestRun + 1] : [largest, 0];
+    [smallest, smallestRun] =
+      nums[length - 1 - i] <= smallest
+        ? [nums[length - 1 - i], smallestRun + 1]
+        : [smallest, 0];
   }
-  if (largestRun < nums.length) {
-    let smallestRun = 1;
-    let smallest = nums[nums.length - 1];
-    for (let i = nums.length - 2; i >= 0; i--) {
-      [smallest, smallestRun] =
-        nums[i] <= smallest ? [nums[i], smallestRun + 1] : [smallest, 0];
-    }
-    result = nums.length - (largestRun + smallestRun);
-  }
-  return result;
+  return largestRun < length ? length - (largestRun + smallestRun) : 0;
 };
 
 module.exports = { findUnsortedSubarray };
