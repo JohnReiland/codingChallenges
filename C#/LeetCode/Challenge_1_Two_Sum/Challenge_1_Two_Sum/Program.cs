@@ -40,7 +40,21 @@ namespace Challenge_1_Two_Sum
     {
         public int[] TwoSum(int[] nums, int target)
         {
+            int[] result = new int[2];
+            Dictionary<int, int> match = new Dictionary<int, int>();
 
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (match.ContainsKey(target - nums[i]))
+                {
+                    result[0] = match[target - nums[i]];
+                    result[1] = i;
+                    break;
+                }
+                else if (!match.ContainsKey(nums[i]))
+                    match.Add(nums[i], i);
+            }
+            return result;
         }
     }
 }
